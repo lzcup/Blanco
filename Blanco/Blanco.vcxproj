@@ -57,8 +57,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blanco\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -73,6 +72,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Blanco\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,12 +82,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Blanco\Log.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Application.h" />
     <ClInclude Include="src\Blanco\Core.h" />
     <ClInclude Include="src\Blanco\EntryPoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Blanco\Log.cpp" />
     <ClCompile Include="src\Blanco\Application.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

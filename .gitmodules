@@ -1,0 +1,3 @@
+[submodule "Blanco/vendor/spdlog"]
+	path = Blanco/vendor/spdlog
+	url = https://github.com/gabime/spdlog
