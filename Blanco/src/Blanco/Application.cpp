@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "Events/Mouse.h"
+#include "Log.h"
 
 namespace Blanco
 {
@@ -12,6 +14,8 @@ namespace Blanco
 
 	void Application::Run()
 	{
+		MouseButtonPressedEvent e(666);
+		BL_CORE_TRACE(e.ToString());
 		while (true)
 		{
 		}

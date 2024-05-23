@@ -1,0 +1,67 @@
+#pragma once
+#include "Blanco/Core.h"
+#include <string>
+#include <functional>
+
+namespace Blanco {
+	enum class EventType
+	{
+		None = 0,
+		WindowClose, WindowResize, WindowFoucus, WindowLostFocus,WindowMoved,
+		AppTick, AppUpdate, AppRender,
+		KeyPressed,KeyReleased,
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+	};
+
+	enum EventCategory
+	{
+		None = 0,
+		EventCategoryApplication = BIT(0),
+		EventInput               = BIT(1),
+		EventKeyboard            = BIT(2),
+		EventCategoryMouse       = BIT(3),
+		EventCategoryMouseButton = BIT(4)
+	};
+
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() {return EventType::type;}\
+	                           virtual EventType GetEventType() const override {return GetStaticType();}\
+	                           virtual const char* GetEventName() const override {return #type;}
+#define EVENT_CATEGORY(category) virtual int GetEventCategoryFlag() const override {return category;}
+
+	class BL_API Event {
+	public:
+		virtual EventType GetEventType() const = 0;
+		virtual const char* GetEventName() const = 0;
+		virtual int GetEventCategoryFlag() const = 0;
+		virtual std::string ToString() const { return GetEventName(); }
+
+		bool IsInCategory(EventCategory category) const {
+			return GetEventCategoryFlag() & category;
+		}
+
+		inline bool GetHandled() const { return m_Handled; }
+	protected:
+		bool m_Handled = false;
+	};
+
+	class BL_API Dispatcher {
+	public:
+		Dispatcher(Event& event) :m_Event(event) {}
+
+		template<typename T>
+		bool Dispatch(std::function<bool(T&)> func) {
+			if (m_Event.GetEventType == T::GetStaticType()) {
+				m_Event.m_Handled = fuc(*((T*)&m_Event));
+				return true;
+			}
+			return false;
+		}
+	private:
+		Event& m_Event;
+	};
+
+	inline std::ostream& operator<<(std::ostream& stream, const Event& event) {
+		stream << event.ToString();
+		return stream;
+	}
+}

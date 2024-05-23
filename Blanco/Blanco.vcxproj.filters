@@ -19,6 +19,10 @@
     <ClInclude Include="src\Blanco\Log.h">
       <Filter>Blanco</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\Events\Event.h" />
+    <ClInclude Include="src\Blanco\Events\Key.h" />
+    <ClInclude Include="src\Blanco\Events\Mouse.h" />
+    <ClInclude Include="src\Blanco\Events\Application.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blanco\Application.cpp">

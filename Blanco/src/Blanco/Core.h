@@ -10,3 +10,5 @@
 #else
   #error Blanco Engine only for windows!
 #endif
+
+#define BIT(x) 1<<x
