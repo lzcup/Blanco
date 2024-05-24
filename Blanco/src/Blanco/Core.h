@@ -12,3 +12,11 @@
 #endif
 
 #define BIT(x) 1<<x
+
+#ifdef BL_ASSERT_ENABLE
+  #define BL_CORE_ASSERT(x,...) if(!x){BL_CORE_ERROR("Assert failed:{0}",__VA_ARGS__);__debugbreak;}
+  #define BL_ASSERT(x,...) if(!x){BL_ERROR("Assert failed:{0}",__VA_ARGS__);__debugbreak;}
+#else
+  #define BL_CORE_ASSERT(x,...)
+  #define BL_ASSERT(x,...)
+#endif

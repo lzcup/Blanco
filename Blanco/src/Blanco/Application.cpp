@@ -1,11 +1,13 @@
 #include "BLpch.h"
 #include "Application.h"
 #include "Events/Mouse.h"
+#include "GLFW/glfw3.h"
 
 namespace Blanco
 {
 	Application::Application()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application()
@@ -14,11 +16,11 @@ namespace Blanco
 
 	void Application::Run()
 	{
-		MouseButtonPressedEvent e(666);
-		BL_CORE_TRACE(e.ToString());
-		while (true)
-		{
-		}
+		glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		m_Window->Update();
+		while (m_Running)
+		{}
 	}
 }
 
