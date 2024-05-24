@@ -1,6 +1,6 @@
+#include "BLpch.h"
 #include "Application.h"
 #include "Events/Mouse.h"
-#include "Log.h"
 
 namespace Blanco
 {

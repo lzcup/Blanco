@@ -1,7 +1,5 @@
 #pragma once
 #include "Blanco/Core.h"
-#include <string>
-#include <functional>
 
 namespace Blanco {
 	enum class EventType

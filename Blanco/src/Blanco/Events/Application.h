@@ -1,7 +1,6 @@
 #pragma once
 #include "Blanco/Core.h"
 #include "Event.h"
-#include <sstream>
 
 namespace Blanco {
 	class BL_API WindowCloseEvent :public Event {

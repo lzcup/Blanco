@@ -4,8 +4,12 @@
     <Filter Include="Blanco">
       <UniqueIdentifier>{94E6ACA9-8088-D77F-6943-EBD355845ED0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blanco\Events">
+      <UniqueIdentifier>{F8E3F216-64A4-6E4D-2DDF-B7CA995EB329}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Application.h">
       <Filter>Blanco</Filter>
@@ -16,15 +20,24 @@
     <ClInclude Include="src\Blanco\EntryPoint.h">
       <Filter>Blanco</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\Events\Application.h">
+      <Filter>Blanco\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Events\Event.h">
+      <Filter>Blanco\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Events\Key.h">
+      <Filter>Blanco\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Events\Mouse.h">
+      <Filter>Blanco\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blanco\Log.h">
       <Filter>Blanco</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Events\Event.h" />
-    <ClInclude Include="src\Blanco\Events\Key.h" />
-    <ClInclude Include="src\Blanco\Events\Mouse.h" />
-    <ClInclude Include="src\Blanco\Events\Application.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BLpch.cpp" />
     <ClCompile Include="src\Blanco\Application.cpp">
       <Filter>Blanco</Filter>
     </ClCompile>

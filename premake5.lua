@@ -2,12 +2,27 @@ workspace "Blanco"
 configurations {"Debug","Release","Dist"}
 architecture "x64"
 
+outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+--include directories
+IncludeDir = {}
+IncludeDir["GLFW"] = "Blanco/vendor/glfw/include"
+IncludeDir["spdlog"] = "Blanco/vendor/spdlog/include"
+
+include "Blanco/vendor/glfw"
+
 project "Blanco"
   location "Blanco"
   kind "SharedLib"
   language "C++"
-  
-  outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+  links {
+      "GLFW",
+      "opengl32.lib"
+  }
+
+  pchheader "BLpch.h"
+  pchsource "%{prj.name}/src/BLpch.cpp"
   
   targetdir ("bin/"..outputdir.."/%{prj.name}")
   objdir ("bin-int/"..outputdir.."/%{prj.name}")
@@ -17,8 +32,10 @@ project "Blanco"
   }
   
   includedirs{
-  	"%{prj.name}/vendor/spdlog/include",
-    "%{prj.name}/src"
+    "%{prj.name}/src",
+    "%{IncludeDir.spdlog}",
+    "%{IncludeDir.GLFW}"
+
   }
 
   filter "system:windows"
@@ -52,8 +69,6 @@ project "Sandbox"
 
   links {"Blanco"}
   
-  outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-  
   targetdir ("bin/"..outputdir.."/%{prj.name}")
   objdir ("bin-int/"..outputdir.."/%{prj.name}")
   files {
@@ -62,7 +77,7 @@ project "Sandbox"
   }
   
   includedirs{
-  	"Blanco/vendor/spdlog/include",
+  	"%{IncludeDir.spdlog}",
     "Blanco/src"
   }
 

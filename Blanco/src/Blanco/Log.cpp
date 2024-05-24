@@ -1,4 +1,4 @@
-#include "Log.h"
+#include "BLpch.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace Blanco
