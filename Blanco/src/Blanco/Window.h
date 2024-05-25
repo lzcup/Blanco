@@ -26,7 +26,7 @@ namespace Blanco {
 		virtual inline unsigned int GetHeight() const = 0;
 
 		//TODO:window attribute
-		virtual void SetEventCallBack(EventCallBackFnc&) = 0;
+		virtual void SetEventCallBack(const EventCallBackFnc& fnc) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 

@@ -21,7 +21,7 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std:: stringstream ss;
-			ss << "KeyPressedEvent:" << m_KeyCode << "(repeat" << m_RepeatCounts << "times)\n";
+			ss << "KeyPressedEvent:" << m_KeyCode << "(repeat" << m_RepeatCounts << "times)";
 			return ss.str();
 		}
 	private:
@@ -37,7 +37,7 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "KeyReleasedEvent:" << m_KeyCode <<"\n";
+			ss << "KeyReleasedEvent:" << m_KeyCode ;
 			return ss.str();
 		}
 	};

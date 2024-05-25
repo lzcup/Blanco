@@ -21,7 +21,7 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "MouseButtonPressedEvent:" << m_MouseCode << "\n";
+			ss << "MouseButtonPressedEvent:" << m_MouseCode ;
 			return ss.str();
 		}
 	};
@@ -34,7 +34,7 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "MouseButtonReleasedEvent:" << m_MouseCode << "\n";
+			ss << "MouseButtonReleasedEvent:" << m_MouseCode ;
 			return ss.str();
 		}
 	};
@@ -48,12 +48,12 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "MouseMovedEvent:(" << m_X << "," << m_Y << ")\n";
+			ss << "MouseMovedEvent:(" << m_X << "," << m_Y << ")";
 			return ss.str();
 		}
 
-		inline int GetX() const { return m_X; }
-		inline int GetY() const { return m_Y; }
+		inline float GetX() const { return m_X; }
+		inline float GetY() const { return m_Y; }
 	private:
 		float m_X, m_Y;
 	};
@@ -67,12 +67,12 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "MouseScrolledEvent:(" << m_OffsetX << "," << m_OffsetY << ")\n";
+			ss << "MouseScrolledEvent:(" << m_OffsetX << "," << m_OffsetY << ")";
 			return ss.str();
 		}
 
-		inline int GetXOffset() const { return m_OffsetX; }
-		inline int GetYOffset() const { return m_OffsetY; }
+		inline float GetXOffset() const { return m_OffsetX; }
+		inline float GetYOffset() const { return m_OffsetY; }
 	private:
 		float m_OffsetX, m_OffsetY;
 	};

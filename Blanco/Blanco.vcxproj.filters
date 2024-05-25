@@ -26,16 +26,16 @@
     <ClInclude Include="src\Blanco\EntryPoint.h">
       <Filter>Blanco</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Events\Application.h">
+    <ClInclude Include="src\Blanco\Events\ApplicationEvent.h">
       <Filter>Blanco\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Events\Event.h">
       <Filter>Blanco\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Events\Key.h">
+    <ClInclude Include="src\Blanco\Events\KeyEvent.h">
       <Filter>Blanco\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Events\Mouse.h">
+    <ClInclude Include="src\Blanco\Events\MouseEvent.h">
       <Filter>Blanco\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Log.h">

@@ -20,12 +20,12 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "WindowResizeEvent:(" << m_Width << "," << m_Height << ")\n";
+			ss << "WindowResizeEvent:(" << m_Width << "," << m_Height << ")";
 			return ss.str();
 		}
 
-		inline int GetWidth() const { return m_Width; }
-		inline int GetHeight() const { return m_Height; }
+		inline unsigned int GetWidth() const { return m_Width; }
+		inline unsigned int GetHeight() const { return m_Height; }
 	private:
 		unsigned int m_Width, m_Height;
 	};
@@ -55,12 +55,12 @@ namespace Blanco {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "WindowMoved:(" << m_X << "," << m_Y << ")\n";
+			ss << "WindowMoved:(" << m_X << "," << m_Y << ")";
 			return ss.str();
 		}
 
-		inline int GetX() const { return m_X; }
-		inline int GetY() const { return m_Y; }
+		inline float GetX() const { return m_X; }
+		inline float GetY() const { return m_Y; }
 	private:
 		float m_X, m_Y;
 	};

@@ -10,10 +10,10 @@ namespace Blanco {
 
 		void Update() override;
 
-		inline unsigned int GetWidth() const override;
-		inline unsigned int GetHeight() const override;
+		inline unsigned int GetWidth() const override { return m_Data.m_Width; }
+		inline unsigned int GetHeight() const override { return m_Data.m_Height; }
 
-		void SetEventCallBack(EventCallBackFnc&) override;
+		void SetEventCallBack(const EventCallBackFnc& fnc) override { m_Data.m_Fnc = fnc; }
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 

@@ -157,10 +157,10 @@
     <ClInclude Include="src\Blanco\Application.h" />
     <ClInclude Include="src\Blanco\Core.h" />
     <ClInclude Include="src\Blanco\EntryPoint.h" />
-    <ClInclude Include="src\Blanco\Events\Application.h" />
+    <ClInclude Include="src\Blanco\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Blanco\Events\Event.h" />
-    <ClInclude Include="src\Blanco\Events\Key.h" />
-    <ClInclude Include="src\Blanco\Events\Mouse.h" />
+    <ClInclude Include="src\Blanco\Events\KeyEvent.h" />
+    <ClInclude Include="src\Blanco\Events\MouseEvent.h" />
     <ClInclude Include="src\Blanco\Log.h" />
     <ClInclude Include="src\Blanco\Window.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />

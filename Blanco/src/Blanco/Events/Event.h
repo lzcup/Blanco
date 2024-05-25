@@ -1,4 +1,5 @@
 #pragma once
+#include "BLpch.h"
 #include "Blanco/Core.h"
 
 namespace Blanco {
@@ -27,6 +28,7 @@ namespace Blanco {
 #define EVENT_CATEGORY(category) virtual int GetEventCategoryFlag() const override {return category;}
 
 	class BL_API Event {
+		friend class Dispatcher;
 	public:
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetEventName() const = 0;
@@ -47,9 +49,9 @@ namespace Blanco {
 		Dispatcher(Event& event) :m_Event(event) {}
 
 		template<typename T>
-		bool Dispatch(std::function<bool(T&)> func) {
-			if (m_Event.GetEventType == T::GetStaticType()) {
-				m_Event.m_Handled = fuc(*((T*)&m_Event));
+		bool Dispatch(std::function<bool(T&)> fnc) {
+			if (m_Event.GetEventType() == T::GetStaticType()) {
+				m_Event.m_Handled = fnc(*((T*)&m_Event));
 				return true;
 			}
 			return false;

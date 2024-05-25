@@ -10,10 +10,13 @@ namespace Blanco
 		Application();
 		virtual ~Application();
 
+		void OnEvent(Event& event);
 		void Run();
 	private:
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
+
+		bool OnWindowClose(Event& event);
 	};
 
 	//to be defined in client
