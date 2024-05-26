@@ -53,14 +53,17 @@ project "Blanco"
   filter "configurations:Debug"
     defines "BL_DEBUG"
     symbols "On"
+    buildoptions "/MDd"
   
   filter "configurations:Release"
     defines "BL_RELEASE"
     optimize "On"
+    buildoptions "/MD"
   
   filter "configurations:Dist"
     defines "BL_DIST"
     optimize "On"
+    buildoptions "/MD"
 
 project "Sandbox"
   location "Sandbox"
@@ -93,12 +96,15 @@ project "Sandbox"
   filter "configurations:Debug"
     defines "BL_DEBUG"
     symbols "On"
+    buildoptions "/MDd"
   
   filter "configurations:Release"
     defines "BL_RELEASE"
     optimize "On"
+    buildoptions "/MD"
   
   filter "configurations:Dist"
     defines "BL_DIST"
     optimize "On"
+    buildoptions "/MD"
 
