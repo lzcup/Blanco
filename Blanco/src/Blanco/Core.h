@@ -11,8 +11,6 @@
   #error Blanco Engine only for windows!
 #endif
 
-#define BIT(x) 1<<x
-
 #ifdef BL_ASSERT_ENABLE
   #define BL_CORE_ASSERT(x,...) if(!x){BL_CORE_ERROR("Assert failed:{0}",__VA_ARGS__);__debugbreak;}
   #define BL_ASSERT(x,...) if(!x){BL_ERROR("Assert failed:{0}",__VA_ARGS__);__debugbreak;}
@@ -20,3 +18,7 @@
   #define BL_CORE_ASSERT(x,...)
   #define BL_ASSERT(x,...)
 #endif
+
+#define BIT(x) 1<<x
+
+#define BL_BIND_EVENT_FNC(x) std::bind(&x, this, std::placeholders::_1)

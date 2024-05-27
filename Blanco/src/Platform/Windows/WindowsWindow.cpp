@@ -61,8 +61,10 @@ namespace Blanco {
 		BL_CORE_INFO("Create a window({0},{1},{2})", m_Data.m_Title, m_Data.m_Width, m_Data.m_Height);
 		
 		glfwMakeContextCurrent(m_Window);
+		int version = gladLoadGL(glfwGetProcAddress);
+		BL_CORE_ASSERT(version, "Glad initalize failed");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		m_Data.m_VSync = true;
+		SetVSync(true);
 
 		//setcallback
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
@@ -94,22 +96,29 @@ namespace Blanco {
 			switch (action) {
 			  case GLFW_RELEASE:
 			  {
-			  	KeyReleasedEvent event(key);
+			  	KeyReleasedEvent event(key, scancode);
 			  	data.m_Fnc(event);
 			  	break;
 			  }
 			  case GLFW_PRESS:
 			  {
-			  	KeyPressedEvent event(key, 0);
+			  	KeyPressedEvent event(key, scancode, 0);
 			  	data.m_Fnc(event);
 			  	break;
 			  }
 			  case GLFW_REPEAT: {
-			  	KeyPressedEvent event(key, 1);
+			  	KeyPressedEvent event(key, scancode, 1);
 			  	data.m_Fnc(event);
 			  	break;
 			  }
 			}
+			});
+
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int codepoint) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			KeyTypedEvent event(codepoint);
+			data.m_Fnc(event);
 			});
 
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {

@@ -1,5 +1,6 @@
 #pragma once
-#include "Blanco\Window.h"
+#include "Blanco/Window.h"
+#include "Glad/gl.h"
 #include "GLFW/glfw3.h"
 
 namespace Blanco {

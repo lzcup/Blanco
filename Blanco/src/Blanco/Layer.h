@@ -10,7 +10,7 @@ namespace Blanco
 		virtual ~Layer();
 
 		virtual void OnAttach() {};
-		virtual void Detach() {};
+		virtual void OnDetach() {};
 		virtual void OnUpdate() {};
 		virtual void OnEvent(Event& event) {};
 

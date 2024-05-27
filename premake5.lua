@@ -6,10 +6,14 @@ outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 --include directories
 IncludeDir = {}
-IncludeDir["GLFW"] = "Blanco/vendor/glfw/include"
 IncludeDir["spdlog"] = "Blanco/vendor/spdlog/include"
+IncludeDir["GLFW"] = "Blanco/vendor/glfw/include"
+IncludeDir["Glad"] = "Blanco/vendor/glad/include"
+IncludeDir["ImGui"] = "Blanco/vendor/imgui"
 
 include "Blanco/vendor/glfw"
+include "Blanco/vendor/glad"
+include "Blanco/vendor/imgui"
 
 project "Blanco"
   location "Blanco"
@@ -18,7 +22,9 @@ project "Blanco"
 
   links {
       "GLFW",
-      "opengl32.lib"
+      "opengl32.lib",
+      "Glad",
+      "ImGui"
   }
 
   pchheader "BLpch.h"
@@ -34,7 +40,9 @@ project "Blanco"
   includedirs{
     "%{prj.name}/src",
     "%{IncludeDir.spdlog}",
-    "%{IncludeDir.GLFW}"
+    "%{IncludeDir.GLFW}",
+    "%{IncludeDir.Glad}",
+    "%{IncludeDir.ImGui}"
 
   }
 
@@ -51,7 +59,10 @@ project "Blanco"
     postbuildcommands { "{COPYDIR} %{cfg.buildtarget.relpath} ../bin/"..outputdir.."/Sandbox/" }
   
   filter "configurations:Debug"
-    defines "BL_DEBUG"
+    defines {
+        "BL_DEBUG",
+        "BL_ASSERT_ENABLE"
+    }
     symbols "On"
     buildoptions "/MDd"
   

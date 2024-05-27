@@ -7,19 +7,22 @@ public:
 
 	void OnUpdate() override
 	{
-		BL_INFO("ExampleLayer Updated");
+		//BL_INFO("ExampleLayer Updated");
 	}
 
 	void OnEvent(Blanco::Event& event) override
 	{
-		BL_INFO("Event:{0}(ExampleLayer)",event.ToString());
+		//BL_INFO("Event:{0}(ExampleLayer)",event.ToString());
 	}
 };
 
 
 class SandboxApp :public Blanco::Application {
 public:
-	SandboxApp() { PushLayer(new ExampleLayer()); };
+	SandboxApp() { 
+		PushLayer(new ExampleLayer());
+		PushOverLayer(new Blanco::ImguiLayer());
+	};
 	~SandboxApp() override{};
 };
 

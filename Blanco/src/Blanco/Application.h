@@ -2,6 +2,7 @@
 #include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Blanco
 {
@@ -11,16 +12,20 @@ namespace Blanco
 		Application();
 		virtual ~Application();
 
+		static Application& GetInstance() { return *s_Instance; }
+		inline Window& GetWindow() { return *m_Window; }
+
 		void PushLayer(Layer* layer);
 		void PushOverLayer(Layer* layer);
 		void OnEvent(Event& event);
 		void Run();
 	private:
+		static Application* s_Instance;
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-
-		bool OnWindowClose(Event& event);
+	private:
+		bool OnWindowClose(WindowCloseEvent& event);
 	};
 
 	//to be defined in client
