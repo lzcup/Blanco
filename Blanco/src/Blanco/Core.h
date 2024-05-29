@@ -11,6 +11,10 @@
   #error Blanco Engine only for windows!
 #endif
 
+#ifdef BL_DEBUG
+  #define BL_ASSERT_ENABLE
+#endif
+
 #ifdef BL_ASSERT_ENABLE
   #define BL_CORE_ASSERT(x,...) if(!x){BL_CORE_ERROR("Assert failed:{0}",__VA_ARGS__);__debugbreak;}
   #define BL_ASSERT(x,...) if(!x){BL_ERROR("Assert failed:{0}",__VA_ARGS__);__debugbreak;}

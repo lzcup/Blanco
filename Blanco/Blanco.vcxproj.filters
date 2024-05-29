@@ -7,8 +7,8 @@
     <Filter Include="Blanco\Events">
       <UniqueIdentifier>{F8E3F216-64A4-6E4D-2DDF-B7CA995EB329}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blanco\imgui">
-      <UniqueIdentifier>{FE923803-EAF5-C7A7-937B-005E7FBD932A}</UniqueIdentifier>
+    <Filter Include="Blanco\ImGui">
+      <UniqueIdentifier>{BEFAF400-AA5D-84A5-53E3-BC5B3F255028}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
@@ -44,6 +44,9 @@
     <ClInclude Include="src\Blanco\Events\MouseEvent.h">
       <Filter>Blanco\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\ImGui\ImguiLayer.h">
+      <Filter>Blanco\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blanco\Layer.h">
       <Filter>Blanco</Filter>
     </ClInclude>
@@ -56,21 +59,23 @@
     <ClInclude Include="src\Blanco\Window.h">
       <Filter>Blanco</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\ImGui\ImguiLayer.h">
-      <Filter>Blanco\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImguiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\ImguiOpenGLRendererLoader.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\ImguiOpenGLRendererLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp" />
     <ClCompile Include="src\Blanco\Application.cpp">
       <Filter>Blanco</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\ImGui\ImguiLayer.cpp">
+      <Filter>Blanco\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Layer.cpp">
       <Filter>Blanco</Filter>
@@ -80,9 +85,6 @@
     </ClCompile>
     <ClCompile Include="src\Blanco\Log.cpp">
       <Filter>Blanco</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Blanco\ImGui\ImguiLayer.cpp">
-      <Filter>Blanco\imgui</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImguiOpenGLRenderer.cpp">
       <Filter>Platform\OpenGL</Filter>
