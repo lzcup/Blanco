@@ -12,7 +12,7 @@ namespace Blanco
 		Application();
 		virtual ~Application();
 
-		static Application& GetInstance() { return *s_Instance; }
+		static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
 		void PushLayer(Layer* layer);

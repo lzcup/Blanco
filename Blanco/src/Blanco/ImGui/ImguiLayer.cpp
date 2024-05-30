@@ -162,7 +162,7 @@ namespace Blanco
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		Window& window = Application::GetInstance().GetWindow();
+		Window& window = Application::Get().GetWindow();
 	    io.DisplaySize = ImVec2((float)window.GetWidth(), (float)window.GetHeight());
 
 		float current_time = (float)glfwGetTime();

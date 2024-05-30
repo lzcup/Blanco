@@ -25,11 +25,12 @@ namespace Blanco {
 		virtual inline unsigned int GetWidth() const = 0;
 		virtual inline unsigned int GetHeight() const = 0;
 
+		virtual inline void* GetNativeWindow() const = 0;
+
 		//window attribute
 		virtual void SetEventCallBack(const EventCallBackFnc& fnc) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
-
 
 		static Window* Create(const WindowProp& prop = WindowProp());
 	};

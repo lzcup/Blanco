@@ -152,6 +152,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Blanco\Input.h" />
+    <ClInclude Include="src\Blanco\KeyCodes.h" />
+    <ClInclude Include="src\Blanco\MouseButtonCodes.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Application.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="src\Platform\OpenGL\ImguiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\ImguiOpenGLRendererLoader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">
@@ -180,6 +184,7 @@
     <ClCompile Include="src\Blanco\LayerStack.cpp" />
     <ClCompile Include="src\Blanco\Log.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImguiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>

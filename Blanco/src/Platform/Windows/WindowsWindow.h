@@ -9,14 +9,16 @@ namespace Blanco {
 		WindowsWindow(const WindowProp& prop);
 		~WindowsWindow();
 
-		void Update() override;
+		virtual void Update() override;
 
-		inline unsigned int GetWidth() const override { return m_Data.m_Width; }
-		inline unsigned int GetHeight() const override { return m_Data.m_Height; }
+		virtual inline unsigned int GetWidth() const override { return m_Data.m_Width; }
+		virtual inline unsigned int GetHeight() const override { return m_Data.m_Height; }
 
-		void SetEventCallBack(const EventCallBackFnc& fnc) override { m_Data.m_Fnc = fnc; }
-		void SetVSync(bool enabled) override;
-		bool IsVSync() const override;
+		virtual inline void* GetNativeWindow() const override { return m_Window; }
+
+		virtual void SetEventCallBack(const EventCallBackFnc& fnc) override { m_Data.m_Fnc = fnc; }
+		virtual void SetVSync(bool enabled) override;
+		virtual bool IsVSync() const override;
 
 	private:
 		virtual void Init(const WindowProp& prop);
