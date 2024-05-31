@@ -1,17 +1,24 @@
 #include <Blanco.h>
+#include "imgui.h"
 
 class ExampleLayer :public Blanco::Layer {
 public:
 	ExampleLayer():Layer("Example") {};
 	~ExampleLayer() {};
 
-	void OnUpdate() override
+	virtual void OnUpdate() override
 	{
 		if (Blanco::Input::IsKeyPressed(BL_KEY_A))
 			BL_TRACE("A is pressed(poll)");
 	}
 
-	void OnEvent(Blanco::Event& event) override
+	virtual void OnImguiRender() override {
+		ImGui::Begin("hello");;
+		ImGui::Text("Baiwan");
+		ImGui::End();
+	};
+
+	virtual void OnEvent(Blanco::Event& event) override
 	{
 		if (event.GetEventType() == Blanco::EventType::KeyPressed) {
 			Blanco::KeyPressedEvent& e = dynamic_cast<Blanco::KeyPressedEvent&>(event);
@@ -26,7 +33,6 @@ class SandboxApp :public Blanco::Application {
 public:
 	SandboxApp() { 
 		PushLayer(new ExampleLayer());
-		PushOverLayer(new Blanco::ImguiLayer());
 	};
 	~SandboxApp() override{};
 };

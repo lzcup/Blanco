@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "Events/ApplicationEvent.h"
+#include "ImGui/ImguiLayer.h"
 
 namespace Blanco
 {
@@ -22,6 +23,7 @@ namespace Blanco
 	private:
 		static Application* s_Instance;
 		std::unique_ptr<Window> m_Window;
+		ImguiLayer* m_Imgui;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:

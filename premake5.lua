@@ -11,6 +11,7 @@ IncludeDir["spdlog"] = "Blanco/vendor/spdlog/include"
 IncludeDir["GLFW"] = "Blanco/vendor/glfw/include"
 IncludeDir["Glad"] = "Blanco/vendor/glad/include"
 IncludeDir["ImGui"] = "Blanco/vendor/imgui"
+IncludeDir["glm"] = "Blanco/vendor/glm/glm"
 
 include "Blanco/vendor/glfw"
 include "Blanco/vendor/glad"
@@ -44,8 +45,8 @@ project "Blanco"
     "%{IncludeDir.spdlog}",
     "%{IncludeDir.GLFW}",
     "%{IncludeDir.Glad}",
-    "%{IncludeDir.ImGui}"
-
+    "%{IncludeDir.ImGui}",
+    "%{IncludeDir.glm}"
   }
 
   filter "system:windows"
@@ -80,7 +81,9 @@ project "Sandbox"
   language "C++"
   staticruntime "off"
 
-  links {"Blanco"}
+  links {
+      "Blanco"
+  }
   
   targetdir ("bin/"..outputdir.."/%{prj.name}")
   objdir ("bin-int/"..outputdir.."/%{prj.name}")
@@ -91,6 +94,8 @@ project "Sandbox"
   
   includedirs{
   	"%{IncludeDir.spdlog}",
+    "%{IncludeDir.glm}",
+    "%{IncludeDir.ImGui}",
     "Blanco/src"
   }
 

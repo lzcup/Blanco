@@ -18,6 +18,6 @@ namespace Blanco
         inline std::vector<Layer*>::iterator end() { return m_LayerStack.end(); }
     private:
         std::vector<Layer*> m_LayerStack;
-        std::vector<Layer*>::iterator m_LayerInsert;
+        unsigned int m_LayerInsertIndex;
     };
 }

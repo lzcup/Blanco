@@ -15,6 +15,8 @@ namespace Blanco
 		s_Instance = this;
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallBack(BL_BIND_EVENT_FNC(Application::OnEvent));
+		m_Imgui = new ImguiLayer();
+		PushOverLayer(m_Imgui);
 	}
 
 	Application::~Application()
@@ -53,6 +55,11 @@ namespace Blanco
 		    glClear(GL_COLOR_BUFFER_BIT);
 			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
 				(*it++)->OnUpdate();
+			m_Imgui->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImguiRender();
+			m_Imgui->End();
+			
 		}
 	}
 

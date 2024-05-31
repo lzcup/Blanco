@@ -3,9 +3,8 @@
 
 namespace Blanco
 {
-	LayerStack::LayerStack()
+	LayerStack::LayerStack():m_LayerInsertIndex(0)
 	{
-		m_LayerInsert = m_LayerStack.begin();
 	}
 	LayerStack::~LayerStack()
 	{
@@ -14,7 +13,8 @@ namespace Blanco
 	}
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		m_LayerInsert = m_LayerStack.emplace(m_LayerInsert, layer);
+		m_LayerStack.emplace(m_LayerStack.begin() + m_LayerInsertIndex, layer);
+		m_LayerInsertIndex++;
 	}
 	void LayerStack::PushOverLayer(Layer* layer)
 	{
@@ -25,7 +25,7 @@ namespace Blanco
 		auto it = std::find(m_LayerStack.begin(), m_LayerStack.end(), layer);
 		if (it != m_LayerStack.end()) {
 			m_LayerStack.erase(it);
-			m_LayerInsert--;
+			m_LayerInsertIndex--;
 		}
 
 	}
