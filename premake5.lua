@@ -1,6 +1,7 @@
 workspace "Blanco"
 configurations {"Debug","Release","Dist"}
 architecture "x64"
+cppdialect "C++20"
 startproject "Sandbox"
 
 outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -19,9 +20,9 @@ include "Blanco/vendor/imgui"
 
 project "Blanco"
   location "Blanco"
-  kind "SharedLib"
+  kind "StaticLib"
   language "C++"
-  staticruntime "off"
+  staticruntime "on"
 
   links {
       "GLFW",
@@ -49,37 +50,39 @@ project "Blanco"
     "%{IncludeDir.glm}"
   }
 
+  defines{
+    "_CRT_SECURE_NO_WARNINGS"
+  }
+
   filter "system:windows"
-    cppdialect "C++20"
     systemversion "latest"
     
     defines{
     	"BLANCO_BUILD_DLL",
     	"BLANCO_PLATFORM_WINDOWS"
     }
-    
-    postbuildcommands { "{COPYDIR} %{cfg.buildtarget.relpath} \"../bin/"..outputdir.."/Sandbox/\"" }
   
   filter "configurations:Debug"
     defines "BL_DEBUG"
-    symbols "On"
+    symbols "on"
     runtime "Debug"
   
   filter "configurations:Release"
     defines "BL_RELEASE"
-    optimize "On"
+    optimize "on"
     runtime "Release"
   
   filter "configurations:Dist"
     defines "BL_DIST"
-    optimize "On"
+    optimize "on"
     runtime "Release"
 
 project "Sandbox"
   location "Sandbox"
   kind "ConsoleApp"
   language "C++"
-  staticruntime "off"
+  cppdialect "C++20"
+  staticruntime "on"
 
   links {
       "Blanco"
@@ -100,7 +103,6 @@ project "Sandbox"
   }
 
   filter "system:windows"
-    cppdialect "C++20"
     systemversion "latest"
     
     defines{
@@ -109,16 +111,16 @@ project "Sandbox"
   
   filter "configurations:Debug"
     defines "BL_DEBUG"
-    symbols "On"
+    symbols "on"
     runtime "Debug"
   
   filter "configurations:Release"
     defines "BL_RELEASE"
-    optimize "On"
+    optimize "on"
     runtime "Release"
   
   filter "configurations:Dist"
     defines "BL_DIST"
-    optimize "On"
+    optimize "on"
     runtime "Release"
 

@@ -19,5 +19,12 @@ project "Glad"
     systemversion "latest"
     staticruntime "on"
 
-  filter {"system:windows","configurations:Release"}
-    buildoptions "/MT"
+  filter "configurations:Debug"
+    defines "BL_DEBUG"
+    symbols "on"
+    runtime "Debug"
+  
+  filter "configurations:Release"
+    defines "BL_RELEASE"
+    optimize "on"
+    runtime "Release"
