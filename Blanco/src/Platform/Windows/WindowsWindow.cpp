@@ -3,6 +3,7 @@
 #include "Blanco/Events/ApplicationEvent.h"
 #include "Blanco/Events/KeyEvent.h"
 #include "Blanco/Events/MouseEvent.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Blanco {
 	static bool s_Initialized = false;
@@ -22,7 +23,7 @@ namespace Blanco {
 	}
 	void WindowsWindow::Update()
 	{
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffer();
 		glfwPollEvents();
 	}
 
@@ -55,14 +56,13 @@ namespace Blanco {
 			s_Initialized = true;
 		}
 		m_Window = glfwCreateWindow((int)m_Data.m_Width, (int)m_Data.m_Height, m_Data.m_Title.c_str(), nullptr, nullptr);
-
 		
 		BL_CORE_ASSERT(m_Window,"Cannot create a window!")
 		BL_CORE_INFO("Create a window({0},{1},{2})", m_Data.m_Title, m_Data.m_Width, m_Data.m_Height);
+
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 		
-		glfwMakeContextCurrent(m_Window);
-		int version = gladLoadGL(glfwGetProcAddress);
-		BL_CORE_ASSERT(version, "Glad initalize failed");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 

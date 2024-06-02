@@ -1,7 +1,7 @@
 #pragma once
 #include "Blanco/Window.h"
-#include "Glad/gl.h"
 #include "GLFW/glfw3.h"
+#include "Blanco/Renderer/GraphicsContext.h"
 
 namespace Blanco {
 	class BL_API WindowsWindow :public Window {
@@ -33,7 +33,8 @@ namespace Blanco {
 			EventCallBackFnc m_Fnc;
 		};
 
-		GLFWwindow* m_Window;
 		WindowData m_Data;
+		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 	};
 }
