@@ -14,6 +14,11 @@ namespace Blanco
 		glfwMakeContextCurrent(m_WindowHandle);
 		int version = gladLoadGL(glfwGetProcAddress);
 		BL_CORE_ASSERT(version, "Glad initalize failed");
+
+		BL_CORE_INFO("OpenGL Info:");
+		BL_CORE_INFO("  Vendor:{0}", (const char*)glGetString(GL_VENDOR));
+		BL_CORE_INFO("  Renderer:{0}", (const char*)glGetString(GL_RENDERER));
+		BL_CORE_INFO("  Version:{0}", (const char*)glGetString(GL_VERSION));
 	}
 
 	void OpenGLContext::SwapBuffer()

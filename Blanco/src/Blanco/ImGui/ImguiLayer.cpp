@@ -68,7 +68,6 @@ namespace Blanco
         int display_w, display_h;
         glfwGetFramebufferSize(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         ImGuiIO& io = ImGui::GetIO();

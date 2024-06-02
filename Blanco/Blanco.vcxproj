@@ -143,7 +143,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Blanco\Renderer\Buffer.h" />
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Blanco\Renderer\Renderer.h" />
+    <ClInclude Include="src\Blanco\Renderer\Shader.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Application.h" />
@@ -161,11 +164,15 @@
     <ClInclude Include="src\Blanco\Log.h" />
     <ClInclude Include="src\Blanco\MouseButtonCodes.h" />
     <ClInclude Include="src\Blanco\Window.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Blanco\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Shader.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -174,6 +181,7 @@
     <ClCompile Include="src\Blanco\Layer.cpp" />
     <ClCompile Include="src\Blanco\LayerStack.cpp" />
     <ClCompile Include="src\Blanco\Log.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

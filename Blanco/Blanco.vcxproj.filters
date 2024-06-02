@@ -73,6 +73,10 @@
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Blanco\Renderer\Shader.h" />
+    <ClInclude Include="src\Blanco\Renderer\Buffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\Blanco\Renderer\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp" />
@@ -98,5 +102,9 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>
