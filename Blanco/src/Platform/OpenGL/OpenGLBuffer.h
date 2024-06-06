@@ -22,7 +22,7 @@ namespace Blanco
 		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
 		virtual ~OpenGLIndexBuffer() override;
 
-		inline uint32_t GetCount() const{ return m_Count; }
+		virtual inline uint32_t GetCount() const override { return m_Count; }
 
 		virtual void Bind() const override;
 		virtual void UnBind() const override;

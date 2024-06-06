@@ -29,7 +29,7 @@ namespace Blanco
 		std::string Name;
 		ShaderDataType Type;
 		uint32_t Size;
-		uint32_t Offset;
+		uint64_t Offset;
 		bool Normalized;
 
 		BufferElement(ShaderDataType type, const std::string& name, bool normalized)
@@ -58,10 +58,10 @@ namespace Blanco
 
 	class BufferLayout {
 	public:
-		BufferLayout() {};
+		BufferLayout() :m_Stride(0) {}
 
 		BufferLayout(const std::initializer_list<BufferElement>& elements) :m_Elements(elements), m_Stride(0) {
-			uint32_t offset = 0;
+			uint64_t offset = 0;
 			for (BufferElement& element : m_Elements) {
 				element.Offset = offset;
 				offset += element.Size;
@@ -96,6 +96,8 @@ namespace Blanco
 		virtual ~IndexBuffer() {};
 
 		static IndexBuffer* CreatIndexBuffer(uint32_t* indices, uint32_t count);
+
+		virtual inline uint32_t GetCount() const = 0;
 
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;

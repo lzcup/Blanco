@@ -13,10 +13,9 @@ namespace Blanco
 			  return nullptr;
 		case RenderAPI::OPENGL:
 		   	  return new OpenGLVertexBuffer(vertices, size);
-		   default:
-		   	  BL_CORE_ASSERT(false, "Unknown API is not supported!")
-			  return nullptr;
 		}
+		BL_CORE_ASSERT(false, "Unknown API is not supported!")
+			return nullptr;
 	}
 
 	IndexBuffer* IndexBuffer::CreatIndexBuffer(uint32_t* indices, uint32_t count)
@@ -27,9 +26,8 @@ namespace Blanco
 		    return nullptr;
 		case RenderAPI::OPENGL:
 			return new OpenGLIndexBuffer(indices, count);
-		default:
-			BL_CORE_ASSERT(false, "Unknown API is not supported!")
-			return nullptr;
 		}
+		BL_CORE_ASSERT(false, "Unknown API is not supported!")
+			return nullptr;
 	}
 }
