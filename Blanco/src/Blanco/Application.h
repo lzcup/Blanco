@@ -7,6 +7,7 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
+#include "Renderer/Camera.h"
 
 namespace Blanco
 {
@@ -33,6 +34,7 @@ namespace Blanco
 		std::shared_ptr<Shader> m_BlueShader;
 		std::shared_ptr<VertexArray> m_VertexArray;
 		std::shared_ptr<VertexArray> m_SquaVertexArray;
+		OrthoGraphicCamera m_Camera;
 	private:
 		bool OnWindowClose(WindowCloseEvent& event);
 	};

@@ -8,7 +8,7 @@ namespace Blanco
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application() :m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		BL_CORE_ASSERT(!s_Instance, "Instance already exist!");
 		s_Instance = this;
@@ -42,10 +42,10 @@ namespace Blanco
 		m_SquaVertexArray.reset(VertexArray::Create());
 
 		float squaVertices[3 * 4] = {
-			-0.7f,-0.5f,0.0f,
-			-0.7f, 0.5f,0.0f,
-			 0.7f, 0.5f,0.0f,
-			 0.7f,-0.5f,0.0f,
+			-0.7f,-0.7f,0.0f,
+			-0.7f, 0.7f,0.0f,
+			 0.7f, 0.7f,0.0f,
+			 0.7f,-0.7f,0.0f,
 		};
 
 		std::shared_ptr<VertexBuffer> squaVB(VertexBuffer::CreatVertextBuffer(squaVertices, sizeof(squaVertices)));
@@ -69,9 +69,10 @@ namespace Blanco
 
            out vec3 o_Position;
            out vec4 o_Color;
+           uniform mat4 u_ViewProjection;
 
            void main(){
-                 gl_Position=vec4(a_Position,1.0f);
+                 gl_Position=u_ViewProjection * vec4(a_Position,1.0f);
                  o_Position=a_Position;
                  o_Color=a_Color;
            }
@@ -97,9 +98,10 @@ namespace Blanco
            layout(location = 0) in vec3 a_Position;
 
            out vec3 o_Position;
+           uniform mat4 u_ViewProjection;
 
            void main(){
-                 gl_Position=vec4(a_Position,1.0f);
+                 gl_Position=u_ViewProjection * vec4(a_Position,1.0f);
            }
         )";
 
@@ -113,6 +115,9 @@ namespace Blanco
         )";
 
 		m_BlueShader.reset(new Shader(blueVertexSrc, blueFragmentSrc));
+
+		m_Camera.SetPosition(glm::vec3(-0.2f, -0.2f, 0.0f));
+		m_Camera.SetRotation(0.0f);
 	}
 
 	Application::~Application()
@@ -151,14 +156,12 @@ namespace Blanco
 			RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
-			m_BlueShader->Bind();
-			Renderer::Submit(m_SquaVertexArray);
+			Renderer::BeginScene(m_Camera);
+			Renderer::Submit(m_BlueShader, m_SquaVertexArray);
 			Renderer::EndScene();
 
-			Renderer::BeginScene();
-			m_Shader->Bind();
-			Renderer::Submit(m_VertexArray);
+			Renderer::BeginScene(m_Camera);
+			Renderer::Submit(m_Shader, m_VertexArray);
 			Renderer::EndScene();
 
 			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)

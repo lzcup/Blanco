@@ -1,6 +1,7 @@
 #include "BLpch.h"
 #include "Shader.h"
 #include "glad/gl.h"
+#include "gtc/type_ptr.hpp"
 
 namespace Blanco
 {
@@ -90,6 +91,13 @@ namespace Blanco
 		glDeleteProgram(m_RendererID);
 	}
 
+	void Shader::UploadUniformMat4(const std::string& name, const glm::mat4& value)
+	{
+		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
+		BL_CORE_ASSERT((location != -1), "Uniform(" + name + ")is not exist!") ;
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+	}
+
 	void Shader::Bind() const
 	{
 		glUseProgram(m_RendererID);
@@ -99,5 +107,4 @@ namespace Blanco
 	{
 		glUseProgram(0);
 	}
-
 }

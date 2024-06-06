@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Blanco\Renderer\Buffer.h" />
+    <ClInclude Include="src\Blanco\Renderer\Camera.h" />
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Blanco\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Blanco\Renderer\Renderer.h" />
@@ -176,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blanco\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Camera.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RendererAPI.cpp" />
