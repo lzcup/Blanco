@@ -1,8 +1,8 @@
 #include "BLpch.h"
 #include "Application.h"
-#include "glad/gl.h"
 #include "GLFW/glfw3.h"
 #include "Events/ApplicationEvent.h"
+#include "Renderer/Renderer.h"
 
 namespace Blanco
 {
@@ -147,16 +147,19 @@ namespace Blanco
 		while (m_Running)
 		{
 			m_Window->Update();
-		    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		    glClear(GL_COLOR_BUFFER_BIT);
 
+			RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 			m_BlueShader->Bind();
-			m_SquaVertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquaVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_SquaVertexArray);
+			Renderer::EndScene();
 
+			Renderer::BeginScene();
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
+			Renderer::EndScene();
 
 			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
 				(*it++)->OnUpdate();

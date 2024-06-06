@@ -7,11 +7,11 @@ namespace Blanco
 {
 	VertexArray* VertexArray::Create()
 	{
-		switch (Renderer::GetAPI()) {
-		case RenderAPI::NONE:
+		switch (RendererAPI::GetAPI()) {
+		case RendererAPI::API::NONE:
 			BL_CORE_ASSERT(false, "API is none which is not supported!")
 				return nullptr;
-		case RenderAPI::OPENGL:
+		case RendererAPI::API::OPENGL:
 			return new OpenGLVertexArray();
 		}
 	    BL_CORE_ASSERT(false, "Unknown API is not supported!")
