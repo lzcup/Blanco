@@ -105,22 +105,22 @@ public:
 	};
 	~ExampleLayer() {};
 
-	virtual void OnUpdate() override
+	virtual void OnUpdate(Blanco::TimeStep ts) override
 	{
 		if (Blanco::Input::IsKeyPressed(BL_KEY_UP))
-			m_Position.y += m_MoveSpeed;
+			m_Position.y += m_MoveSpeed * ts;
 		else if (Blanco::Input::IsKeyPressed(BL_KEY_DOWN))
-			m_Position.y -= m_MoveSpeed;
+			m_Position.y -= m_MoveSpeed * ts;
 
 		if (Blanco::Input::IsKeyPressed(BL_KEY_RIGHT))
-			m_Position.x += m_MoveSpeed;
+			m_Position.x += m_MoveSpeed * ts;
 		else if (Blanco::Input::IsKeyPressed(BL_KEY_LEFT))
-			m_Position.x -= m_MoveSpeed;
+			m_Position.x -= m_MoveSpeed * ts;
 
 		if (Blanco::Input::IsKeyPressed(BL_KEY_A))
-			m_Rotation -= m_RotateSpeed;
+			m_Rotation -= m_RotateSpeed * ts;
 		else if (Blanco::Input::IsKeyPressed(BL_KEY_D))
-			m_Rotation += m_RotateSpeed;
+			m_Rotation += m_RotateSpeed * ts;
 
 		m_Camera.SetPosition(m_Position);
 		m_Camera.SetRotation(m_Rotation);
@@ -173,9 +173,9 @@ private:
 	std::shared_ptr<Blanco::VertexArray> m_SquaVertexArray;
 	Blanco::OrthoGraphicCamera m_Camera;
 	glm::vec3 m_Position;
-	float m_MoveSpeed = 0.1f;
+	float m_MoveSpeed = 5.0f;
 	float m_Rotation = 0.0f;
-	float m_RotateSpeed = 1.0f;
+	float m_RotateSpeed = 180.0f;
 	glm::vec4 m_Projection = { -1.6f, 1.6f, -0.9f, 0.9f };
 };
 

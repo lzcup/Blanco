@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "Events/Event.h"
+#include "Core/TimeStep.h"
 
 namespace Blanco 
 {
@@ -11,7 +12,7 @@ namespace Blanco
 
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};
-		virtual void OnUpdate() {};
+		virtual void OnUpdate(TimeStep ts) {};
 		virtual void OnEvent(Event& event) {};
 		virtual void OnImguiRender() {};
 

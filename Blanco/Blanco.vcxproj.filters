@@ -83,6 +83,7 @@
     <ClInclude Include="src\Blanco\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Blanco\Renderer\Camera.h" />
+    <ClInclude Include="src\Blanco\Core\TimeStep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp" />

@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "Events/ApplicationEvent.h"
 #include "Renderer/Renderer.h"
+#include "Core/TimeStep.h"
 
 namespace Blanco
 {
@@ -49,10 +50,14 @@ namespace Blanco
 	{
 		while (m_Running)
 		{
+			float currentTime = (float)glfwGetTime();
+			TimeStep ts = currentTime - m_Time;
+			m_Time = currentTime;
+
 			m_Window->Update();
 
 			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
-				(*it++)->OnUpdate();
+				(*it++)->OnUpdate(ts);
 			m_Imgui->Begin();
 			for (Layer* layer : m_LayerStack)
 				layer->OnImguiRender();

@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Blanco\Core\TimeStep.h" />
     <ClInclude Include="src\Blanco\Renderer\Buffer.h" />
     <ClInclude Include="src\Blanco\Renderer\Camera.h" />
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h" />

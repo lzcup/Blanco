@@ -30,6 +30,7 @@ namespace Blanco
 		ImguiLayer* m_Imgui;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		float m_Time = 0.0f;
 	private:
 		bool OnWindowClose(WindowCloseEvent& event);
 	};
