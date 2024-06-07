@@ -11,7 +11,7 @@
 
 namespace Blanco
 {
-	class BL_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -30,11 +30,6 @@ namespace Blanco
 		ImguiLayer* m_Imgui;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<VertexArray> m_SquaVertexArray;
-		OrthoGraphicCamera m_Camera;
 	private:
 		bool OnWindowClose(WindowCloseEvent& event);
 	};
