@@ -94,7 +94,8 @@ namespace Blanco
 	void Shader::UploadUniformMat4(const std::string& name, const glm::mat4& value)
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
-		BL_CORE_ASSERT((location != -1), "Uniform(" + name + ")is not exist!") ;
+		if (location == -1)
+			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
 

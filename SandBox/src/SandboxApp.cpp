@@ -1,9 +1,10 @@
 #include <Blanco.h>
 #include "imgui.h"
+#include "gtc/matrix_transform.hpp"
 
 class ExampleLayer :public Blanco::Layer {
 public:
-	ExampleLayer() :Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_Position(0.0f) {
+	ExampleLayer() :Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f){
 		m_VertexArray.reset(Blanco::VertexArray::Create());
 
 		float vertices[3 * 7] = {
@@ -29,10 +30,10 @@ public:
 		m_SquaVertexArray.reset(Blanco::VertexArray::Create());
 
 		float squaVertices[3 * 4] = {
-			-0.7f,-0.7f,0.0f,
-			-0.7f, 0.7f,0.0f,
-			 0.7f, 0.7f,0.0f,
-			 0.7f,-0.7f,0.0f,
+			-0.5f,-0.5f,0.0f,
+			-0.5f, 0.5f,0.0f,
+			 0.5f, 0.5f,0.0f,
+			 0.5f,-0.5f,0.0f,
 		};
 
 		std::shared_ptr<Blanco::VertexBuffer> squaVB(Blanco::VertexBuffer::CreatVertextBuffer(squaVertices, sizeof(squaVertices)));
@@ -57,9 +58,10 @@ public:
            out vec3 o_Position;
            out vec4 o_Color;
            uniform mat4 u_ViewProjection;
+           uniform mat4 u_Transform;
 
            void main(){
-                 gl_Position=u_ViewProjection * vec4(a_Position,1.0f);
+                 gl_Position=u_ViewProjection * u_Transform * vec4(a_Position,1.0f);
                  o_Position=a_Position;
                  o_Color=a_Color;
            }
@@ -86,9 +88,10 @@ public:
 
            out vec3 o_Position;
            uniform mat4 u_ViewProjection;
+           uniform mat4 u_Transform;
 
            void main(){
-                 gl_Position=u_ViewProjection * vec4(a_Position,1.0f);
+                 gl_Position=u_ViewProjection * u_Transform * vec4(a_Position,1.0f);
            }
         )";
 
@@ -107,29 +110,41 @@ public:
 
 	virtual void OnUpdate(Blanco::TimeStep ts) override
 	{
+		//Camera Control
 		if (Blanco::Input::IsKeyPressed(BL_KEY_UP))
-			m_Position.y += m_MoveSpeed * ts;
+			m_CameraPosition.y += m_MoveSpeed * ts;
 		else if (Blanco::Input::IsKeyPressed(BL_KEY_DOWN))
-			m_Position.y -= m_MoveSpeed * ts;
+			m_CameraPosition.y -= m_MoveSpeed * ts;
 
 		if (Blanco::Input::IsKeyPressed(BL_KEY_RIGHT))
-			m_Position.x += m_MoveSpeed * ts;
+			m_CameraPosition.x += m_MoveSpeed * ts;
 		else if (Blanco::Input::IsKeyPressed(BL_KEY_LEFT))
-			m_Position.x -= m_MoveSpeed * ts;
+			m_CameraPosition.x -= m_MoveSpeed * ts;
 
 		if (Blanco::Input::IsKeyPressed(BL_KEY_A))
 			m_Rotation -= m_RotateSpeed * ts;
 		else if (Blanco::Input::IsKeyPressed(BL_KEY_D))
 			m_Rotation += m_RotateSpeed * ts;
 
-		m_Camera.SetPosition(m_Position);
+		if (Blanco::Input::IsKeyPressed(BL_KEY_A))
+			m_Rotation -= m_RotateSpeed * ts;
+		else if (Blanco::Input::IsKeyPressed(BL_KEY_D))
+			m_Rotation += m_RotateSpeed * ts;
+
+		m_Camera.SetPosition(m_CameraPosition);
 		m_Camera.SetRotation(m_Rotation);
 
 		Blanco::RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		Blanco::RenderCommand::Clear();
 
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		Blanco::Renderer::BeginScene(m_Camera);
-		Blanco::Renderer::Submit(m_BlueShader, m_SquaVertexArray);
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.11f * x, 0.11f * y, 0.0f)) * scale;
+				Blanco::Renderer::Submit(m_BlueShader, m_SquaVertexArray, transform);
+			}
+		}
 		Blanco::Renderer::EndScene();
 
 		Blanco::Renderer::BeginScene(m_Camera);
@@ -172,7 +187,7 @@ private:
 	std::shared_ptr<Blanco::VertexArray> m_VertexArray;
 	std::shared_ptr<Blanco::VertexArray> m_SquaVertexArray;
 	Blanco::OrthoGraphicCamera m_Camera;
-	glm::vec3 m_Position;
+	glm::vec3 m_CameraPosition;
 	float m_MoveSpeed = 5.0f;
 	float m_Rotation = 0.0f;
 	float m_RotateSpeed = 180.0f;
