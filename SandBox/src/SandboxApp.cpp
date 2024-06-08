@@ -1,6 +1,7 @@
 #include <Blanco.h>
 #include "imgui.h"
 #include "gtc/matrix_transform.hpp"
+#include "Platform/OpenGL/OpenGLShader.h"
 
 class ExampleLayer :public Blanco::Layer {
 public:
@@ -13,7 +14,7 @@ public:
 			 0.0f, 0.5f,0.0f,0.8f,0.2f,0.3f,1.0f
 		};
 
-		std::shared_ptr<Blanco::VertexBuffer> tranVB(Blanco::VertexBuffer::CreatVertextBuffer(vertices, sizeof(vertices)));
+		Blanco::Ref<Blanco::VertexBuffer> tranVB(Blanco::VertexBuffer::CreatVertextBuffer(vertices, sizeof(vertices)));
 		Blanco::BufferLayout layout = {
 			{Blanco::ShaderDataType::Float3,"a_Position",false},
 			{Blanco::ShaderDataType::Float4,"a_Color",false}
@@ -24,7 +25,7 @@ public:
 		unsigned int indices[3] = {
 			0,1,2
 		};
-		std::shared_ptr<Blanco::IndexBuffer> tranIB(Blanco::IndexBuffer::CreatIndexBuffer(indices, sizeof(indices) / sizeof(uint32_t)));
+		Blanco::Ref<Blanco::IndexBuffer> tranIB(Blanco::IndexBuffer::CreatIndexBuffer(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(tranIB);
 
 		m_SquaVertexArray.reset(Blanco::VertexArray::Create());
@@ -36,7 +37,7 @@ public:
 			 0.5f,-0.5f,0.0f,
 		};
 
-		std::shared_ptr<Blanco::VertexBuffer> squaVB(Blanco::VertexBuffer::CreatVertextBuffer(squaVertices, sizeof(squaVertices)));
+		Blanco::Ref<Blanco::VertexBuffer> squaVB(Blanco::VertexBuffer::CreatVertextBuffer(squaVertices, sizeof(squaVertices)));
 		Blanco::BufferLayout squaLayout = {
 			{Blanco::ShaderDataType::Float3,"a_Position",false}
 		};
@@ -47,7 +48,7 @@ public:
 			0,1,2,
 			0,2,3
 		};
-		std::shared_ptr<Blanco::IndexBuffer> squaIB(Blanco::IndexBuffer::CreatIndexBuffer(squaIndices, sizeof(squaIndices) / sizeof(uint32_t)));
+		Blanco::Ref<Blanco::IndexBuffer> squaIB(Blanco::IndexBuffer::CreatIndexBuffer(squaIndices, sizeof(squaIndices) / sizeof(uint32_t)));
 		m_SquaVertexArray->SetIndexBuffer(squaIB);
 
 		std::string vertexSrc = R"(
@@ -80,9 +81,9 @@ public:
            }
         )";
 
-		m_Shader.reset(new Blanco::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Blanco::Shader::Create(vertexSrc, fragmentSrc));
 
-		std::string blueVertexSrc = R"(
+		std::string flatColorVertexSrc = R"(
            #version 330
            layout(location = 0) in vec3 a_Position;
 
@@ -95,16 +96,18 @@ public:
            }
         )";
 
-		std::string blueFragmentSrc = R"(
+		std::string flatColorFragmentSrc = R"(
            #version 330
            layout(location = 0) out vec4 color;
 
+           uniform vec3 u_FlatColor;
+
            void main(){
-                 color=vec4(0.2, 0.3, 0.5, 1.0);
+                 color=vec4(u_FlatColor,1.0f);
            }
         )";
 
-		m_BlueShader.reset(new Blanco::Shader(blueVertexSrc, blueFragmentSrc));
+		m_FlatColorShader.reset(Blanco::Shader::Create(flatColorVertexSrc, flatColorFragmentSrc));
 	};
 	~ExampleLayer() {};
 
@@ -137,12 +140,14 @@ public:
 		Blanco::RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		Blanco::RenderCommand::Clear();
 
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		Blanco::Renderer::BeginScene(m_Camera);
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_FlatColorShader)->Bind();
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_FlatColor", m_FlatColor);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.11f * x, 0.11f * y, 0.0f)) * scale;
-				Blanco::Renderer::Submit(m_BlueShader, m_SquaVertexArray, transform);
+				Blanco::Renderer::Submit(m_FlatColorShader, m_SquaVertexArray, transform);
 			}
 		}
 		Blanco::Renderer::EndScene();
@@ -153,7 +158,9 @@ public:
 	}
 
 	virtual void OnImguiRender() override {
-		
+		ImGui::Begin("Color test!");
+		ImGui::ColorEdit3("Square Color",&m_FlatColor.r);
+		ImGui::End();
 	};
 
 	virtual void OnEvent(Blanco::Event& event) override
@@ -182,16 +189,18 @@ private:
 		return false;
 	}
 private:
-	std::shared_ptr<Blanco::Shader> m_Shader;
-	std::shared_ptr<Blanco::Shader> m_BlueShader;
-	std::shared_ptr<Blanco::VertexArray> m_VertexArray;
-	std::shared_ptr<Blanco::VertexArray> m_SquaVertexArray;
+	Blanco::Ref<Blanco::Shader> m_Shader;
+	Blanco::Ref<Blanco::Shader> m_FlatColorShader;
+	Blanco::Ref<Blanco::VertexArray> m_VertexArray;
+	Blanco::Ref<Blanco::VertexArray> m_SquaVertexArray;
 	Blanco::OrthoGraphicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_MoveSpeed = 5.0f;
 	float m_Rotation = 0.0f;
 	float m_RotateSpeed = 180.0f;
 	glm::vec4 m_Projection = { -1.6f, 1.6f, -0.9f, 0.9f };
+
+	glm::vec3 m_FlatColor = { 0.2f, 0.3f, 0.5f };
 };
 
 

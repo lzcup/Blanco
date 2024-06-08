@@ -1,19 +1,14 @@
 #pragma once
-#include <string>
-#include <glm.hpp>
 
 namespace Blanco
 {
 	class Shader {
 	public:
-		Shader(std::string vertexSrc, std::string fragmentSrc);
-		~Shader();
+		virtual ~Shader() = default;
 
-		void Bind() const;
-		void UnBind() const;
+		virtual void Bind() const = 0;
+		virtual void UnBind() const = 0;
 
-		void UploadUniformMat4(const std::string& name, const glm::mat4& value);
-	private:
-		uint32_t m_RendererID;
+		static Shader* Create(std::string vertexSrc, std::string fragmentSrc);
 	};
 }

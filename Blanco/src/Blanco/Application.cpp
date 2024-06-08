@@ -13,7 +13,7 @@ namespace Blanco
 	{
 		BL_CORE_ASSERT(!s_Instance, "Instance already exist!");
 		s_Instance = this;
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = Ref<Window>(Window::Create());
 		m_Window->SetEventCallBack(BL_BIND_EVENT_FNC(Application::OnEvent));
 		m_Imgui = new ImguiLayer();
 		PushOverLayer(m_Imgui);

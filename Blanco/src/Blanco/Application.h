@@ -26,7 +26,7 @@ namespace Blanco
 		void Run();
 	private:
 		static Application* s_Instance;
-		std::unique_ptr<Window> m_Window;
+		Ref<Window> m_Window;
 		ImguiLayer* m_Imgui;
 		bool m_Running = true;
 		LayerStack m_LayerStack;

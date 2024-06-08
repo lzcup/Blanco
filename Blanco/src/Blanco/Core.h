@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 #ifdef BLANCO_PLATFORM_WINDOWS
 //define BL_API
@@ -30,3 +31,12 @@
 #define BIT(x) 1<<x
 
 #define BL_BIND_EVENT_FNC(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace Blanco 
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}
