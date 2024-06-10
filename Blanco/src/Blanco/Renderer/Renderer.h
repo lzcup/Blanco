@@ -7,6 +7,8 @@ namespace Blanco
 {
 	class Renderer {
 	public:
+		static void Init();
+
 		static void BeginScene(OrthoGraphicCamera& camera);
 		static void EndScene();
 

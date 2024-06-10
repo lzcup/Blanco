@@ -30,16 +30,17 @@ public:
 
 		m_SquaVertexArray.reset(Blanco::VertexArray::Create());
 
-		float squaVertices[3 * 4] = {
-			-0.5f,-0.5f,0.0f,
-			-0.5f, 0.5f,0.0f,
-			 0.5f, 0.5f,0.0f,
-			 0.5f,-0.5f,0.0f,
+		float squaVertices[5 * 4] = {
+			-0.5f,-0.5f,0.0f,0.0f,0.0f,
+			-0.5f, 0.5f,0.0f,0.0f,1.0f,
+			 0.5f, 0.5f,0.0f,1.0f,1.0f,
+			 0.5f,-0.5f,0.0f,1.0f,0.0f
 		};
 
 		Blanco::Ref<Blanco::VertexBuffer> squaVB(Blanco::VertexBuffer::CreatVertextBuffer(squaVertices, sizeof(squaVertices)));
 		Blanco::BufferLayout squaLayout = {
-			{Blanco::ShaderDataType::Float3,"a_Position",false}
+			{Blanco::ShaderDataType::Float3,"a_Position",false},
+			{Blanco::ShaderDataType::Float2,"a_TexCoord",false}
 		};
 		squaVB->SetLayout(squaLayout);
 		m_SquaVertexArray->AddVertexBuffer(squaVB);
@@ -108,6 +109,40 @@ public:
         )";
 
 		m_FlatColorShader.reset(Blanco::Shader::Create(flatColorVertexSrc, flatColorFragmentSrc));
+
+		std::string texture2DVertexSrc = R"(
+           #version 330
+           layout(location = 0) in vec3 a_Position;
+           layout(location = 1) in vec2 a_TexCoord;
+
+           out vec2 v_TexCoord;
+           uniform mat4 u_ViewProjection;
+           uniform mat4 u_Transform;
+
+           void main(){
+                 gl_Position = u_ViewProjection * u_Transform * vec4(a_Position,1.0f);
+                 v_TexCoord = a_TexCoord;
+           }
+        )";
+
+		std::string texture2DFragmentSrc = R"(
+           #version 330
+           layout(location = 0) out vec4 color;
+
+           in vec2 v_TexCoord;
+           uniform vec3 u_FlatColor;
+           uniform sampler2D u_Texture;
+
+           void main(){
+                 color=texture(u_Texture,v_TexCoord);
+           }
+        )";
+
+		m_Texture2DShader.reset(Blanco::Shader::Create(texture2DVertexSrc, texture2DFragmentSrc));
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_Texture2DShader)->Bind();
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_Texture2DShader)->UploadUniformInt("u_Texture", 0);
+		m_Texture2D = Blanco::Texture2D::Create("asset/textures/checkerboard.png");
+		m_Cat = Blanco::Texture2D::Create("asset/textures/cat.png");
 	};
 	~ExampleLayer() {};
 
@@ -141,6 +176,7 @@ public:
 		Blanco::RenderCommand::Clear();
 
 		Blanco::Renderer::BeginScene(m_Camera);
+
 		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_FlatColorShader)->Bind();
 		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_FlatColor", m_FlatColor);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
@@ -150,11 +186,19 @@ public:
 				Blanco::Renderer::Submit(m_FlatColorShader, m_SquaVertexArray, transform);
 			}
 		}
+
+		m_Texture2D->Bind();
+		Blanco::Renderer::Submit(m_Texture2DShader, m_SquaVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		m_Cat->Bind();
+		Blanco::Renderer::Submit(m_Texture2DShader, m_SquaVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		//Triangle
+		//Blanco::Renderer::Submit(m_Shader, m_VertexArray);
+
 		Blanco::Renderer::EndScene();
 
-		Blanco::Renderer::BeginScene(m_Camera);
-		Blanco::Renderer::Submit(m_Shader, m_VertexArray);
-		Blanco::Renderer::EndScene();
+
+
+		
 	}
 
 	virtual void OnImguiRender() override {
@@ -191,8 +235,11 @@ private:
 private:
 	Blanco::Ref<Blanco::Shader> m_Shader;
 	Blanco::Ref<Blanco::Shader> m_FlatColorShader;
+	Blanco::Ref<Blanco::Shader> m_Texture2DShader;
 	Blanco::Ref<Blanco::VertexArray> m_VertexArray;
 	Blanco::Ref<Blanco::VertexArray> m_SquaVertexArray;
+	Blanco::Ref<Blanco::Texture2D> m_Texture2D;
+	Blanco::Ref<Blanco::Texture2D> m_Cat;
 	Blanco::OrthoGraphicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_MoveSpeed = 5.0f;

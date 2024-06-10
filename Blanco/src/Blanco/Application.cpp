@@ -13,8 +13,12 @@ namespace Blanco
 	{
 		BL_CORE_ASSERT(!s_Instance, "Instance already exist!");
 		s_Instance = this;
+
 		m_Window = Ref<Window>(Window::Create());
 		m_Window->SetEventCallBack(BL_BIND_EVENT_FNC(Application::OnEvent));
+
+		Renderer::Init();
+
 		m_Imgui = new ImguiLayer();
 		PushOverLayer(m_Imgui);
 	}
