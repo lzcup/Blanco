@@ -1,7 +1,7 @@
 #include <Blanco.h>
+#include "Platform/OpenGL/OpenGLShader.h"
 #include "imgui.h"
 #include "gtc/matrix_transform.hpp"
-#include "Platform/OpenGL/OpenGLShader.h"
 
 class ExampleLayer :public Blanco::Layer {
 public:
@@ -110,39 +110,11 @@ public:
 
 		m_FlatColorShader.reset(Blanco::Shader::Create(flatColorVertexSrc, flatColorFragmentSrc));
 
-		std::string texture2DVertexSrc = R"(
-           #version 330
-           layout(location = 0) in vec3 a_Position;
-           layout(location = 1) in vec2 a_TexCoord;
-
-           out vec2 v_TexCoord;
-           uniform mat4 u_ViewProjection;
-           uniform mat4 u_Transform;
-
-           void main(){
-                 gl_Position = u_ViewProjection * u_Transform * vec4(a_Position,1.0f);
-                 v_TexCoord = a_TexCoord;
-           }
-        )";
-
-		std::string texture2DFragmentSrc = R"(
-           #version 330
-           layout(location = 0) out vec4 color;
-
-           in vec2 v_TexCoord;
-           uniform vec3 u_FlatColor;
-           uniform sampler2D u_Texture;
-
-           void main(){
-                 color=texture(u_Texture,v_TexCoord);
-           }
-        )";
-
-		m_Texture2DShader.reset(Blanco::Shader::Create(texture2DVertexSrc, texture2DFragmentSrc));
+		m_Texture2DShader = Blanco::Shader::Create("assets/shaders/Texture.glsl");
 		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_Texture2DShader)->Bind();
 		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_Texture2DShader)->UploadUniformInt("u_Texture", 0);
-		m_Texture2D = Blanco::Texture2D::Create("asset/textures/checkerboard.png");
-		m_Cat = Blanco::Texture2D::Create("asset/textures/cat.png");
+		m_Texture2D = Blanco::Texture2D::Create("assets/textures/checkerboard.png");
+		m_Cat = Blanco::Texture2D::Create("assets/textures/cat.png");
 	};
 	~ExampleLayer() {};
 

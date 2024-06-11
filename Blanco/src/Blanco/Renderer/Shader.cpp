@@ -5,6 +5,19 @@
 
 namespace Blanco
 {
+	Ref<Shader> Shader::Create(std::string filepath)
+	{
+		switch (RendererAPI::GetAPI()) {
+		case RendererAPI::API::NONE:
+			BL_CORE_ASSERT(false, "API is none which is not supported!")
+				return nullptr;
+		case RendererAPI::API::OPENGL:
+			return std::make_shared<OpenGLShader>(filepath);
+		}
+		BL_CORE_ASSERT(false, "Unknown API is not supported!")
+			return nullptr;
+	}
+
 	Shader* Shader::Create(std::string vertexSrc, std::string fragmentSrc)
 	{
 		switch (RendererAPI::GetAPI()) {

@@ -9,6 +9,7 @@ namespace Blanco
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;
 
+		static Ref<Shader> Create(std::string filepath);
 		static Shader* Create(std::string vertexSrc, std::string fragmentSrc);
 	};
 }

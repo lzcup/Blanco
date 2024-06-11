@@ -5,8 +5,12 @@
 
 namespace Blanco
 {
+	//TODO:remove
+	typedef unsigned int GLenum;
+
 	class OpenGLShader: public Shader{
 	public:
+		OpenGLShader(std::string filepath);
 		OpenGLShader(std::string vertexSrc, std::string fragmentSrc);
 		~OpenGLShader();
 
@@ -22,6 +26,10 @@ namespace Blanco
 
 		void UploadUniformMat3(const std::string& name, const glm::mat3& value);
 		void UploadUniformMat4(const std::string& name, const glm::mat4& value);
+	private:
+		std::string ReadFile(const std::string& filepath);
+		std::unordered_map<GLenum,std::string> PreProcess(const std::string& shader);
+		void Compile(const std::unordered_map<GLenum, std::string>& map);
 	private:
 		uint32_t m_RendererID;
 	};
