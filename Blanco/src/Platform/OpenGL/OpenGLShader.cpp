@@ -15,13 +15,19 @@ namespace Blanco
 		BL_CORE_ASSERT(false,"Unknow shader type!")
 		return 0;
 	}
-	OpenGLShader::OpenGLShader(std::string filepath)
+	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		size_t begin = filepath.find_last_of("/\\") == std::string::npos ? 0 : filepath.find_last_of("/\\") + 1;
+		size_t end = filepath.rfind(".");
+		size_t counts = end == std::string::npos ? filepath.size() - begin : end - begin;
+		m_Name = filepath.substr(begin, counts);
+
 		std::string shaderSource = ReadFile(filepath);
 		auto shaderMap = PreProcess(shaderSource);
 		Compile(shaderMap);
 	}
-	OpenGLShader::OpenGLShader(std::string vertexSrc, std::string fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc):
+		m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> shaderMap;
 		shaderMap[GL_VERTEX_SHADER] = vertexSrc;
@@ -123,7 +129,9 @@ namespace Blanco
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderMap)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLuint> shaderIDs(shaderMap.size());
+		BL_CORE_ASSERT(shaderMap.size() <= 2, "Not support more than 2 shaders for now!")
+		std::array<GLuint,2> shaderIDs;
+		int index = 0;
 		for (auto& kv : shaderMap) {
 			GLenum shadeType = kv.first;
 			const std::string& value = kv.second;
@@ -151,7 +159,7 @@ namespace Blanco
 				BL_CORE_ASSERT(false, "Shader compile failed!")
 			}
 		glAttachShader(program, shader);
-		shaderIDs.push_back(shader);
+		shaderIDs[index++] = shader;
 		}
 	
 		glLinkProgram(program);

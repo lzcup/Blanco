@@ -82,7 +82,7 @@ public:
            }
         )";
 
-		m_Shader.reset(Blanco::Shader::Create(vertexSrc, fragmentSrc));
+		m_ShaderLibrary.Load("VertexPosTriangle", vertexSrc, fragmentSrc);
 
 		std::string flatColorVertexSrc = R"(
            #version 330
@@ -108,11 +108,11 @@ public:
            }
         )";
 
-		m_FlatColorShader.reset(Blanco::Shader::Create(flatColorVertexSrc, flatColorFragmentSrc));
+		m_ShaderLibrary.Load("FlatColor", flatColorVertexSrc, flatColorFragmentSrc);
 
-		m_Texture2DShader = Blanco::Shader::Create("assets/shaders/Texture.glsl");
-		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_Texture2DShader)->Bind();
-		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_Texture2DShader)->UploadUniformInt("u_Texture", 0);
+		auto texture2DShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(texture2DShader)->Bind();
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(texture2DShader)->UploadUniformInt("u_Texture", 0);
 		m_Texture2D = Blanco::Texture2D::Create("assets/textures/checkerboard.png");
 		m_Cat = Blanco::Texture2D::Create("assets/textures/cat.png");
 	};
@@ -149,20 +149,22 @@ public:
 
 		Blanco::Renderer::BeginScene(m_Camera);
 
-		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<Blanco::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_FlatColor", m_FlatColor);
+		auto flatColorShader = m_ShaderLibrary.Get("FlatColor");
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(flatColorShader)->Bind();
+		std::dynamic_pointer_cast<Blanco::OpenGLShader>(flatColorShader)->UploadUniformFloat3("u_FlatColor", m_FlatColor);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.11f * x, 0.11f * y, 0.0f)) * scale;
-				Blanco::Renderer::Submit(m_FlatColorShader, m_SquaVertexArray, transform);
+				Blanco::Renderer::Submit(flatColorShader, m_SquaVertexArray, transform);
 			}
 		}
 
 		m_Texture2D->Bind();
-		Blanco::Renderer::Submit(m_Texture2DShader, m_SquaVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		auto texture2DShader = m_ShaderLibrary.Get("Texture");
+		Blanco::Renderer::Submit(texture2DShader, m_SquaVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_Cat->Bind();
-		Blanco::Renderer::Submit(m_Texture2DShader, m_SquaVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Blanco::Renderer::Submit(texture2DShader, m_SquaVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		//Triangle
 		//Blanco::Renderer::Submit(m_Shader, m_VertexArray);
 
@@ -205,9 +207,7 @@ private:
 		return false;
 	}
 private:
-	Blanco::Ref<Blanco::Shader> m_Shader;
-	Blanco::Ref<Blanco::Shader> m_FlatColorShader;
-	Blanco::Ref<Blanco::Shader> m_Texture2DShader;
+	Blanco::ShaderLibrary m_ShaderLibrary;
 	Blanco::Ref<Blanco::VertexArray> m_VertexArray;
 	Blanco::Ref<Blanco::VertexArray> m_SquaVertexArray;
 	Blanco::Ref<Blanco::Texture2D> m_Texture2D;
