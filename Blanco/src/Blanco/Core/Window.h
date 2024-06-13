@@ -1,7 +1,7 @@
 #pragma once
 #include "BLpch.h"
-#include "Core.h"
-#include "Events/Event.h"
+#include "Blanco/Core/Core.h"
+#include "Blanco/Events/Event.h"
 
 namespace Blanco {
 
@@ -32,7 +32,7 @@ namespace Blanco {
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		static Window* Create(const WindowProp& prop = WindowProp());
+		static Ref<Window> Create(const WindowProp& prop = WindowProp());
 	};
 }
 

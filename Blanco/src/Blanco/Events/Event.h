@@ -1,6 +1,6 @@
 #pragma once
 #include "BLpch.h"
-#include "Blanco/Core.h"
+#include "Blanco/Core/Core.h"
 
 namespace Blanco {
 	enum class EventType

@@ -21,6 +21,6 @@ namespace Blanco
 			s_RendererAPI->DrawIndexed(vertexArray);
 		};
 	private:
-		static RendererAPI* s_RendererAPI;
+		static Ref<RendererAPI> s_RendererAPI;
 	};
 }

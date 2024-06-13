@@ -40,49 +40,49 @@ namespace Blanco
 		glDeleteProgram(m_RendererID);
 	}
 
-	void OpenGLShader::UploadUniformInt(const std::string& name, int value)
+	void OpenGLShader::UploadUniformInt(const std::string& name, int value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform1i(location, value);
 	}
-	void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
+	void OpenGLShader::UploadUniformFloat(const std::string& name, float value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform1f(location, value);
 	}
-	void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& value)
+	void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform2f(location, value.x, value.y);
 	}
-	void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& value)
+	void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform3f(location, value.x, value.y, value.z);
 	}
-	void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& value)
+	void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
-	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& value)
+	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
 	}
-	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& value)
+	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
@@ -130,7 +130,7 @@ namespace Blanco
 	{
 		GLuint program = glCreateProgram();
 		BL_CORE_ASSERT(shaderMap.size() <= 2, "Not support more than 2 shaders for now!")
-		std::array<GLuint,2> shaderIDs;
+		std::array<GLuint, 2> shaderIDs = { 0,0 };
 		int index = 0;
 		for (auto& kv : shaderMap) {
 			GLenum shadeType = kv.first;

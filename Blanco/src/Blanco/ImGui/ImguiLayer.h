@@ -1,6 +1,6 @@
 #pragma once
-#include "Blanco/Core.h"
-#include "Blanco/Layer.h"
+#include "Blanco/Core/Core.h"
+#include "Blanco/Core/Layer.h"
 #include "Blanco/Events/ApplicationEvent.h"
 #include "Blanco/Events/KeyEvent.h"
 #include "Blanco/Events/MouseEvent.h"

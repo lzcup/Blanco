@@ -2,12 +2,12 @@
 #include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
-#include "Events/ApplicationEvent.h"
-#include "ImGui/ImguiLayer.h"
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/Camera.h"
+#include "Blanco/Events/ApplicationEvent.h"
+#include "Blanco/ImGui/ImguiLayer.h"
+#include "Blanco/Renderer/Shader.h"
+#include "Blanco/Renderer/Buffer.h"
+#include "Blanco/Renderer/VertexArray.h"
+#include "Blanco/Renderer/Camera.h"
 
 namespace Blanco
 {
@@ -20,14 +20,14 @@ namespace Blanco
 		static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
-		void PushLayer(Layer* layer);
-		void PushOverLayer(Layer* layer);
+		void PushLayer(Ref<Layer> layer);
+		void PushOverLayer(Ref<Layer> layer);
 		void OnEvent(Event& e);
 		void Run();
 	private:
 		static Application* s_Instance;
 		Ref<Window> m_Window;
-		ImguiLayer* m_Imgui;
+		Ref<ImguiLayer> m_Imgui;
 		bool m_Running = true;
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;

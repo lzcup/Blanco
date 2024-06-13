@@ -4,5 +4,5 @@
 
 namespace Blanco
 {
-	RendererAPI* RenderCommand::s_RendererAPI = new OpenGLRendererAPI();
+	Ref<RendererAPI> RenderCommand::s_RendererAPI = std::make_shared<OpenGLRendererAPI>();
 }

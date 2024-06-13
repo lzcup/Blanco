@@ -6,7 +6,7 @@
 class ExampleLayer :public Blanco::Layer {
 public:
 	ExampleLayer() :Layer("Example"), m_CameraController(1280.0f / 720.0f) {
-		m_VertexArray.reset(Blanco::VertexArray::Create());
+		m_VertexArray = Blanco::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f,-0.5f,0.0f,0.2f,0.4f,0.8f,1.0f,
@@ -28,7 +28,7 @@ public:
 		Blanco::Ref<Blanco::IndexBuffer> tranIB(Blanco::IndexBuffer::CreatIndexBuffer(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(tranIB);
 
-		m_SquaVertexArray.reset(Blanco::VertexArray::Create());
+		m_SquaVertexArray = Blanco::VertexArray::Create();
 
 		float squaVertices[5 * 4] = {
 			-0.5f,-0.5f,0.0f,0.0f,0.0f,
@@ -180,7 +180,7 @@ private:
 class SandboxApp :public Blanco::Application {
 public:
 	SandboxApp() { 
-		PushLayer(new ExampleLayer());
+		PushLayer(std::make_shared<ExampleLayer>());
 	};
 	~SandboxApp() override{};
 };

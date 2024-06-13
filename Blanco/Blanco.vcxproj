@@ -143,34 +143,34 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Blanco\OrthoGraphicCameraController.h" />
-    <ClInclude Include="src\Blanco\Renderer\Texture.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
-    <ClInclude Include="src\Blanco\Application.h" />
-    <ClInclude Include="src\Blanco\Core.h" />
+    <ClInclude Include="src\Blanco\Core\Application.h" />
+    <ClInclude Include="src\Blanco\Core\Core.h" />
+    <ClInclude Include="src\Blanco\Core\EntryPoint.h" />
+    <ClInclude Include="src\Blanco\Core\Input.h" />
+    <ClInclude Include="src\Blanco\Core\KeyCodes.h" />
+    <ClInclude Include="src\Blanco\Core\Layer.h" />
+    <ClInclude Include="src\Blanco\Core\LayerStack.h" />
+    <ClInclude Include="src\Blanco\Core\Log.h" />
+    <ClInclude Include="src\Blanco\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Blanco\Core\TimeStep.h" />
-    <ClInclude Include="src\Blanco\EntryPoint.h" />
+    <ClInclude Include="src\Blanco\Core\Window.h" />
     <ClInclude Include="src\Blanco\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Blanco\Events\Event.h" />
     <ClInclude Include="src\Blanco\Events\KeyEvent.h" />
     <ClInclude Include="src\Blanco\Events\MouseEvent.h" />
     <ClInclude Include="src\Blanco\ImGui\ImguiLayer.h" />
-    <ClInclude Include="src\Blanco\Input.h" />
-    <ClInclude Include="src\Blanco\KeyCodes.h" />
-    <ClInclude Include="src\Blanco\Layer.h" />
-    <ClInclude Include="src\Blanco\LayerStack.h" />
-    <ClInclude Include="src\Blanco\Log.h" />
-    <ClInclude Include="src\Blanco\MouseButtonCodes.h" />
     <ClInclude Include="src\Blanco\Renderer\Buffer.h" />
     <ClInclude Include="src\Blanco\Renderer\Camera.h" />
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Blanco\Renderer\OrthoGraphicCameraController.h" />
     <ClInclude Include="src\Blanco\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Blanco\Renderer\Renderer.h" />
     <ClInclude Include="src\Blanco\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Blanco\Renderer\Shader.h" />
+    <ClInclude Include="src\Blanco\Renderer\Texture.h" />
     <ClInclude Include="src\Blanco\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Blanco\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -598,22 +598,22 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Blanco\OrthoGraphicCameraController.cpp" />
-    <ClCompile Include="src\Blanco\Renderer\Texture.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Blanco\Application.cpp" />
+    <ClCompile Include="src\Blanco\Core\Application.cpp" />
+    <ClCompile Include="src\Blanco\Core\Layer.cpp" />
+    <ClCompile Include="src\Blanco\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Blanco\Core\Log.cpp" />
     <ClCompile Include="src\Blanco\ImGui\ImguiLayer.cpp" />
-    <ClCompile Include="src\Blanco\Layer.cpp" />
-    <ClCompile Include="src\Blanco\LayerStack.cpp" />
-    <ClCompile Include="src\Blanco\Log.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\OrthoGraphicCameraController.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Texture.cpp" />
     <ClCompile Include="src\Blanco\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />

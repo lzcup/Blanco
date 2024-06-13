@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Blanco/Log.h"
+#include "Blanco/Core/Log.h"
 
 #ifdef BLANCO_PLATFORM_WINDOWS
 #include <Windows.h>

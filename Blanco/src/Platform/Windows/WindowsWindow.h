@@ -1,5 +1,5 @@
 #pragma once
-#include "Blanco/Window.h"
+#include "Blanco/Core/Window.h"
 #include "GLFW/glfw3.h"
 #include "Blanco/Renderer/GraphicsContext.h"
 
@@ -35,6 +35,6 @@ namespace Blanco {
 
 		WindowData m_Data;
 		GLFWwindow* m_Window;
-		GraphicsContext* m_Context;
+		Ref<GraphicsContext> m_Context;
 	};
 }

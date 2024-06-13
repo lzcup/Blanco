@@ -8,19 +8,17 @@ namespace Blanco
 	}
 	LayerStack::~LayerStack()
 	{
-		for (Layer* layer : m_LayerStack)
-			delete layer;
 	}
-	void LayerStack::PushLayer(Layer* layer)
+	void LayerStack::PushLayer(Ref<Layer> layer)
 	{
 		m_LayerStack.emplace(m_LayerStack.begin() + m_LayerInsertIndex, layer);
 		m_LayerInsertIndex++;
 	}
-	void LayerStack::PushOverLayer(Layer* layer)
+	void LayerStack::PushOverLayer(Ref<Layer> layer)
 	{
 		m_LayerStack.emplace_back(layer);
 	}
-	void LayerStack::PopLayer(Layer* layer)
+	void LayerStack::PopLayer(Ref<Layer> layer)
 	{
 		auto it = std::find(m_LayerStack.begin(), m_LayerStack.end(), layer);
 		if (it != m_LayerStack.end()) {
@@ -29,7 +27,7 @@ namespace Blanco
 		}
 
 	}
-	void LayerStack::PopOverLayer(Layer* layer)
+	void LayerStack::PopOverLayer(Ref<Layer> layer)
 	{
 		auto it = std::find(m_LayerStack.begin(), m_LayerStack.end(), layer);
 		if (it != m_LayerStack.end())

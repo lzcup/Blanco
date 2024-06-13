@@ -83,7 +83,7 @@ namespace Blanco
 	public:
 		virtual ~VertexBuffer() {};
 
-		static VertexBuffer* CreatVertextBuffer(float* vertices, uint32_t size);
+		static Ref<VertexBuffer> CreatVertextBuffer(float* vertices, uint32_t size);
 
 		virtual BufferLayout GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
@@ -95,7 +95,7 @@ namespace Blanco
 	public:
 		virtual ~IndexBuffer() {};
 
-		static IndexBuffer* CreatIndexBuffer(uint32_t* indices, uint32_t count);
+		static Ref<IndexBuffer> CreatIndexBuffer(uint32_t* indices, uint32_t count);
 
 		virtual inline uint32_t GetCount() const = 0;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Blanco/Input.h"
+#include "Blanco/Core/Input.h"
 
 namespace Blanco 
 {

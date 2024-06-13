@@ -1,9 +1,9 @@
 #include "BLpch.h"
 #include "Application.h"
 #include "GLFW/glfw3.h"
-#include "Events/ApplicationEvent.h"
-#include "Renderer/Renderer.h"
-#include "Core/TimeStep.h"
+#include "Blanco/Events/ApplicationEvent.h"
+#include "Blanco/Renderer/Renderer.h"
+#include "Blanco/Core/TimeStep.h"
 
 namespace Blanco
 {
@@ -19,7 +19,7 @@ namespace Blanco
 
 		Renderer::Init();
 
-		m_Imgui = new ImguiLayer();
+		m_Imgui = std::make_shared<ImguiLayer>();
 		PushOverLayer(m_Imgui);
 	}
 
@@ -27,13 +27,13 @@ namespace Blanco
 	{
 	}
 
-	void Application::PushLayer(Layer* layer)
+	void Application::PushLayer(Ref<Layer> layer)
 	{
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
-	void Application::PushOverLayer(Layer* layer)
+	void Application::PushOverLayer(Ref<Layer> layer)
 	{
 		m_LayerStack.PushOverLayer(layer);
 		layer->OnAttach();
@@ -66,7 +66,7 @@ namespace Blanco
 					(*it++)->OnUpdate(ts);
 			}
 			m_Imgui->Begin();
-			for (Layer* layer : m_LayerStack)
+			for (Ref<Layer> layer : m_LayerStack)
 				layer->OnImguiRender();
 			m_Imgui->End();
 		}

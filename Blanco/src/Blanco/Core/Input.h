@@ -13,6 +13,6 @@ namespace Blanco {
 		virtual bool IsMousePressedImpl(int button) = 0;
 		virtual std::pair<float, float> GetMousePosImpl() = 0;
 	private:
-		static Input* s_Instance;
+		static Ref<Input> s_Instance;
 	};
 }

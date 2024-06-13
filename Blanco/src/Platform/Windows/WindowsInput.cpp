@@ -1,11 +1,11 @@
 #include "BLpch.h"
 #include "WindowsInput.h"
-#include "Blanco/Application.h"
+#include "Blanco/Core/Application.h"
 #include "GLFW/glfw3.h"
 
 namespace Blanco
 {
-	Input* Input::s_Instance = new WindowsInput();
+	Ref<Input> Input::s_Instance = std::make_shared<WindowsInput>();
 
 	bool WindowsInput::IsKeyPressedImpl(int keyCode)
 	{

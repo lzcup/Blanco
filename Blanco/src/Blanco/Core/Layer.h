@@ -1,7 +1,7 @@
 #pragma once
 #include "Core.h"
-#include "Events/Event.h"
-#include "Core/TimeStep.h"
+#include "Blanco/Events/Event.h"
+#include "Blanco/Core/TimeStep.h"
 
 namespace Blanco 
 {

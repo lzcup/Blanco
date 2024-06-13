@@ -60,17 +60,38 @@
     <ClInclude Include="src\Blanco.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Application.h">
-      <Filter>src\Blanco</Filter>
+    <ClInclude Include="src\Blanco\Core\Application.h">
+      <Filter>src\Blanco\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Core.h">
-      <Filter>src\Blanco</Filter>
+    <ClInclude Include="src\Blanco\Core\Core.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\EntryPoint.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\Input.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\KeyCodes.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\Layer.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\LayerStack.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\Log.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Core\MouseButtonCodes.h">
+      <Filter>src\Blanco\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Core\TimeStep.h">
       <Filter>src\Blanco\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\EntryPoint.h">
-      <Filter>src\Blanco</Filter>
+    <ClInclude Include="src\Blanco\Core\Window.h">
+      <Filter>src\Blanco\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Events\ApplicationEvent.h">
       <Filter>src\Blanco\Events</Filter>
@@ -87,24 +108,6 @@
     <ClInclude Include="src\Blanco\ImGui\ImguiLayer.h">
       <Filter>src\Blanco\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Input.h">
-      <Filter>src\Blanco</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Blanco\KeyCodes.h">
-      <Filter>src\Blanco</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Blanco\Layer.h">
-      <Filter>src\Blanco</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Blanco\LayerStack.h">
-      <Filter>src\Blanco</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Blanco\Log.h">
-      <Filter>src\Blanco</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Blanco\MouseButtonCodes.h">
-      <Filter>src\Blanco</Filter>
-    </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\Buffer.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
@@ -112,6 +115,9 @@
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Renderer\OrthoGraphicCameraController.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\RenderCommand.h">
@@ -126,11 +132,11 @@
     <ClInclude Include="src\Blanco\Renderer\Shader.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Renderer\VertexArray.h">
+    <ClInclude Include="src\Blanco\Renderer\Texture.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Window.h">
-      <Filter>src\Blanco</Filter>
+    <ClInclude Include="src\Blanco\Renderer\VertexArray.h">
+      <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -142,6 +148,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
@@ -1404,33 +1413,33 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Renderer\Texture.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
-    <ClInclude Include="src\Blanco\OrthoGraphicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blanco\Application.cpp">
-      <Filter>src\Blanco</Filter>
+    <ClCompile Include="src\Blanco\Core\Application.cpp">
+      <Filter>src\Blanco\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Core\Layer.cpp">
+      <Filter>src\Blanco\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Core\LayerStack.cpp">
+      <Filter>src\Blanco\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Core\Log.cpp">
+      <Filter>src\Blanco\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\ImGui\ImguiLayer.cpp">
       <Filter>src\Blanco\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Blanco\Layer.cpp">
-      <Filter>src\Blanco</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Blanco\LayerStack.cpp">
-      <Filter>src\Blanco</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Blanco\Log.cpp">
-      <Filter>src\Blanco</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Buffer.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Camera.cpp">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Renderer\OrthoGraphicCameraController.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\RenderCommand.cpp">
@@ -1443,6 +1452,9 @@
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Shader.cpp">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Renderer\Texture.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\VertexArray.cpp">
@@ -1460,6 +1472,9 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1472,8 +1487,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blanco\Renderer\Texture.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
-    <ClCompile Include="src\Blanco\OrthoGraphicCameraController.cpp" />
   </ItemGroup>
 </Project>

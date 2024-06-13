@@ -1,8 +1,8 @@
 #include "BLpch.h"
 #include "OrthoGraphicCameraController.h"
-#include "Blanco/Core.h"
-#include "Blanco/Input.h"
-#include "Blanco/KeyCodes.h"
+#include "Blanco/Core/Core.h"
+#include "Blanco/Core/Input.h"
+#include "Blanco/Core/KeyCodes.h"
 
 namespace Blanco
 {
