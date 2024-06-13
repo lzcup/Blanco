@@ -33,7 +33,7 @@ namespace Blanco
         ImGui::StyleColorsDark();
         //ImGui::StyleColorsLight();
 
-        // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+        // When view ports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
         ImGuiStyle& style = ImGui::GetStyle();
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
@@ -41,7 +41,7 @@ namespace Blanco
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
 
-        // Setup Platform/Renderer backends
+        // Setup Platform/Renderer back ends
         ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()),true);
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
@@ -65,9 +65,9 @@ namespace Blanco
     void ImguiLayer::End()
     {
         ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
+		/*   int display_w, display_h;
+		   glfwGetFramebufferSize(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), &display_w, &display_h);
+		   glViewport(0, 0, display_w, display_h);*/
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         ImGuiIO& io = ImGui::GetIO();

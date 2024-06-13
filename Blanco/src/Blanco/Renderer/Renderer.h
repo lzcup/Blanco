@@ -9,6 +9,8 @@ namespace Blanco
 	public:
 		static void Init();
 
+		static void OnWindowResize(float x, float y, float width, float height);
+
 		static void BeginScene(OrthoGraphicCamera& camera);
 		static void EndScene();
 

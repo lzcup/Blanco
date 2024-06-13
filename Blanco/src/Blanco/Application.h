@@ -22,17 +22,19 @@ namespace Blanco
 
 		void PushLayer(Layer* layer);
 		void PushOverLayer(Layer* layer);
-		void OnEvent(Event& event);
+		void OnEvent(Event& e);
 		void Run();
 	private:
 		static Application* s_Instance;
 		Ref<Window> m_Window;
 		ImguiLayer* m_Imgui;
 		bool m_Running = true;
+		bool m_Minimized = false;
 		LayerStack m_LayerStack;
 		float m_Time = 0.0f;
 	private:
-		bool OnWindowClose(WindowCloseEvent& event);
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 	};
 
 	//to be defined in client

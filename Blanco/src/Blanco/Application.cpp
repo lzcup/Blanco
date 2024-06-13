@@ -39,13 +39,14 @@ namespace Blanco
 		layer->OnAttach();
 	}
 
-	void Application::OnEvent(Event& event)
+	void Application::OnEvent(Event& e)
 	{
-		Dispatcher dispatcher(event);
+		Dispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BL_BIND_EVENT_FNC(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BL_BIND_EVENT_FNC(Application::OnWindowResize));
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
-			(*--it)->OnEvent(event);
-			if (event.GetHandled())
+			(*--it)->OnEvent(e);
+			if (e.GetHandled())
 				break;
 		}
 	}
@@ -60,20 +61,32 @@ namespace Blanco
 
 			m_Window->Update();
 
-			for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
-				(*it++)->OnUpdate(ts);
+			if (!m_Minimized) {
+				for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
+					(*it++)->OnUpdate(ts);
+			}
 			m_Imgui->Begin();
 			for (Layer* layer : m_LayerStack)
 				layer->OnImguiRender();
 			m_Imgui->End();
-			
 		}
 	}
 
-	bool Application::OnWindowClose(WindowCloseEvent& event)
+	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;
 		return true;
+	}
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		Renderer::OnWindowResize(0, 0, (float)e.GetWidth(), (float)e.GetHeight());
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+			m_Minimized = true;
+		}
+		else {
+			m_Minimized = false;
+		}
+		return false;
 	}
 }
 

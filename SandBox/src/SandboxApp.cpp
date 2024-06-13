@@ -5,7 +5,7 @@
 
 class ExampleLayer :public Blanco::Layer {
 public:
-	ExampleLayer() :Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f){
+	ExampleLayer() :Layer("Example"), m_CameraController(1280.0f / 720.0f) {
 		m_VertexArray.reset(Blanco::VertexArray::Create());
 
 		float vertices[3 * 7] = {
@@ -121,33 +121,12 @@ public:
 	virtual void OnUpdate(Blanco::TimeStep ts) override
 	{
 		//Camera Control
-		if (Blanco::Input::IsKeyPressed(BL_KEY_UP))
-			m_CameraPosition.y += m_MoveSpeed * ts;
-		else if (Blanco::Input::IsKeyPressed(BL_KEY_DOWN))
-			m_CameraPosition.y -= m_MoveSpeed * ts;
-
-		if (Blanco::Input::IsKeyPressed(BL_KEY_RIGHT))
-			m_CameraPosition.x += m_MoveSpeed * ts;
-		else if (Blanco::Input::IsKeyPressed(BL_KEY_LEFT))
-			m_CameraPosition.x -= m_MoveSpeed * ts;
-
-		if (Blanco::Input::IsKeyPressed(BL_KEY_A))
-			m_Rotation -= m_RotateSpeed * ts;
-		else if (Blanco::Input::IsKeyPressed(BL_KEY_D))
-			m_Rotation += m_RotateSpeed * ts;
-
-		if (Blanco::Input::IsKeyPressed(BL_KEY_A))
-			m_Rotation -= m_RotateSpeed * ts;
-		else if (Blanco::Input::IsKeyPressed(BL_KEY_D))
-			m_Rotation += m_RotateSpeed * ts;
-
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_Rotation);
+		m_CameraController.OnUpdate(ts);
 
 		Blanco::RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		Blanco::RenderCommand::Clear();
 
-		Blanco::Renderer::BeginScene(m_Camera);
+		Blanco::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		auto flatColorShader = m_ShaderLibrary.Get("FlatColor");
 		std::dynamic_pointer_cast<Blanco::OpenGLShader>(flatColorShader)->Bind();
@@ -183,41 +162,16 @@ public:
 
 	virtual void OnEvent(Blanco::Event& event) override
 	{
-		Blanco::Dispatcher dispatcher(event);
-		dispatcher.Dispatch<Blanco::MouseScrolledEvent>(BL_BIND_EVENT_FNC(ExampleLayer::OnMouseScolledEvent));
+		m_CameraController.OnEvent(event);
 	}
-private:
-	bool OnMouseScolledEvent(Blanco::MouseScrolledEvent& event) {
-		if (event.GetYOffset() == 1.0f) {
-			m_Projection.x *= 1.1f;
-			m_Projection.y *= 1.1f;
-			m_Projection.z *= 1.1f;
-			m_Projection.w *= 1.1f;
-			Blanco::OrthoGraphicCamera newCamera(m_Projection.x, m_Projection.y, m_Projection.z, m_Projection.w);
-			m_Camera = newCamera;
-		}
-		if (event.GetYOffset() == -1.0f) {
-			m_Projection.x *= (float)10 / 11;
-			m_Projection.y *= (float)10 / 11;
-			m_Projection.z *= (float)10 / 11;
-			m_Projection.w *= (float)10 / 11;
-			Blanco::OrthoGraphicCamera newCamera(m_Projection.x, m_Projection.y, m_Projection.z, m_Projection.w);
-			m_Camera = newCamera;
-		}
-		return false;
-	}
+
 private:
 	Blanco::ShaderLibrary m_ShaderLibrary;
 	Blanco::Ref<Blanco::VertexArray> m_VertexArray;
 	Blanco::Ref<Blanco::VertexArray> m_SquaVertexArray;
 	Blanco::Ref<Blanco::Texture2D> m_Texture2D;
 	Blanco::Ref<Blanco::Texture2D> m_Cat;
-	Blanco::OrthoGraphicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_MoveSpeed = 5.0f;
-	float m_Rotation = 0.0f;
-	float m_RotateSpeed = 180.0f;
-	glm::vec4 m_Projection = { -1.6f, 1.6f, -0.9f, 0.9f };
+	Blanco::OrthoGraphicCameraController m_CameraController;
 
 	glm::vec3 m_FlatColor = { 0.2f, 0.3f, 0.5f };
 };

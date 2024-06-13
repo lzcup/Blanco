@@ -27,9 +27,9 @@ namespace Blanco {
 	private:
 		struct WindowData
 		{
-			unsigned int m_Width,m_Height;
+			unsigned int m_Width = 0, m_Height = 0;
 			std::string m_Title;
-			bool m_VSync;
+			bool m_VSync = true;
 			EventCallBackFnc m_Fnc;
 		};
 

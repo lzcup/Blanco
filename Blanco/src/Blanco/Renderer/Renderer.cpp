@@ -11,6 +11,11 @@ namespace Blanco
         RenderCommand::Init();
     }
 
+    void Renderer::OnWindowResize(float x, float y, float width, float height)
+    {
+        RenderCommand::SetViewport(x, y, width, height);
+    }
+
     void Renderer::BeginScene(OrthoGraphicCamera& camera)
     {
         m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();

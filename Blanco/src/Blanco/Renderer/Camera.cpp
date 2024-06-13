@@ -11,6 +11,11 @@ namespace Blanco
 		m_PorjectionMatrix = glm::ortho(left, right, bottom, top, -0.5f, 0.5f);
 		m_ViewProjectionMatrix = m_PorjectionMatrix * m_ViewMatrix;
 	}
+	void OrthoGraphicCamera::SetProjection(float left, float right, float bottom, float top)
+	{
+		m_PorjectionMatrix = glm::ortho(left, right, bottom, top, -0.5f, 0.5f);
+		m_ViewProjectionMatrix = m_PorjectionMatrix * m_ViewMatrix;
+	}
 	void OrthoGraphicCamera::ReCalculateProjectionViewMatrix()
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Postion) * glm::rotate(glm::mat4(1.0f), m_Rotation, glm::vec3(0, 0, 1));
