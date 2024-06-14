@@ -19,6 +19,6 @@ namespace Blanco
 		struct SceneData{
 			glm::mat4 ViewProjectionMatrix;
 		};
-		static SceneData* m_SceneData;
+		static Scope<SceneData> m_SceneData;
 	};
 }

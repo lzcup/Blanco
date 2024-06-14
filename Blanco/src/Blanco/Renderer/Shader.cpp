@@ -12,7 +12,7 @@ namespace Blanco
 			BL_CORE_ASSERT(false, "API is none which is not supported!")
 				return nullptr;
 		case RendererAPI::API::OPENGL:
-			return std::make_shared<OpenGLShader>(filepath);
+			return CreateRef<OpenGLShader>(filepath);
 		}
 		BL_CORE_ASSERT(false, "Unknown API is not supported!")
 			return nullptr;
@@ -25,7 +25,7 @@ namespace Blanco
 			BL_CORE_ASSERT(false, "API is none which is not supported!")
 				return nullptr;
 		case RendererAPI::API::OPENGL:
-			return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 		BL_CORE_ASSERT(false, "Unknown API is not supported!")
 			return nullptr;

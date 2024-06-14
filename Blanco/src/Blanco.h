@@ -20,6 +20,4 @@
 #include "Blanco/Renderer/VertexArray.h"
 #include "Blanco/Renderer/Buffer.h"
 #include "Blanco/Renderer/Texture.h"
-
-//Entry Point
-#include "Blanco/Core/EntryPoint.h"
+#include "Blanco/Renderer/Renderer2D.h"

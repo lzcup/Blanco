@@ -20,14 +20,14 @@ namespace Blanco
 		static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
-		void PushLayer(Ref<Layer> layer);
-		void PushOverLayer(Ref<Layer> layer);
+		void PushLayer(Layer* layer);
+		void PushOverLayer(Layer* layer);
 		void OnEvent(Event& e);
 		void Run();
 	private:
 		static Application* s_Instance;
 		Ref<Window> m_Window;
-		Ref<ImguiLayer> m_Imgui;
+		ImguiLayer* m_Imgui;
 		bool m_Running = true;
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;

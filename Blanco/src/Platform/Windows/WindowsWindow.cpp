@@ -60,7 +60,7 @@ namespace Blanco {
 		BL_CORE_ASSERT(m_Window,"Cannot create a window!")
 		BL_CORE_INFO("Create a window({0},{1},{2})", m_Data.m_Title, m_Data.m_Width, m_Data.m_Height);
 
-		m_Context = std::make_shared<OpenGLContext>(m_Window);
+		m_Context = CreateRef<OpenGLContext>(m_Window);
 		m_Context->Init();
 		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -161,6 +161,6 @@ namespace Blanco {
 	}
 
 	Ref<Window> Window::Create(const WindowProp& prop) {
-		return std::make_shared<WindowsWindow>(prop);
+		return CreateRef<WindowsWindow>(prop);
 	}
 }

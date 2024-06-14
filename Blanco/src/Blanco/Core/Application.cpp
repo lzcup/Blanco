@@ -14,12 +14,12 @@ namespace Blanco
 		BL_CORE_ASSERT(!s_Instance, "Instance already exist!");
 		s_Instance = this;
 
-		m_Window = Ref<Window>(Window::Create());
+		m_Window = Window::Create();
 		m_Window->SetEventCallBack(BL_BIND_EVENT_FNC(Application::OnEvent));
 
 		Renderer::Init();
 
-		m_Imgui = std::make_shared<ImguiLayer>();
+		m_Imgui = new ImguiLayer();
 		PushOverLayer(m_Imgui);
 	}
 
@@ -27,13 +27,13 @@ namespace Blanco
 	{
 	}
 
-	void Application::PushLayer(Ref<Layer> layer)
+	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
-	void Application::PushOverLayer(Ref<Layer> layer)
+	void Application::PushOverLayer(Layer* layer)
 	{
 		m_LayerStack.PushOverLayer(layer);
 		layer->OnAttach();
@@ -66,7 +66,7 @@ namespace Blanco
 					(*it++)->OnUpdate(ts);
 			}
 			m_Imgui->Begin();
-			for (Ref<Layer> layer : m_LayerStack)
+			for (Layer* layer : m_LayerStack)
 				layer->OnImguiRender();
 			m_Imgui->End();
 		}

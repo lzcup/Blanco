@@ -5,7 +5,7 @@
 
 namespace Blanco
 {
-	Ref<Input> Input::s_Instance = std::make_shared<WindowsInput>();
+	Ref<Input> Input::s_Instance = CreateRef<WindowsInput>();
 
 	bool WindowsInput::IsKeyPressedImpl(int keyCode)
 	{

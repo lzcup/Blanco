@@ -19,9 +19,9 @@ namespace Blanco
 		else if (Input::IsKeyPressed(BL_KEY_S))
 			m_CameraPosition.y -= m_MoveSpeed * ts;
 
-		if (Input::IsKeyPressed(BL_KEY_A))
+		if (Input::IsKeyPressed(BL_KEY_D))
 			m_CameraPosition.x += m_MoveSpeed * ts;
-		else if (Input::IsKeyPressed(BL_KEY_D))
+		else if (Input::IsKeyPressed(BL_KEY_A))
 			m_CameraPosition.x -= m_MoveSpeed * ts;
 
 		if (m_Rotation) {

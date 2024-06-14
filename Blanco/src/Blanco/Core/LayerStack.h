@@ -9,15 +9,15 @@ namespace Blanco
         LayerStack();
         ~LayerStack();
 
-        void PushLayer(Ref<Layer> layer);
-        void PushOverLayer(Ref<Layer> layer);
-        void PopLayer(Ref<Layer> layer);
-        void PopOverLayer(Ref<Layer> layer);
+        void PushLayer(Layer* layer);
+        void PushOverLayer(Layer* layer);
+        void PopLayer(Layer* layer);
+        void PopOverLayer(Layer* layer);
 
-        inline std::vector<Ref<Layer>>::iterator begin() { return m_LayerStack.begin(); }
-        inline std::vector<Ref<Layer>>::iterator end() { return m_LayerStack.end(); }
+        inline std::vector<Layer*>::iterator begin() { return m_LayerStack.begin(); }
+        inline std::vector<Layer*>::iterator end() { return m_LayerStack.end(); }
     private:
-        std::vector<Ref<Layer>> m_LayerStack;
+        std::vector<Layer*> m_LayerStack;
         unsigned int m_LayerInsertIndex;
     };
 }

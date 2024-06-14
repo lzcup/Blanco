@@ -13,7 +13,7 @@ namespace Blanco
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};
 		virtual void OnUpdate(TimeStep ts) {};
-		virtual void OnEvent(Event& event) {};
+		virtual void OnEvent(Event& e) {};
 		virtual void OnImguiRender() {};
 
 		inline const char* GetName() { return m_LayerName; }

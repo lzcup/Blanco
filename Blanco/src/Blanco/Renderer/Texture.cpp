@@ -12,7 +12,7 @@ namespace Blanco
 			BL_CORE_ASSERT(false, "API is none which is not supported!")
 				return nullptr;
 		case RendererAPI::API::OPENGL:
-			return std::make_shared<OpenGLTexture2D>(path);
+			return CreateRef<OpenGLTexture2D>(path);
 		}
 		BL_CORE_ASSERT(false, "Unknown API is not supported!")
 			return nullptr;

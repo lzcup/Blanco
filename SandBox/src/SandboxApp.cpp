@@ -1,7 +1,9 @@
 #include <Blanco.h>
+#include <Blanco/Core/EntryPoint.h>
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "imgui.h"
 #include "gtc/matrix_transform.hpp"
+#include "SandBox2D.h"
 
 class ExampleLayer :public Blanco::Layer {
 public:
@@ -160,9 +162,9 @@ public:
 		ImGui::End();
 	};
 
-	virtual void OnEvent(Blanco::Event& event) override
+	virtual void OnEvent(Blanco::Event& e) override
 	{
-		m_CameraController.OnEvent(event);
+		m_CameraController.OnEvent(e);
 	}
 
 private:
@@ -180,7 +182,8 @@ private:
 class SandboxApp :public Blanco::Application {
 public:
 	SandboxApp() { 
-		PushLayer(std::make_shared<ExampleLayer>());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new SandBox2D());
 	};
 	~SandboxApp() override{};
 };

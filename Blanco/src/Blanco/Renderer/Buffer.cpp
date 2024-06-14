@@ -12,7 +12,7 @@ namespace Blanco
 			  BL_CORE_ASSERT(false, "API is none which is not supported!")
 			  return nullptr;
 		case RendererAPI::API::OPENGL:
-			return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+			return CreateRef<OpenGLVertexBuffer>(vertices, size);
 		}
 		BL_CORE_ASSERT(false, "Unknown API is not supported!")
 			return nullptr;
@@ -25,7 +25,7 @@ namespace Blanco
 			BL_CORE_ASSERT(false, "API is none which is not supported!")
 		    return nullptr;
 		case RendererAPI::API::OPENGL:
-			return std::make_shared<OpenGLIndexBuffer>(indices, count);
+			return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 		BL_CORE_ASSERT(false, "Unknown API is not supported!")
 			return nullptr;

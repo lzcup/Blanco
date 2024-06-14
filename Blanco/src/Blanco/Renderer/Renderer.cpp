@@ -1,14 +1,16 @@
 #include "BLpch.h"
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 namespace Blanco 
 {
-    Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData();
+    Scope<Renderer::SceneData> Renderer::m_SceneData = CreateScope<Renderer::SceneData>();
    
     void Renderer::Init()
     {
         RenderCommand::Init();
+        Renderer2D::Init();
     }
 
     void Renderer::OnWindowResize(float x, float y, float width, float height)
