@@ -8,7 +8,7 @@ SandBox2D::SandBox2D() :Layer("SandBox2D"), m_CameraController(1280.0f / 720.0f)
 
 void SandBox2D::OnAttach()
 {
-	
+	m_Texture = Blanco::Texture2D::Create("assets/textures/cat.png");
 }
 
 void SandBox2D::OnDetach()
@@ -24,8 +24,10 @@ void SandBox2D::OnUpdate(Blanco::TimeStep ts)
 
 	Blanco::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f }, { 1.0f,1.0f }, m_FlatColor, 0.0f);
-	Blanco::Renderer2D::DrawQuad({ -0.8f,-0.8f }, { 0.5f,0.8f }, m_FlatColor, 105.0f);
+	Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f }, 0.0f, { 1.0f,1.0f }, m_FlatColor);
+	Blanco::Renderer2D::DrawQuad({ -0.8f,-0.8f }, 105.0f, { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
+	Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, 0.0f, { 10.0f,10.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, 10);
+
 
 	Blanco::Renderer::EndScene();
 	/*auto flatColorShader = m_ShaderLibrary.Get("FlatColor");

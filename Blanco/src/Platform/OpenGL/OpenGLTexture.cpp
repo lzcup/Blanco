@@ -5,6 +5,18 @@
 
 namespace Blanco
 {
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) :
+		m_Width(width), m_Height(height), m_Internalformat(GL_RGBA8), m_Dataformat(GL_RGBA)
+	{
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererId);
+		glTextureStorage2D(m_RendererId, 1, m_Internalformat, m_Width, m_Height);
+
+		glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 	{
 		stbi_set_flip_vertically_on_load(1);
@@ -15,24 +27,26 @@ namespace Blanco
 		m_Width = width;
 		m_Height = height;
 
-		uint32_t internalFormat = 0, dataFormat = 0;
 		if (channels == 4) {
-			internalFormat = GL_RGBA8;
-			dataFormat = GL_RGBA;
+			m_Internalformat = GL_RGBA8;
+			m_Dataformat = GL_RGBA;
 		}
 		else if (channels == 3) {
-			internalFormat = GL_RGB8;
-			dataFormat = GL_RGB;
+			m_Internalformat = GL_RGB8;
+			m_Dataformat = GL_RGB;
 		}
-		BL_CORE_ASSERT((internalFormat & dataFormat), "ImageFormat is not supported")
+		BL_CORE_ASSERT((m_Internalformat & m_Dataformat), "ImageFormat is not supported")
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererId);
-		glTextureStorage2D(m_RendererId, 1, internalFormat, m_Width, m_Height);
+		glTextureStorage2D(m_RendererId, 1, m_Internalformat, m_Width, m_Height);
 
-		glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererId, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureSubImage2D(m_RendererId, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		glTextureSubImage2D(m_RendererId, 0, 0, 0, m_Width, m_Height, m_Dataformat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
 	}
@@ -40,8 +54,18 @@ namespace Blanco
 	{
 		glDeleteTextures(1, &m_RendererId);
 	}
+	void OpenGLTexture2D::SetData(void* data, uint32_t size)
+	{
+		uint32_t bpp = m_Dataformat == GL_RGBA ? 4 : 3;
+		BL_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire size!")
+		glTextureSubImage2D(m_RendererId, 0, 0, 0, m_Width, m_Height, m_Dataformat, GL_UNSIGNED_BYTE, data);
+	}
 	void OpenGLTexture2D::Bind(uint32_t slot)
 	{
 		glBindTextureUnit(slot, m_RendererId);
+	}
+	void OpenGLTexture2D::UnBind(uint32_t slot)
+	{
+		glBindTextureUnit(slot, 0);
 	}
 }
