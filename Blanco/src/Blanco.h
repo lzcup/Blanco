@@ -6,6 +6,7 @@
 #include "Blanco/imgui/ImguiLayer.h"
 #include "Blanco/Core/TimeStep.h"
 #include "Blanco/Renderer/OrthoGraphicCameraController.h"
+#include "Blanco/Debug/Instrumentor.h"
 
 //events
 #include "Blanco/Core/Input.h"

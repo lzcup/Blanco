@@ -9,18 +9,24 @@ namespace Blanco
 
 	bool WindowsInput::IsKeyPressedImpl(int keyCode)
 	{
+		BL_PROFILE_FUNCTION();
+
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		int state = glfwGetKey(window, keyCode);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 	bool WindowsInput::IsMousePressedImpl(int button)
 	{
+		BL_PROFILE_FUNCTION();
+
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		int state = glfwGetMouseButton(window, button);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 	std::pair<float, float> WindowsInput::GetMousePosImpl()
 	{
+		BL_PROFILE_FUNCTION();
+
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);

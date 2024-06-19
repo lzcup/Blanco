@@ -14,6 +14,7 @@
 #include <unordered_set>
 
 #include "Blanco/Core/Log.h"
+#include "Blanco/Debug/Instrumentor.h"
 
 #ifdef BLANCO_PLATFORM_WINDOWS
 #include <Windows.h>

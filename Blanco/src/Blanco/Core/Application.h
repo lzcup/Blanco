@@ -1,5 +1,4 @@
 #pragma once
-#include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
 #include "Blanco/Events/ApplicationEvent.h"

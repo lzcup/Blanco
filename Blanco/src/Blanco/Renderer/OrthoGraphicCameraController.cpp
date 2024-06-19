@@ -14,6 +14,8 @@ namespace Blanco
 
 	void OrthoGraphicCameraController::OnUpdate(TimeStep ts)
 	{
+		BL_PROFILE_FUNCTION();
+
 		if (Input::IsKeyPressed(BL_KEY_W))
 			m_CameraPosition.y += m_MoveSpeed * ts;
 		else if (Input::IsKeyPressed(BL_KEY_S))
@@ -38,6 +40,8 @@ namespace Blanco
 
 	void OrthoGraphicCameraController::OnEvent(Event& e)
 	{
+		BL_PROFILE_FUNCTION();
+
 		Dispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(BL_BIND_EVENT_FNC(OrthoGraphicCameraController::OnMouseScrolledEvent));
 		dispatcher.Dispatch<WindowResizeEvent>(BL_BIND_EVENT_FNC(OrthoGraphicCameraController::OnWindowResizeEvent));
@@ -45,6 +49,8 @@ namespace Blanco
 
 	bool OrthoGraphicCameraController::OnMouseScrolledEvent(MouseScrolledEvent& e)
 	{
+		BL_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= e.GetYOffset() * 0.5f;
 		m_ZoomLevel = std::max(0.25f, m_ZoomLevel);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -53,6 +59,8 @@ namespace Blanco
 
 	bool OrthoGraphicCameraController::OnWindowResizeEvent(WindowResizeEvent& e)
 	{
+		BL_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

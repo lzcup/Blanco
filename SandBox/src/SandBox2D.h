@@ -17,4 +17,5 @@ private:
 
 	glm::vec4 m_FlatColor = { 0.2f, 0.3f, 0.5f ,1.0f};
 	Blanco::Ref<Blanco::Texture2D> m_Texture;
+	float m_Tiling;
 };

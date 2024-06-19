@@ -24,26 +24,36 @@ namespace Blanco
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		BL_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &m_RendererId);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		BL_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &m_RendererId);
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
+		BL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererId);
 	}
 
 	void OpenGLVertexArray::UnBind() const
 	{
+		BL_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
+		BL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererId);
 		vertexBuffer->Bind();
 
@@ -65,6 +75,8 @@ namespace Blanco
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
+		BL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererId);
 		indexBuffer->Bind();
 

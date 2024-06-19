@@ -11,6 +11,8 @@ namespace Blanco
 
 	Application::Application()
 	{
+		BL_PROFILE_FUNCTION();
+
 		BL_CORE_ASSERT(!s_Instance, "Instance already exist!");
 		s_Instance = this;
 
@@ -25,22 +27,29 @@ namespace Blanco
 
 	Application::~Application()
 	{
+		BL_PROFILE_FUNCTION();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
+		BL_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverLayer(Layer* layer)
 	{
+		BL_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		BL_PROFILE_FUNCTION();
+
 		Dispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BL_BIND_EVENT_FNC(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BL_BIND_EVENT_FNC(Application::OnWindowResize));
@@ -53,22 +62,31 @@ namespace Blanco
 
 	void Application::Run()
 	{
-		while (m_Running)
+		BL_PROFILE_FUNCTION();
+
 		{
-			float currentTime = (float)glfwGetTime();
-			TimeStep ts = currentTime - m_Time;
-			m_Time = currentTime;
-
-			m_Window->Update();
-
-			if (!m_Minimized) {
-				for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
-					(*it++)->OnUpdate(ts);
+			BL_PROFILE_SCOPE("Application-RunLoop");
+			while (m_Running)
+			{
+				float currentTime = (float)glfwGetTime();
+				TimeStep ts = currentTime - m_Time;
+				m_Time = currentTime;
+				if (!m_Minimized) {
+					{
+						BL_PROFILE_SCOPE("LayerStack-Update");
+						for (auto it = m_LayerStack.begin(); it != m_LayerStack.end();)
+							(*it++)->OnUpdate(ts);
+					}
+					{
+						BL_PROFILE_SCOPE("LayerStack-ImguiRender");
+						m_Imgui->Begin();
+						for (Layer* layer : m_LayerStack)
+							layer->OnImguiRender();
+						m_Imgui->End();
+					}
+				}
+				m_Window->Update();
 			}
-			m_Imgui->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImguiRender();
-			m_Imgui->End();
 		}
 	}
 

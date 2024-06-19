@@ -11,6 +11,8 @@ namespace Blanco
 	}
 	void OpenGLContext::Init()
 	{
+		BL_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int version = gladLoadGL(glfwGetProcAddress);
 		BL_CORE_ASSERT(version, "Glad initalize failed");
@@ -23,6 +25,8 @@ namespace Blanco
 
 	void OpenGLContext::SwapBuffer()
 	{
+		BL_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

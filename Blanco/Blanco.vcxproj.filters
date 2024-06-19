@@ -10,6 +10,9 @@
     <Filter Include="src\Blanco\Core">
       <UniqueIdentifier>{037B3B8C-6F06-A950-7817-2C45E4210551}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Blanco\Debug">
+      <UniqueIdentifier>{8136B713-6D2F-D665-9661-BBEA82B9B571}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Blanco\Events">
       <UniqueIdentifier>{4F59288E-BB6F-2624-04E7-B145703CF7AB}</UniqueIdentifier>
     </Filter>
@@ -93,6 +96,9 @@
     <ClInclude Include="src\Blanco\Core\Window.h">
       <Filter>src\Blanco\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\Debug\Instrumentor.h">
+      <Filter>src\Blanco\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blanco\Events\ApplicationEvent.h">
       <Filter>src\Blanco\Events</Filter>
     </ClInclude>
@@ -124,6 +130,9 @@
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\Renderer.h">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Renderer\Renderer2D.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\RendererAPI.h">
@@ -1413,7 +1422,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">
@@ -1447,6 +1455,9 @@
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Renderer.cpp">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Renderer\Renderer2D.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\RendererAPI.cpp">
@@ -1488,6 +1499,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blanco\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

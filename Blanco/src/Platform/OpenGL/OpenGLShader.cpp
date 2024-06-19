@@ -17,6 +17,8 @@ namespace Blanco
 	}
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		BL_PROFILE_FUNCTION();
+
 		size_t begin = filepath.find_last_of("/\\") == std::string::npos ? 0 : filepath.find_last_of("/\\") + 1;
 		size_t end = filepath.rfind(".");
 		size_t counts = end == std::string::npos ? filepath.size() - begin : end - begin;
@@ -29,6 +31,8 @@ namespace Blanco
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc):
 		m_Name(name)
 	{
+		BL_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderMap;
 		shaderMap[GL_VERTEX_SHADER] = vertexSrc;
 		shaderMap[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -37,6 +41,8 @@ namespace Blanco
 
 	OpenGLShader::~OpenGLShader()
 	{
+		BL_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
@@ -92,6 +98,8 @@ namespace Blanco
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
+		BL_PROFILE_FUNCTION();
+
 		std::ifstream in(filepath, std::ios::binary);
 		if (in) {
 			in.seekg(0, std::ios::end);
@@ -109,6 +117,8 @@ namespace Blanco
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		BL_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderMap;
 		std::string token = "#type";
 		size_t pos = source.find(token);
@@ -128,6 +138,8 @@ namespace Blanco
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderMap)
 	{
+		BL_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		BL_CORE_ASSERT(shaderMap.size() <= 2, "Not support more than 2 shaders for now!")
 		std::array<GLuint, 2> shaderIDs = { 0,0 };
@@ -191,27 +203,45 @@ namespace Blanco
 
 	void OpenGLShader::Bind() const
 	{
+		BL_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::UnBind() const
 	{
+		BL_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
+		BL_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& values)
 	{
+		BL_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, values);
+	}
+	void OpenGLShader::SetFloat(const std::string& name, float value)
+	{
+		BL_PROFILE_FUNCTION();
+
+		UploadUniformFloat(name, value);
 	}
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& values)
 	{
+		BL_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, values);
 	}
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& values)
 	{
+		BL_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, values);
 	}
 }

@@ -15,20 +15,28 @@ namespace Blanco {
 
 	WindowsWindow::WindowsWindow(const WindowProp& prop)
 	{
+		BL_PROFILE_FUNCTION();
+
 		Init(prop);
 	}
 	WindowsWindow::~WindowsWindow()
 	{
+		BL_PROFILE_FUNCTION();
+
 		ShutDown();
 	}
 	void WindowsWindow::Update()
 	{
+		BL_PROFILE_FUNCTION();
+
 		m_Context->SwapBuffer();
 		glfwPollEvents();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
+		BL_PROFILE_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else
@@ -43,6 +51,8 @@ namespace Blanco {
 
 	void WindowsWindow::Init(const WindowProp& prop)
 	{
+		BL_PROFILE_FUNCTION();
+
 		m_Data.m_Width = prop.m_Width;
 		m_Data.m_Height = prop.m_Height;
 		m_Data.m_Title = prop.m_Title;
@@ -157,10 +167,14 @@ namespace Blanco {
 
 	void WindowsWindow::ShutDown()
 	{
+		BL_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 	}
 
 	Ref<Window> Window::Create(const WindowProp& prop) {
+		BL_PROFILE_FUNCTION();
+
 		return CreateRef<WindowsWindow>(prop);
 	}
 }

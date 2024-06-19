@@ -19,6 +19,8 @@ namespace Blanco
 
 	void ImguiLayer::OnAttach()
 	{
+        BL_PROFILE_FUNCTION();
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -47,23 +49,27 @@ namespace Blanco
 	}
 	void ImguiLayer::OnDetach()
 	{
+        BL_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
 	}
     void ImguiLayer::OnImguiRender()
     {
-        static bool show = true;
-        ImGui::ShowDemoWindow(&show);
     }
     void ImguiLayer::Begin()
     {
+        BL_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
     }
     void ImguiLayer::End()
     {
+        BL_PROFILE_FUNCTION();
+
         ImGui::Render();
 		/*   int display_w, display_h;
 		   glfwGetFramebufferSize(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), &display_w, &display_h);
