@@ -83,10 +83,14 @@ namespace Blanco
 	public:
 		virtual ~VertexBuffer() {};
 
+		static Ref<VertexBuffer> CreatVertextBuffer(uint32_t size);
 		static Ref<VertexBuffer> CreatVertextBuffer(float* vertices, uint32_t size);
 
 		virtual BufferLayout GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
+
+		virtual void SetData(uint32_t size, void* data) = 0;
+
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;
 	};

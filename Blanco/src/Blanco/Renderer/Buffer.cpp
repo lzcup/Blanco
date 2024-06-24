@@ -5,6 +5,19 @@
 
 namespace Blanco
 {
+	Ref<VertexBuffer> VertexBuffer::CreatVertextBuffer(uint32_t size)
+	{
+		switch (RendererAPI::GetAPI()) {
+		case RendererAPI::API::NONE:
+			BL_CORE_ASSERT(false, "API is none which is not supported!")
+				return nullptr;
+		case RendererAPI::API::OPENGL:
+			return CreateRef<OpenGLVertexBuffer>(size);
+		}
+		BL_CORE_ASSERT(false, "Unknown API is not supported!")
+			return nullptr;
+	}
+
 	Ref<VertexBuffer> VertexBuffer::CreatVertextBuffer(float* vertices, uint32_t size)
 	{
 		switch (RendererAPI::GetAPI()) {

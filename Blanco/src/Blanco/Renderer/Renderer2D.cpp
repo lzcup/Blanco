@@ -4,71 +4,104 @@
 
 namespace Blanco
 {
-	struct Renderer2DStorage{
+	struct QuadVertex
+	{
+		glm::vec3 Position;
+		glm::vec4 Color;
+		glm::vec2 Texcoord;
+	};
+
+	struct Renderer2DData {
 		Ref<VertexArray> QuadVertexArray;
 		Ref<Shader> TextureShader;
 		Ref<Texture2D> WhiteTexture;
+		Ref<VertexBuffer> QuadVertexBuffer;
+
+		uint32_t MAXQUAD = 10000;
+		uint32_t MAXINDICES = MAXQUAD * 6;
+		uint32_t MAXVERTICES = MAXQUAD * 4;
+
+		uint32_t IndexCount = 0;
+
+		QuadVertex* QuadVertexBufferBase = nullptr;
+		QuadVertex* QuadVertexBufferPtr = nullptr;
+
 	};
 
-	static Renderer2DStorage* s_Data;
+	static Renderer2DData s_Data;
 
 	void Renderer2D::Init()
 	{
 		BL_PROFILE_FUNCTION();
 
-		s_Data = new Renderer2DStorage;
+		s_Data.QuadVertexArray = VertexArray::Create();
 
-		s_Data->QuadVertexArray = VertexArray::Create();
-
-		float squaVertices[5 * 4] = {
-			-0.5f,-0.5f,0.0f,0.0f,0.0f,
-			-0.5f, 0.5f,0.0f,0.0f,1.0f,
-			 0.5f, 0.5f,0.0f,1.0f,1.0f,
-			 0.5f,-0.5f,0.0f,1.0f,0.0f
-		};
-
-		Ref<VertexBuffer> squaVB(VertexBuffer::CreatVertextBuffer(squaVertices, sizeof(squaVertices)));
-		BufferLayout squaLayout = {
+		s_Data.QuadVertexBuffer = VertexBuffer::CreatVertextBuffer(sizeof(QuadVertex) * s_Data.MAXVERTICES);
+		BufferLayout quadLayout = {
 			{ShaderDataType::Float3,"a_Position",false},
+			{ShaderDataType::Float4,"a_Color",false},
 			{ShaderDataType::Float2,"a_TexCoord",false}
 		};
-		squaVB->SetLayout(squaLayout);
-		s_Data->QuadVertexArray->AddVertexBuffer(squaVB);
+		s_Data.QuadVertexBuffer->SetLayout(quadLayout);
+		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
-		unsigned int squaIndices[6] = {
-			0,1,2,
-			0,2,3
-		};
-		Ref<IndexBuffer> squaIB(IndexBuffer::CreatIndexBuffer(squaIndices, sizeof(squaIndices) / sizeof(uint32_t)));
-		s_Data->QuadVertexArray->SetIndexBuffer(squaIB);
+		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MAXVERTICES];
 
-		s_Data->TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data->TextureShader->Bind();
-		s_Data->TextureShader->SetInt("u_Texture", 0);
+		uint32_t* quadIndices = new uint32_t[s_Data.MAXINDICES];
+		uint32_t offset = 0;
+		for (uint32_t i = 0; i < s_Data.MAXINDICES; i += 6) {
+			quadIndices[i] = offset;
+			quadIndices[i + 1] = offset + 1;
+			quadIndices[i + 2] = offset + 2;
+								 
+			quadIndices[i + 3] = offset;
+			quadIndices[i + 4] = offset + 2;
+			quadIndices[i + 5] = offset + 3;
 
-		s_Data->WhiteTexture = Texture2D::Create(1, 1);
+			offset += 4;
+		}
+		Ref<IndexBuffer> quadIB(IndexBuffer::CreatIndexBuffer(quadIndices, s_Data.MAXINDICES));
+		s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
+		delete[] quadIndices;
+
+		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetInt("u_Texture", 0);
+
+		s_Data.WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t data = 0xffffffff;
-		s_Data->WhiteTexture->SetData(&data, sizeof(data));
+		s_Data.WhiteTexture->SetData(&data, sizeof(data));
 	}
 
 	void Renderer2D::ShutDown()
 	{
 		BL_PROFILE_FUNCTION();
-
-		delete s_Data;
 	}
 
 	void Renderer2D::BeginScene(OrthoGraphicCamera& camera)
 	{
 		BL_PROFILE_FUNCTION();
 
-		s_Data->TextureShader->Bind();
-		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_Data.IndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 	}
 
 	void Renderer2D::EndScene()
 	{
 		BL_PROFILE_FUNCTION();
+
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+		s_Data.QuadVertexBuffer->SetData(dataSize, s_Data.QuadVertexBufferBase);
+		s_Data.QuadVertexArray->Bind();
+		Flush();
+	}
+
+	void Renderer2D::Flush()
+	{
+		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.IndexCount);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -80,16 +113,27 @@ namespace Blanco
 	{
 		BL_PROFILE_FUNCTION();
 
-		s_Data->TextureShader->Bind();
-		glm::mat4 transform = 
-			glm::translate(glm::mat4(1.0f), position) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-		s_Data->TextureShader->SetMat4("u_Transform", transform);
-		s_Data->TextureShader->SetFloat4("u_TextureColor", color);
-		s_Data->TextureShader->SetFloat("u_TilingFactor", 1.0f);
-		
-		s_Data->WhiteTexture->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		s_Data.QuadVertexBufferPtr->Position = { position.x - size.x * 0.5, position.y - size.y * 0.5,position.z };
+		s_Data.QuadVertexBufferPtr->Color = color;
+		s_Data.QuadVertexBufferPtr->Texcoord = { 0.0f,0.0f };
+		s_Data.QuadVertexBufferPtr++;
+
+		s_Data.QuadVertexBufferPtr->Position = { position.x - size.x * 0.5, position.y + size.y * 0.5,position.z };
+		s_Data.QuadVertexBufferPtr->Color = color;
+		s_Data.QuadVertexBufferPtr->Texcoord = { 0.0f,1.0f };
+		s_Data.QuadVertexBufferPtr++;
+
+		s_Data.QuadVertexBufferPtr->Position = { position.x + size.x * 0.5, position.y + size.y * 0.5,position.z };
+		s_Data.QuadVertexBufferPtr->Color = color;
+		s_Data.QuadVertexBufferPtr->Texcoord = { 1.0f,1.0f };
+		s_Data.QuadVertexBufferPtr++;
+
+		s_Data.QuadVertexBufferPtr->Position = { position.x + size.x * 0.5, position.y - size.y * 0.5,position.z };
+		s_Data.QuadVertexBufferPtr->Color = color;
+		s_Data.QuadVertexBufferPtr->Texcoord = { 1.0f,0.0f };
+		s_Data.QuadVertexBufferPtr++;
+
+		s_Data.IndexCount += 6;
 	}
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor)
 	{
@@ -99,16 +143,16 @@ namespace Blanco
 	{
 		BL_PROFILE_FUNCTION();
 
-		s_Data->TextureShader->Bind();
+		s_Data.TextureShader->Bind();
 		glm::mat4 transform =
 			glm::translate(glm::mat4(1.0f), position) *
 			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-		s_Data->TextureShader->SetMat4("u_Transform", transform);
-		s_Data->TextureShader->SetFloat("u_TilingFactor", tilingFactor);
-		s_Data->TextureShader->SetFloat4("u_TextureColor", color);
+		s_Data.TextureShader->SetMat4("u_Transform", transform);
+		s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
+		s_Data.TextureShader->SetFloat4("u_TextureColor", color);
 
 		texture->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		RenderCommand::DrawIndexed(s_Data.QuadVertexArray);
 	}
 	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
 	{
@@ -118,17 +162,17 @@ namespace Blanco
 	{
 		BL_PROFILE_FUNCTION();
 
-		s_Data->TextureShader->Bind();
+		s_Data.TextureShader->Bind();
 		glm::mat4 transform =
 			glm::translate(glm::mat4(1.0f), position) *
 			glm::rotate(glm::mat4(1.0f), rotation, { 0,0,1 }) *
 			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-		s_Data->TextureShader->SetMat4("u_Transform", transform);
-		s_Data->TextureShader->SetFloat("u_TilingFactor", 1.0f);
-		s_Data->TextureShader->SetFloat4("u_TextureColor", color);
+		s_Data.TextureShader->SetMat4("u_Transform", transform);
+		s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
+		s_Data.TextureShader->SetFloat4("u_TextureColor", color);
 
-		s_Data->WhiteTexture->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		s_Data.WhiteTexture->Bind();
+		RenderCommand::DrawIndexed(s_Data.QuadVertexArray);
 	}
 	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor)
 	{
@@ -138,17 +182,17 @@ namespace Blanco
 	{
 		BL_PROFILE_FUNCTION();
 
-		s_Data->TextureShader->Bind();
+		s_Data.TextureShader->Bind();
 		glm::mat4 transform =
 			glm::translate(glm::mat4(1.0f), position) *
 			glm::rotate(glm::mat4(1.0f), rotation, { 0,0,1 }) *
 			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-		s_Data->TextureShader->SetMat4("u_Transform", transform);
-		s_Data->TextureShader->SetFloat("u_TilingFactor", tilingFactor);
-		s_Data->TextureShader->SetFloat4("u_TextureColor", color);
+		s_Data.TextureShader->SetMat4("u_Transform", transform);
+		s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
+		s_Data.TextureShader->SetFloat4("u_TextureColor", color);
 
 		texture->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		RenderCommand::DrawIndexed(s_Data.QuadVertexArray);
 	}
 }
 

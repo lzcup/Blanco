@@ -4,7 +4,7 @@
 
 
 
-SandBox2D::SandBox2D() :Layer("SandBox2D"), m_CameraController(1280.0f / 720.0f),m_Tiling(10.0f)
+SandBox2D::SandBox2D() :Layer("SandBox2D"), m_CameraController(1280.0f / 720.0f), m_Tiling(10.0f)
 {
 }
 
@@ -35,12 +35,12 @@ void SandBox2D::OnUpdate(Blanco::TimeStep ts)
 		BL_PROFILE_SCOPE("Render Scene");
 		Blanco::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f }, { 1.0f,1.0f }, m_FlatColor);
-		Blanco::Renderer2D::DrawRotateQuad({ -0.8f,-0.8f }, 105.0f, { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
-		Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, { 10.0f,10.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, m_Tiling);
+		Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f }, { 0.3f,0.3f }, m_FlatColor);
+		Blanco::Renderer2D::DrawQuad({ 1.0f,0.0f }, { 1.0f,1.5f }, { 0.8f,0.5f,0.5f,1.0f });
+		//Blanco::Renderer2D::DrawRotateQuad({ -0.8f,-0.8f }, 105.0f, { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
+		//Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, { 10.0f,10.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, m_Tiling);
 
-
-		Blanco::Renderer::EndScene();
+		Blanco::Renderer2D::EndScene();
 	}
 	/*auto flatColorShader = m_ShaderLibrary.Get("FlatColor");
 	std::dynamic_pointer_cast<Blanco::OpenGLShader>(flatColorShader)->Bind();
