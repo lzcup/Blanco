@@ -350,3 +350,6 @@ FodyWeavers.xsd
 # Directories
 bin/
 bin-int/
+
+# profile.json
+*.json
