@@ -1,0 +1,12 @@
+[submodule "Blanco/vendor/spdlog"]
+	path = Blanco/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Blanco/vendor/glfw"]
+	path = Blanco/vendor/glfw
+	url = https://github.com/lzcup/glfw
+[submodule "Blanco/vendor/imgui"]
+	path = Blanco/vendor/imgui
+	url = https://github.com/lzcup/imgui
+[submodule "Blanco/vendor/glm"]
+	path = Blanco/vendor/glm
+	url = https://github.com/g-truc/glm
