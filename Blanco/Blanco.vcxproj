@@ -143,8 +143,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Blanco\Debug\Instrumentor.h" />
-    <ClInclude Include="src\Blanco\Renderer\Renderer2D.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Core\Application.h" />
@@ -158,6 +156,7 @@
     <ClInclude Include="src\Blanco\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Blanco\Core\TimeStep.h" />
     <ClInclude Include="src\Blanco\Core\Window.h" />
+    <ClInclude Include="src\Blanco\Debug\Instrumentor.h" />
     <ClInclude Include="src\Blanco\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Blanco\Events\Event.h" />
     <ClInclude Include="src\Blanco\Events\KeyEvent.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="src\Blanco\Renderer\OrthoGraphicCameraController.h" />
     <ClInclude Include="src\Blanco\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Blanco\Renderer\Renderer.h" />
+    <ClInclude Include="src\Blanco\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Blanco\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Blanco\Renderer\Shader.h" />
     <ClInclude Include="src\Blanco\Renderer\Texture.h" />
@@ -600,7 +600,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Blanco\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -614,6 +613,7 @@
     <ClCompile Include="src\Blanco\Renderer\OrthoGraphicCameraController.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Shader.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Texture.cpp" />
