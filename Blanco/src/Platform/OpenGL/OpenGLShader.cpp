@@ -53,6 +53,13 @@ namespace Blanco
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform1i(location, value);
 	}
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values,uint32_t count) const
+	{
+		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
+		if (location == -1)
+			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
+		glUniform1iv(location, count, values);
+	}
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float value) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
@@ -219,6 +226,12 @@ namespace Blanco
 		BL_PROFILE_FUNCTION();
 
 		UploadUniformInt(name, value);
+	}
+	void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		BL_PROFILE_FUNCTION();
+
+		UploadUniformIntArray(name, values, count);
 	}
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& values)
 	{
