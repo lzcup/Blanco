@@ -38,8 +38,10 @@ void SandBox2D::OnUpdate(Blanco::TimeStep ts)
 		Blanco::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f }, { 0.3f,0.3f }, m_FlatColor);
 		Blanco::Renderer2D::DrawQuad({ 1.0f,0.0f }, { 1.0f,1.5f }, { 0.8f,0.5f,0.5f,1.0f });
-		//Blanco::Renderer2D::DrawRotateQuad({ -0.8f,-0.8f }, 105.0f, { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
-		//Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, { 10.0f,10.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, m_Tiling);
+		Blanco::Renderer2D::DrawRotateQuad({ -0.8f,-0.8f }, 105.0f, { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
+		Blanco::Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, { 20.0f,20.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, 20.0f);
+		Blanco::Renderer2D::DrawRotateQuad({ 0.0f,0.0f,-0.05f }, 45.0f, { 5.0f,5.0f }, m_Texture, { 0.2f,0.8f,0.8f,0.8f }, 1.0f);
+		Blanco::Renderer2D::EndScene();
 
 		Blanco::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		for (float y = -5.0f; y < 5.0f; y += 0.5f) {
@@ -67,5 +69,4 @@ void SandBox2D::OnImguiRender()
 	ImGui::Text("DrawIndices:%d", stats.DrawIndices);
 	ImGui::ColorEdit4("Square Color", &m_FlatColor.r);
 	ImGui::End();
-
 }
