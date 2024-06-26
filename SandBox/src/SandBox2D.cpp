@@ -52,9 +52,6 @@ void SandBox2D::OnUpdate(Blanco::TimeStep ts)
 		}
 		Blanco::Renderer2D::EndScene();
 	}
-	/*auto flatColorShader = m_ShaderLibrary.Get("FlatColor");
-	std::dynamic_pointer_cast<Blanco::OpenGLShader>(flatColorShader)->Bind();
-	std::dynamic_pointer_cast<Blanco::OpenGLShader>(flatColorShader)->UploadUniformFloat4("u_FlatColor", m_FlatColor);*/
 }
 
 void SandBox2D::OnEvent(Blanco::Event& e)
