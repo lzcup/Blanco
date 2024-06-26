@@ -3,7 +3,7 @@
 #include "gtc/matrix_transform.hpp"
 
 namespace Blanco
-{aa
+{
 	struct QuadVertex
 	{
 		glm::vec3 Position;
