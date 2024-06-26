@@ -96,8 +96,8 @@ namespace Blanco {
 	};
 }
 
-#define PROFILING 1
-#ifdef PROFILING 
+#define PROFILING 0
+#if PROFILING 
 #define CONNECT(x,y) x##y
 #define BL_PROFILE_FUNCTION() ::Blanco::InstrumentationTimer CONNECT(timer,__LINE__)(__FUNCSIG__)
 #define BL_PROFILE_SCOPE(name) ::Blanco::InstrumentationTimer timer##__LINE__(name)

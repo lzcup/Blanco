@@ -17,6 +17,11 @@ namespace Blanco
 
 		virtual void Bind(uint32_t slot) override;
 		virtual void UnBind(uint32_t slot) override;
+
+		virtual bool operator==(Texture& other) override 
+		{
+			return m_RendererId == ((OpenGLTexture2D&)other).m_RendererId;
+		}
 	private:
 		uint32_t m_RendererId;
 		uint32_t m_Width, m_Height;
