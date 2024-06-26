@@ -32,9 +32,9 @@ namespace Blanco
 
 		std::array<Ref<Texture2D>, MAXTEXTURESLOT> TextureSlots;
 
-		glm::vec4 QuadVerticesPosition[4];
+		glm::vec4 QuadVerticesPosition[4] = { glm::vec4(0.0f),glm::vec4(0.0f),glm::vec4(0.0f),glm::vec4(0.0f) };
 
-		Renderer2D::Statistics Stats;
+		Renderer2D::Statistics Stats = { 0,0,0,0 };
 	};
 
 	static Renderer2DData s_Data;
