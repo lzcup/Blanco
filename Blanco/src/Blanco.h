@@ -21,4 +21,5 @@
 #include "Blanco/Renderer/VertexArray.h"
 #include "Blanco/Renderer/Buffer.h"
 #include "Blanco/Renderer/Texture.h"
+#include "Blanco/Renderer/SubTexture2D.h"
 #include "Blanco/Renderer/Renderer2D.h"

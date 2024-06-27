@@ -17,4 +17,8 @@ private:
 
 	glm::vec4 m_FlatColor = { 0.2f, 0.3f, 0.5f ,1.0f };
 	Blanco::Ref<Blanco::Texture2D> m_Texture;
+	Blanco::Ref<Blanco::Texture2D> m_DoorsSpriteSheet;
+	Blanco::Ref<Blanco::SubTexture2D> m_YellowDoor,m_YellowKey,m_OpenDoor;
+
+	float m_keyx = -0.5f;
 };
