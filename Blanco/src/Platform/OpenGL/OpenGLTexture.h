@@ -12,6 +12,7 @@ namespace Blanco
 
 		virtual uint32_t GetWidth() const override { return m_Width; }
 		virtual uint32_t GetHeight() const override { return m_Height; }
+		virtual uint32_t GetRendererID() const override { return m_RendererID; }
 
 		virtual void SetData(void* data, uint32_t size) override;
 
@@ -20,10 +21,10 @@ namespace Blanco
 
 		virtual bool operator==(Texture& other) override 
 		{
-			return m_RendererId == ((OpenGLTexture2D&)other).m_RendererId;
+			return m_RendererID == ((OpenGLTexture2D&)other).m_RendererID;
 		}
 	private:
-		uint32_t m_RendererId;
+		uint32_t m_RendererID;
 		uint32_t m_Width, m_Height;
 		GLenum m_Internalformat = 0;
 		GLenum m_Dataformat = 0;

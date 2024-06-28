@@ -23,6 +23,7 @@ namespace Blanco
 		void PushOverLayer(Layer* layer);
 		void OnEvent(Event& e);
 		void Run();
+		void Close();
 	private:
 		static Application* s_Instance;
 		Ref<Window> m_Window;

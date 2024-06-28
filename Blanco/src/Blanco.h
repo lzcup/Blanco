@@ -23,3 +23,4 @@
 #include "Blanco/Renderer/Texture.h"
 #include "Blanco/Renderer/SubTexture2D.h"
 #include "Blanco/Renderer/Renderer2D.h"
+#include "Blanco/Renderer/FrameBuffer.h"
