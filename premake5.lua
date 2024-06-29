@@ -2,7 +2,7 @@ workspace "Blanco"
 configurations {"Debug","Release","Dist"}
 architecture "x64"
 cppdialect "C++20"
-startproject "Sandbox"
+startproject "BlancoPelota"
 
 outputdir="%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -83,8 +83,8 @@ project "Blanco"
     optimize "on"
     runtime "Release"
 
-project "BlancoEditor"
-  location "BlancoEditor"
+project "BlancoPelota"
+  location "BlancoPelota"
   kind "ConsoleApp"
   language "C++"
   cppdialect "C++20"

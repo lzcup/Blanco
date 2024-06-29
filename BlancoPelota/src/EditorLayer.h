@@ -21,6 +21,6 @@ namespace Blanco
 		Ref<Texture2D> m_DoorsSpriteSheet;
 		Ref<SubTexture2D> m_YellowDoor, m_YellowKey, m_OpenDoor;
 
-		float m_keyx = -0.5f;
+		glm::vec2 m_Viewport = { 0,0 };
 	};
 }

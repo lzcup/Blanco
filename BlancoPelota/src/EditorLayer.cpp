@@ -135,8 +135,19 @@ namespace Blanco
 		ImGui::Text("DrawVertices:%d", stats.DrawVertices);
 		ImGui::Text("DrawIndices:%d", stats.DrawIndices);
 		ImGui::ColorEdit4("Square Color", &m_FlatColor.r);
+		ImGui::End();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("Viewpoint");
+		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
+		if (m_Viewport != *((glm::vec2*)&regionViewport)) {
+			m_FrameBuffer->Resize((uint32_t)regionViewport.x, (uint32_t)regionViewport.y);
+		}
+		m_Viewport = { regionViewport.x,regionViewport.y };
+		m_CameraController.OnResize(regionViewport.x, regionViewport.y);
 		uint32_t textureID = m_FrameBuffer->GetColorAttchmentRendererID();
-		ImGui::Image((void*)textureID, { 1280,720 },{0,1},{1,0});
+		ImGui::Image((void*)textureID, { regionViewport.x,regionViewport.y },{0,1},{1,0});
+		ImGui::PopStyleVar();
 		ImGui::End();
 	}
 }

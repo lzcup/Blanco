@@ -3,15 +3,15 @@
 #include "EditorLayer.h"
 
 namespace Blanco {
-	class BlancoEditorApp :public Application {
+	class BlancoPelota :public Application {
 	public:
-		BlancoEditorApp() :Application("BlancoEditor") {
+		BlancoPelota() :Application("BlancoPelota") {
 			PushLayer(new EditorLayer());
 		};
-		~BlancoEditorApp() override {};
+		~BlancoPelota() override {};
 	};
 
 	Application* CreatApplication() {
-		return new BlancoEditorApp();
+		return new BlancoPelota();
 	}
 }

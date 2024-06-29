@@ -16,6 +16,7 @@ namespace Blanco
 
 		void OnUpdate(TimeStep ts);
 		void OnEvent(Event& e);
+		void OnResize(float width, float height);
 
 	private:
 		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
