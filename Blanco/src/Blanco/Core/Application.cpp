@@ -9,14 +9,14 @@ namespace Blanco
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const char* name)
 	{
 		BL_PROFILE_FUNCTION();
 
 		BL_CORE_ASSERT(!s_Instance, "Instance already exist!");
 		s_Instance = this;
 
-		m_Window = Window::Create();
+		m_Window = Window::Create(WindowProp(name));
 		m_Window->SetEventCallBack(BL_BIND_EVENT_FNC(Application::OnEvent));
 
 		Renderer::Init();

@@ -5,7 +5,7 @@
 
 namespace Blanco 
 {
-	class BL_API Layer {
+	class Layer {
 	public:
 		Layer(const char* name = "Layer");
 		virtual ~Layer();

@@ -13,7 +13,7 @@ namespace Blanco
 	class Application
 	{
 	public:
-		Application();
+		Application(const char* name = "Blanco App");
 		virtual ~Application();
 
 		static Application& Get() { return *s_Instance; }

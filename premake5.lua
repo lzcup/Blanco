@@ -83,6 +83,53 @@ project "Blanco"
     optimize "on"
     runtime "Release"
 
+project "BlancoEditor"
+  location "BlancoEditor"
+  kind "ConsoleApp"
+  language "C++"
+  cppdialect "C++20"
+  staticruntime "on"
+
+  links {
+      "Blanco"
+  }
+  
+  targetdir ("bin/"..outputdir.."/%{prj.name}")
+  objdir ("bin-int/"..outputdir.."/%{prj.name}")
+  files {
+  	"%{prj.name}/src/**.h",
+  	"%{prj.name}/src/**.cpp"
+  }
+  
+  includedirs{
+  	"%{IncludeDir.spdlog}",
+    "%{IncludeDir.glm}",
+    "%{IncludeDir.ImGui}",
+    "Blanco/src"
+  }
+
+  filter "system:windows"
+    systemversion "latest"
+    
+    defines{
+    	"BLANCO_PLATFORM_WINDOWS"
+    }
+  
+  filter "configurations:Debug"
+    defines "BL_DEBUG"
+    symbols "on"
+    runtime "Debug"
+  
+  filter "configurations:Release"
+    defines "BL_RELEASE"
+    optimize "on"
+    runtime "Release"
+  
+  filter "configurations:Dist"
+    defines "BL_DIST"
+    optimize "on"
+    runtime "Release"
+
 project "Sandbox"
   location "Sandbox"
   kind "ConsoleApp"

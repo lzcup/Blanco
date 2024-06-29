@@ -12,7 +12,6 @@ public:
 	virtual void OnImguiRender() override;
 private:
 	Blanco::OrthoGraphicCameraController m_CameraController;
-	Blanco::Ref<Blanco::FrameBuffer> m_FrameBuffer;
 
 	glm::vec4 m_FlatColor = { 0.2f, 0.3f, 0.5f ,1.0f };
 	Blanco::Ref<Blanco::Texture2D> m_Texture;

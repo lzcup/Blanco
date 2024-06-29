@@ -6,24 +6,24 @@
 namespace Blanco {
 
 	struct WindowProp {
-		WindowProp(unsigned int width = 1280, unsigned int height = 720, const std::string& title = "Blanco Engine")
-			:m_Width(width), m_Height(height), m_Title(title) {}
+		WindowProp(const std::string& title = "Blanco Engine", uint32_t width = 1280, uint32_t height = 720)
+			:m_Title(title), m_Width(width), m_Height(height) {}
 
-		unsigned int m_Width;
-		unsigned int m_Height;
 		std::string m_Title;
+		uint32_t m_Width;
+		uint32_t m_Height;
 	};
 
 
-	class BL_API Window {
+	class Window {
 	public:
 		using EventCallBackFnc = std::function<void(Event& event)>;
 		virtual ~Window() {};
 
 		virtual void Update() = 0;
 
-		virtual inline unsigned int GetWidth() const = 0;
-		virtual inline unsigned int GetHeight() const = 0;
+		virtual inline uint32_t GetWidth() const = 0;
+		virtual inline uint32_t GetHeight() const = 0;
 
 		virtual inline void* GetNativeWindow() const = 0;
 

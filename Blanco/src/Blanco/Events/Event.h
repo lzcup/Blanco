@@ -27,7 +27,7 @@ namespace Blanco {
 	                           virtual const char* GetEventName() const override {return #type;}
 #define EVENT_CATEGORY(category) virtual int GetEventCategoryFlag() const override {return category;}
 
-	class BL_API Event {
+	class Event {
 		friend class Dispatcher;
 	public:
 		virtual EventType GetEventType() const = 0;
@@ -44,7 +44,7 @@ namespace Blanco {
 		bool m_Handled = false;
 	};
 
-	class BL_API Dispatcher {
+	class Dispatcher {
 	public:
 		Dispatcher(Event& event) :m_Event(event) {}
 

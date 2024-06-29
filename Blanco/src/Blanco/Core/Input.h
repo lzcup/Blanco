@@ -3,7 +3,7 @@
 #include "Core.h"
 
 namespace Blanco {
-	class BL_API Input {
+	class Input {
 	public:
 		static bool IsKeyPressed(int keyCode) { return s_Instance->IsKeyPressedImpl(keyCode); }
 		static bool IsMousePressed(int button) { return s_Instance->IsMousePressedImpl(button); }

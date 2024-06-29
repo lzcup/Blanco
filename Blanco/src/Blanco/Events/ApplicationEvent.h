@@ -3,7 +3,7 @@
 #include "Event.h"
 
 namespace Blanco {
-	class BL_API WindowCloseEvent :public Event {
+	class WindowCloseEvent :public Event {
 	public:
 		WindowCloseEvent(){}
 
@@ -11,9 +11,9 @@ namespace Blanco {
 		EVENT_CLASS_TYPE(WindowClose)
 	};
 
-	class BL_API WindowResizeEvent :public Event {
+	class WindowResizeEvent :public Event {
 	public:
-		WindowResizeEvent(unsigned int width, unsigned int height) :m_Width(width), m_Height(height) {}
+		WindowResizeEvent(uint32_t width, uint32_t height) :m_Width(width), m_Height(height) {}
 
 		EVENT_CATEGORY(EventCategoryApplication)
 		EVENT_CLASS_TYPE(WindowResize)
@@ -24,13 +24,13 @@ namespace Blanco {
 			return ss.str();
 		}
 
-		inline unsigned int GetWidth() const { return m_Width; }
-		inline unsigned int GetHeight() const { return m_Height; }
+		inline uint32_t GetWidth() const { return m_Width; }
+		inline uint32_t GetHeight() const { return m_Height; }
 	private:
-		unsigned int m_Width, m_Height;
+		uint32_t m_Width, m_Height;
 	};
 
-	class BL_API WindowFoucusEvent :public Event {
+	class WindowFoucusEvent :public Event {
 	public:
 		WindowFoucusEvent() {}
 
@@ -38,7 +38,7 @@ namespace Blanco {
 		EVENT_CLASS_TYPE(WindowFoucus)
 	};
 
-	class BL_API WindowLostFocusEvent :public Event {
+	class WindowLostFocusEvent :public Event {
 	public:
 		WindowLostFocusEvent() {}
 
@@ -46,7 +46,7 @@ namespace Blanco {
 		EVENT_CLASS_TYPE(WindowLostFocus)
 	};
 
-	class BL_API WindowMovedEvent :public Event {
+	class WindowMovedEvent :public Event {
 	public:
 		WindowMovedEvent(float x, float y) :m_X(x), m_Y(y) {}
 
@@ -65,7 +65,7 @@ namespace Blanco {
 		float m_X, m_Y;
 	};
 
-	class BL_API AppTickEvent :public Event {
+	class AppTickEvent :public Event {
 	public:
 		AppTickEvent() {}
 
@@ -73,7 +73,7 @@ namespace Blanco {
 		EVENT_CLASS_TYPE(AppTick)
 	};
 
-	class BL_API AppUpdateEvent :public Event {
+	class AppUpdateEvent :public Event {
 	public:
 		AppUpdateEvent() {}
 
@@ -81,7 +81,7 @@ namespace Blanco {
 		EVENT_CLASS_TYPE(AppUpdate)
 	};
 
-	class BL_API AppRenderEvent :public Event {
+	class AppRenderEvent :public Event {
 	public:
 		AppRenderEvent() {}
 

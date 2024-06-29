@@ -3,7 +3,7 @@
 #include "Event.h"
 
 namespace Blanco {
-	class BL_API MouseButtonEvent :public Event {
+	class MouseButtonEvent :public Event {
 	public:
 		EVENT_CATEGORY(EventInput | EventCategoryMouseButton)
 
@@ -13,7 +13,7 @@ namespace Blanco {
 		int m_MouseCode;
 	};
 
-	class BL_API MouseButtonPressedEvent :public MouseButtonEvent {
+	class MouseButtonPressedEvent :public MouseButtonEvent {
 	public:
 		MouseButtonPressedEvent(int MouseCode) :MouseButtonEvent(MouseCode) {}
 
@@ -26,7 +26,7 @@ namespace Blanco {
 		}
 	};
 
-	class BL_API MouseButtonReleasedEvent :public MouseButtonEvent {
+	class MouseButtonReleasedEvent :public MouseButtonEvent {
 	public:
 		MouseButtonReleasedEvent(int MouseCode) :MouseButtonEvent(MouseCode) {}
 
@@ -39,7 +39,7 @@ namespace Blanco {
 		}
 	};
 
-	class BL_API MouseMovedEvent :public Event {
+	class MouseMovedEvent :public Event {
 	public:
 		MouseMovedEvent(float x, float y) :m_X(x), m_Y(y) {}
 
@@ -58,7 +58,7 @@ namespace Blanco {
 		float m_X, m_Y;
 	};
 
-	class BL_API MouseScrolledEvent :public Event {
+	class MouseScrolledEvent :public Event {
 	public:
 		MouseScrolledEvent(float offsetX, float offsetY) :m_OffsetX(offsetX), m_OffsetY(offsetY) {}
 

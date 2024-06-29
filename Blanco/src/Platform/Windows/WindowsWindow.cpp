@@ -124,7 +124,7 @@ namespace Blanco {
 			}
 			});
 
-		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int codepoint) {
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, uint32_t codepoint) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 			KeyTypedEvent event(codepoint);

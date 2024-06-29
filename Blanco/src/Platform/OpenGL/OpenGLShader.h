@@ -2,12 +2,10 @@
 #include <string>
 #include <glm.hpp>
 #include "Blanco/Renderer/Shader.h"
+#include <glad/gl.h>
 
 namespace Blanco
 {
-	//TODO:remove
-	typedef unsigned int GLenum;
-
 	class OpenGLShader: public Shader{
 	public:
 		OpenGLShader(const std::string& filepath);

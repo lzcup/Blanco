@@ -4,7 +4,7 @@
 
 namespace Blanco 
 {
-	class BL_API Log{
+	class Log{
 	public:
 		static void Init();
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; };

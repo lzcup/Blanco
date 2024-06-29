@@ -4,7 +4,7 @@
 
 namespace Blanco 
 {
-    class BL_API LayerStack {
+    class LayerStack {
     public:
         LayerStack();
         ~LayerStack();
@@ -18,6 +18,6 @@ namespace Blanco
         inline std::vector<Layer*>::iterator end() { return m_LayerStack.end(); }
     private:
         std::vector<Layer*> m_LayerStack;
-        unsigned int m_LayerInsertIndex;
+        uint32_t m_LayerInsertIndex;
     };
 }

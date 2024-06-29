@@ -3,7 +3,7 @@
 #include "Event.h"
 
 namespace Blanco {
-	class BL_API KeyEvent :public Event {
+	class KeyEvent :public Event {
 	public:
 		EVENT_CATEGORY(EventInput | EventKeyboard)
 
@@ -13,7 +13,7 @@ namespace Blanco {
 		int m_KeyCode;
 	};
 
-	class BL_API KeyPressedEvent :public KeyEvent {
+	class KeyPressedEvent :public KeyEvent {
 	public:
 		KeyPressedEvent(int KeyCode, int ScanCode, int RepeatCounts) :KeyEvent(KeyCode), m_ScanCode(ScanCode), m_RepeatCounts(RepeatCounts) {}
 	
@@ -32,7 +32,7 @@ namespace Blanco {
 		int m_ScanCode;
 	};
 
-	class BL_API KeyReleasedEvent :public KeyEvent {
+	class KeyReleasedEvent :public KeyEvent {
 	public:
 		KeyReleasedEvent(int KeyCode, int ScanCode) :KeyEvent(KeyCode), m_ScanCode(ScanCode) {}
 
@@ -49,7 +49,7 @@ namespace Blanco {
 		int m_ScanCode;
 	};
 
-	class BL_API KeyTypedEvent :public KeyEvent {
+	class KeyTypedEvent :public KeyEvent {
 	public:
 		KeyTypedEvent(int KeyCode) :KeyEvent(KeyCode) {}
 

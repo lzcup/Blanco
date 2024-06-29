@@ -4,15 +4,15 @@
 #include "Blanco/Renderer/GraphicsContext.h"
 
 namespace Blanco {
-	class BL_API WindowsWindow :public Window {
+	class WindowsWindow :public Window {
 	public:
 		WindowsWindow(const WindowProp& prop);
 		~WindowsWindow();
 
 		virtual void Update() override;
 
-		virtual inline unsigned int GetWidth() const override { return m_Data.m_Width; }
-		virtual inline unsigned int GetHeight() const override { return m_Data.m_Height; }
+		virtual inline uint32_t GetWidth() const override { return m_Data.m_Width; }
+		virtual inline uint32_t GetHeight() const override { return m_Data.m_Height; }
 
 		virtual inline void* GetNativeWindow() const override { return m_Window; }
 
@@ -27,7 +27,7 @@ namespace Blanco {
 	private:
 		struct WindowData
 		{
-			unsigned int m_Width = 0, m_Height = 0;
+			uint32_t m_Width = 0, m_Height = 0;
 			std::string m_Title;
 			bool m_VSync = true;
 			EventCallBackFnc m_Fnc;

@@ -7,7 +7,7 @@
 
 namespace Blanco 
 {
-    class BL_API ImguiLayer:public Layer{
+    class ImguiLayer:public Layer{
     public:
         ImguiLayer();
         ~ImguiLayer();
