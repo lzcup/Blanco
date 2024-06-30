@@ -5,7 +5,7 @@
 namespace Blanco {
 	class MouseButtonEvent :public Event {
 	public:
-		EVENT_CATEGORY(EventInput | EventCategoryMouseButton)
+		EVENT_CATEGORY(EventCategoryInput | EventCategoryMouseButton)
 
 		inline int GetMouseCode() const { return m_MouseCode; }
 	protected:
@@ -43,7 +43,7 @@ namespace Blanco {
 	public:
 		MouseMovedEvent(float x, float y) :m_X(x), m_Y(y) {}
 
-		EVENT_CATEGORY(EventInput | EventCategoryMouse)
+		EVENT_CATEGORY(EventCategoryInput | EventCategoryMouse)
 		EVENT_CLASS_TYPE(MouseMoved)
 
 		std::string ToString() const override {
@@ -62,7 +62,7 @@ namespace Blanco {
 	public:
 		MouseScrolledEvent(float offsetX, float offsetY) :m_OffsetX(offsetX), m_OffsetY(offsetY) {}
 
-		EVENT_CATEGORY(EventInput | EventCategoryMouse)
+		EVENT_CATEGORY(EventCategoryInput | EventCategoryMouse)
 		EVENT_CLASS_TYPE(MouseScrolled)
 
 		std::string ToString() const override {

@@ -16,8 +16,8 @@ namespace Blanco {
 	{
 		None = 0,
 		EventCategoryApplication = BIT(0),
-		EventInput               = BIT(1),
-		EventKeyboard            = BIT(2),
+		EventCategoryInput       = BIT(1),
+		EventCategoryKeyboard    = BIT(2),
 		EventCategoryMouse       = BIT(3),
 		EventCategoryMouseButton = BIT(4)
 	};
@@ -28,7 +28,6 @@ namespace Blanco {
 #define EVENT_CATEGORY(category) virtual int GetEventCategoryFlag() const override {return category;}
 
 	class Event {
-		friend class Dispatcher;
 	public:
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetEventName() const = 0;
@@ -39,9 +38,7 @@ namespace Blanco {
 			return GetEventCategoryFlag() & category;
 		}
 
-		inline bool GetHandled() const { return m_Handled; }
-	protected:
-		bool m_Handled = false;
+		bool Handled = false;
 	};
 
 	class Dispatcher {
@@ -51,7 +48,7 @@ namespace Blanco {
 		template<typename T>
 		bool Dispatch(std::function<bool(T&)> fnc) {
 			if (m_Event.GetEventType() == T::GetStaticType()) {
-				m_Event.m_Handled = fnc(*((T*)&m_Event));
+				m_Event.Handled = fnc(*((T*)&m_Event));
 				return true;
 			}
 			return false;

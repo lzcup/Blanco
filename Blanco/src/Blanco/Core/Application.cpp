@@ -55,7 +55,7 @@ namespace Blanco
 		dispatcher.Dispatch<WindowResizeEvent>(BL_BIND_EVENT_FNC(Application::OnWindowResize));
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 			(*--it)->OnEvent(e);
-			if (e.GetHandled())
+			if (e.Handled)
 				break;
 		}
 	}

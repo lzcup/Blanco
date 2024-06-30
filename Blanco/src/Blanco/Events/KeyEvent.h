@@ -5,7 +5,7 @@
 namespace Blanco {
 	class KeyEvent :public Event {
 	public:
-		EVENT_CATEGORY(EventInput | EventKeyboard)
+		EVENT_CATEGORY(EventCategoryInput | EventCategoryKeyboard)
 
 		inline int GetKeyCode() const{ return m_KeyCode; }
 	protected:

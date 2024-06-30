@@ -18,6 +18,7 @@ namespace Blanco
 
 		static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
+		ImguiLayer& GetImgui() { return *m_Imgui; }
 
 		void PushLayer(Layer* layer);
 		void PushOverLayer(Layer* layer);

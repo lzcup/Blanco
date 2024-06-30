@@ -35,7 +35,8 @@ namespace Blanco
 		m_FrameBuffer->Bind();
 		{
 			BL_PROFILE_SCOPE("CameraController Update");
-			m_CameraController.OnUpdate(ts);
+			if (m_ViewFocuse)
+				m_CameraController.OnUpdate(ts);
 		}
 
 		{
@@ -44,6 +45,9 @@ namespace Blanco
 			RenderCommand::Clear();
 		}
 
+		m_Rotate += 50.0F * ts;
+		if (m_Rotate > 360.0f)
+			m_Rotate = 0.0f;
 		{
 			BL_PROFILE_SCOPE("Render Scene");
 			Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -51,7 +55,7 @@ namespace Blanco
 			Renderer2D::DrawQuad({ 1.0f,0.0f }, { 1.0f,1.5f }, { 0.8f,0.5f,0.5f,1.0f });
 			Renderer2D::DrawRotateQuad({ -0.8f,-0.8f }, glm::radians(105.0f), { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
 			Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, { 20.0f,20.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, 20.0f);
-			Renderer2D::DrawRotateQuad({ 0.0f,0.0f,-0.05f }, glm::radians(45.0f), { 5.0f,5.0f }, m_Texture, { 0.2f,0.8f,0.8f,0.8f }, 1.0f);
+			Renderer2D::DrawRotateQuad({ 0.0f,0.0f,-0.05f }, glm::radians(m_Rotate), { 5.0f,5.0f }, m_Texture, { 0.2f,0.8f,0.8f,0.8f }, 1.0f);
 			Renderer2D::EndScene();
 
 			Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -125,7 +129,6 @@ namespace Blanco
 			}
 			ImGui::EndMenuBar();
 		}
-
 		ImGui::End();
 
 		auto& stats = Renderer2D::GetStats();
@@ -139,6 +142,10 @@ namespace Blanco
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("Viewpoint");
+		m_ViewFocuse = ImGui::IsWindowFocused();
+		m_ViewHovered = ImGui::IsWindowHovered();
+		Application::Get().GetImgui().BlockEvents(!(m_ViewFocuse && m_ViewHovered));
+
 		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
 		if (m_Viewport != *((glm::vec2*)&regionViewport)) {
 			m_FrameBuffer->Resize((uint32_t)regionViewport.x, (uint32_t)regionViewport.y);
