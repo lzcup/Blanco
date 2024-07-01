@@ -14,6 +14,7 @@ IncludeDir["Glad"] = "Blanco/vendor/glad/include"
 IncludeDir["ImGui"] = "Blanco/vendor/imgui"
 IncludeDir["glm"] = "Blanco/vendor/glm/glm"
 IncludeDir["stb_image"] = "Blanco/vendor/stb_image"
+IncludeDir["entt"] = "Blanco/vendor/entt/include"
 
 include "Blanco/vendor/glfw"
 include "Blanco/vendor/glad"
@@ -53,7 +54,8 @@ project "Blanco"
     "%{IncludeDir.Glad}",
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.glm}",
-    "%{IncludeDir.stb_image}"
+    "%{IncludeDir.stb_image}",
+    "%{IncludeDir.entt}"
   }
 
   defines{
@@ -105,6 +107,7 @@ project "BlancoPelota"
   	"%{IncludeDir.spdlog}",
     "%{IncludeDir.glm}",
     "%{IncludeDir.ImGui}",
+    "%{IncludeDir.entt}",
     "Blanco/src"
   }
 

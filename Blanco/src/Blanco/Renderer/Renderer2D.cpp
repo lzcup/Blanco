@@ -100,6 +100,21 @@ namespace Blanco
 		BL_PROFILE_FUNCTION();
 	}
 
+	void Renderer2D::BeginScene(Camera& camera, const glm::mat4& transform)
+	{
+		BL_PROFILE_FUNCTION();
+
+		glm::mat4 viewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
+
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProjectionMatrix);
+
+		s_Data.IndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureIndex = 1;
+	}
+
 	void Renderer2D::BeginScene(OrthoGraphicCamera& camera)
 	{
 		BL_PROFILE_FUNCTION();
@@ -148,16 +163,21 @@ namespace Blanco
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		BL_PROFILE_FUNCTION();
+		glm::mat4 transform =
+			glm::translate(glm::mat4(1.0f), position) *
+			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
 
+		DrawQuad(transform, color);
+
+	}
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	{
 		if (s_Data.IndexCount >= s_Data.MAXINDICES)
 			FlushAndReset();
 
 		float textureIndex = 0.0f;
 		float tilingFactor = 1.0f;
-		glm::mat4 transform =
-			glm::translate(glm::mat4(1.0f), position) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+
 		glm::vec2 texCoords[4] = { {0.0f,0.0f},{0.0f,1.0f},{1.0f,1.0f},{1.0f,0.0f} };
 
 		for (uint32_t i = 0; i < 4; i++) {
@@ -179,8 +199,15 @@ namespace Blanco
 	}
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor)
 	{
-		BL_PROFILE_FUNCTION();
+		glm::mat4 transform =
+			glm::translate(glm::mat4(1.0f), position) *
+			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
 
+		DrawQuad(transform, texture, color, tilingFactor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor)
+	{
 		if ((s_Data.IndexCount >= s_Data.MAXINDICES) || (s_Data.TextureIndex >= s_Data.MAXTEXTURESLOT))
 			FlushAndReset();
 
@@ -197,9 +224,6 @@ namespace Blanco
 			s_Data.TextureIndex++;
 		}
 
-		glm::mat4 transform =
-			glm::translate(glm::mat4(1.0f), position) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
 		glm::vec2 texCoords[4] = { {0.0f,0.0f},{0.0f,1.0f},{1.0f,1.0f},{1.0f,0.0f} };
 
 		for (uint32_t i = 0; i < 4; i++) {

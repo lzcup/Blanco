@@ -1,6 +1,7 @@
 #include "EditorLayer.h"
 #include "imgui.h"
 #include "gtc/matrix_transform.hpp"
+#include <gtc/type_ptr.hpp>
 
 namespace Blanco
 {
@@ -15,6 +16,16 @@ namespace Blanco
 		spec.Height = 720;
 		m_FrameBuffer = FrameBuffer::Create(spec);
 
+		m_ActiveScene = CreateRef<Scene>();
+
+		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
+		m_SquareEntity.AddComponent<SpriteComponent>(glm::vec4(1.0f,0.0f,0.0f,1.0f));
+		m_PrimaryCamera = m_ActiveScene->CreateEntity("Primary Camera");
+		m_PrimaryCamera.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f));
+		m_SecondCamera = m_ActiveScene->CreateEntity("Second Camera");
+		m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.6f, 1.6f, -0.9f, 0.9f));
+		m_SecondCamera.GetComponent<CameraComponent>().Primary = false;
+
 		m_Texture = Texture2D::Create("assets/textures/cat.png");
 		m_DoorsSpriteSheet = Texture2D::Create("assets/game/textures/Doors.png");
 		m_YellowDoor = SubTexture2D::CreateTextureByCoords(m_DoorsSpriteSheet, { 7,0 }, { 128.0f,128.0f }, { 1,2 });
@@ -28,46 +39,20 @@ namespace Blanco
 
 	void EditorLayer::OnUpdate(TimeStep ts)
 	{
-		BL_PROFILE_FUNCTION();
-
 		Renderer2D::ResetStats();
 
 		m_FrameBuffer->Bind();
-		{
-			BL_PROFILE_SCOPE("CameraController Update");
-			if (m_ViewFocuse)
-				m_CameraController.OnUpdate(ts);
-		}
+		if (m_ViewFocuse)
+			m_CameraController.OnUpdate(ts);
+		
+		RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+		RenderCommand::Clear();;
+	
+		m_ActiveScene->OnUpdate(ts);
 
-		{
-			BL_PROFILE_SCOPE("BufferClear");
-			RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
-			RenderCommand::Clear();
-		}
-
-		m_Rotate += 50.0F * ts;
-		if (m_Rotate > 360.0f)
-			m_Rotate = 0.0f;
-		{
-			BL_PROFILE_SCOPE("Render Scene");
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			Renderer2D::DrawQuad({ 0.0f,0.0f }, { 0.3f,0.3f }, m_FlatColor);
-			Renderer2D::DrawQuad({ 1.0f,0.0f }, { 1.0f,1.5f }, { 0.8f,0.5f,0.5f,1.0f });
-			Renderer2D::DrawRotateQuad({ -0.8f,-0.8f }, glm::radians(105.0f), { 0.5f,0.8f }, { 0.2f,0.9f,0.5f,1.0f });
-			Renderer2D::DrawQuad({ 0.0f,0.0f,-0.1f }, { 20.0f,20.0f }, m_Texture, { 0.8f,0.8f,0.8f,0.8f }, 20.0f);
-			Renderer2D::DrawRotateQuad({ 0.0f,0.0f,-0.05f }, glm::radians(m_Rotate), { 5.0f,5.0f }, m_Texture, { 0.2f,0.8f,0.8f,0.8f }, 1.0f);
-			Renderer2D::EndScene();
-
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (float y = -5.0f; y < 5.0f; y += 0.5f) {
-				for (float x = -5.0f; x < 5.0f; x += 0.5f) {
-					glm::vec4 color = { 0.1f * x + 0.5f,0.1f * y + 0.5f,0.6f,0.7f };
-					Renderer2D::DrawQuad({ x,y }, { 0.45f,0.45f }, color);
-				}
-			}
-			Renderer2D::EndScene();
-			m_FrameBuffer->UnBind();
-		}
+		bool p1 = m_PrimaryCamera.GetComponent<CameraComponent>().Primary;
+		bool p2 = m_SecondCamera.GetComponent<CameraComponent>().Primary;
+		m_FrameBuffer->UnBind();
 	}
 
 	void EditorLayer::OnEvent(Event& e)
@@ -133,11 +118,24 @@ namespace Blanco
 
 		auto& stats = Renderer2D::GetStats();
 		ImGui::Begin("Statistics");
+		if (m_SquareEntity) {
+			auto& color = m_SquareEntity.GetComponent<SpriteComponent>().Color;
+			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());
+			ImGui::ColorEdit4("Square Color", &color.r);
+		}
+		if (m_PrimaryCamera && m_SecondCamera) {
+			glm::mat4& transform = m_PrimaryCamera.GetComponent<TransformComponent>();
+			bool* primary = &(m_PrimaryCamera.GetComponent<CameraComponent>().Primary);
+			ImGui::DragFloat3("primary transform", glm::value_ptr(transform[3]));
+			if (ImGui::Checkbox("Primary Camera", primary)) {
+				m_SecondCamera.GetComponent<CameraComponent>().Primary = !*primary;
+			}
+		}
+
 		ImGui::Text("DrawCalls:%d", stats.DrawCalls);
 		ImGui::Text("DrawQuads:%d", stats.DrawQuads);
 		ImGui::Text("DrawVertices:%d", stats.DrawVertices);
 		ImGui::Text("DrawIndices:%d", stats.DrawIndices);
-		ImGui::ColorEdit4("Square Color", &m_FlatColor.r);
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -145,7 +143,6 @@ namespace Blanco
 		m_ViewFocuse = ImGui::IsWindowFocused();
 		m_ViewHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImgui().BlockEvents(!(m_ViewFocuse && m_ViewHovered));
-
 		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
 		if (m_Viewport != *((glm::vec2*)&regionViewport)) {
 			m_FrameBuffer->Resize((uint32_t)regionViewport.x, (uint32_t)regionViewport.y);

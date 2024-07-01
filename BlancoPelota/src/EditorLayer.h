@@ -20,7 +20,10 @@ namespace Blanco
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_DoorsSpriteSheet;
 		Ref<SubTexture2D> m_YellowDoor, m_YellowKey, m_OpenDoor;
-		float m_Rotate = 0.0f;
+		Ref<Scene> m_ActiveScene;
+		Entity m_SquareEntity;
+		Entity m_PrimaryCamera;
+		Entity m_SecondCamera;
 
 		glm::vec2 m_Viewport = { 0,0 };
 		bool m_ViewFocuse = false;
