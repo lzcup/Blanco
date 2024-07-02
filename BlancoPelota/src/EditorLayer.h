@@ -25,7 +25,7 @@ namespace Blanco
 		Entity m_PrimaryCamera;
 		Entity m_SecondCamera;
 
-		glm::vec2 m_Viewport = { 0,0 };
+		glm::vec2 m_Viewport = { 1280.0f,720.0f };
 		bool m_ViewFocuse = false;
 		bool m_ViewHovered = false;
 	};

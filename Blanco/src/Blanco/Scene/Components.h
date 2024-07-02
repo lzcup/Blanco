@@ -1,6 +1,6 @@
 #pragma once
 #include <glm.hpp>
-#include "Blanco/Renderer/Camera.h"
+#include "SceneCamera.h"
 
 namespace Blanco
 {
@@ -33,11 +33,11 @@ namespace Blanco
 
 	struct CameraComponent
 	{
-		Camera mianCamera;
+		SceneCamera Camera;
 		bool Primary = true;
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
-		CameraComponent(const glm::mat4& projection) :mianCamera(projection) {}
 		CameraComponent(const CameraComponent&) = default;
 	};
 }

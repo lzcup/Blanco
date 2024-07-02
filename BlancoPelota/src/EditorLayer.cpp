@@ -21,9 +21,9 @@ namespace Blanco
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 		m_SquareEntity.AddComponent<SpriteComponent>(glm::vec4(1.0f,0.0f,0.0f,1.0f));
 		m_PrimaryCamera = m_ActiveScene->CreateEntity("Primary Camera");
-		m_PrimaryCamera.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f));
+		m_PrimaryCamera.AddComponent<CameraComponent>();
 		m_SecondCamera = m_ActiveScene->CreateEntity("Second Camera");
-		m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.6f, 1.6f, -0.9f, 0.9f));
+		m_SecondCamera.AddComponent<CameraComponent>();
 		m_SecondCamera.GetComponent<CameraComponent>().Primary = false;
 
 		m_Texture = Texture2D::Create("assets/textures/cat.png");
@@ -40,6 +40,12 @@ namespace Blanco
 	void EditorLayer::OnUpdate(TimeStep ts)
 	{
 		Renderer2D::ResetStats();
+
+		if(FrameBufferSpecification& spec=m_FrameBuffer->GetSpecification();
+			spec.Width > 0 && spec.Height > 0 && (spec.Width != m_Viewport.x || spec.Height != m_Viewport.y) ){
+			m_FrameBuffer->Resize((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+			m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+		}
 
 		m_FrameBuffer->Bind();
 		if (m_ViewFocuse)
@@ -126,10 +132,13 @@ namespace Blanco
 		if (m_PrimaryCamera && m_SecondCamera) {
 			glm::mat4& transform = m_PrimaryCamera.GetComponent<TransformComponent>();
 			bool* primary = &(m_PrimaryCamera.GetComponent<CameraComponent>().Primary);
-			ImGui::DragFloat3("primary transform", glm::value_ptr(transform[3]));
+			ImGui::DragFloat3("Primary Transform", glm::value_ptr(transform[3]));
 			if (ImGui::Checkbox("Primary Camera", primary)) {
 				m_SecondCamera.GetComponent<CameraComponent>().Primary = !*primary;
 			}
+			float size = m_SecondCamera.GetComponent<CameraComponent>().Camera.GetOrthoGraphicSize();
+			ImGui::DragFloat("Second OrthoSize", &size);
+			m_SecondCamera.GetComponent<CameraComponent>().Camera.SetOrthGraphicSize(size);
 		}
 
 		ImGui::Text("DrawCalls:%d", stats.DrawCalls);
@@ -144,13 +153,9 @@ namespace Blanco
 		m_ViewHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImgui().BlockEvents(!(m_ViewFocuse && m_ViewHovered));
 		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
-		if (m_Viewport != *((glm::vec2*)&regionViewport)) {
-			m_FrameBuffer->Resize((uint32_t)regionViewport.x, (uint32_t)regionViewport.y);
-		}
 		m_Viewport = { regionViewport.x,regionViewport.y };
-		m_CameraController.OnResize(regionViewport.x, regionViewport.y);
 		uint32_t textureID = m_FrameBuffer->GetColorAttchmentRendererID();
-		ImGui::Image((void*)textureID, { regionViewport.x,regionViewport.y },{0,1},{1,0});
+		ImGui::Image((void*)textureID, { m_Viewport.x,m_Viewport.y },{0,1},{1,0});
 		ImGui::PopStyleVar();
 		ImGui::End();
 	}

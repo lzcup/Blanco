@@ -1428,6 +1428,10 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\Scene\Components.h" />
+    <ClInclude Include="src\Blanco\Scene\Entity.h" />
+    <ClInclude Include="src\Blanco\Scene\Scene.h" />
+    <ClInclude Include="src\Blanco\Scene\SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">
@@ -1514,5 +1518,7 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blanco\Scene\Scene.cpp" />
+    <ClCompile Include="src\Blanco\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

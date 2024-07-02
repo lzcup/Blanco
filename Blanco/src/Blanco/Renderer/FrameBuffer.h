@@ -14,7 +14,7 @@ namespace Blanco
 	public:
 		virtual ~FrameBuffer() {}
 
-		virtual const FrameBufferSpecification& GetSpecification() const = 0;
+		virtual FrameBufferSpecification& GetSpecification() = 0;
 		virtual const uint32_t GetColorAttchmentRendererID() const = 0;
 		virtual const uint32_t GetDepthAttchmentRendererID() const = 0;
 

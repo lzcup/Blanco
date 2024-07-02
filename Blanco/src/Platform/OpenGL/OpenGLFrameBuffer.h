@@ -8,7 +8,7 @@ namespace Blanco
 		OpenGLFrameBuffer(const FrameBufferSpecification& spec);
 		virtual ~OpenGLFrameBuffer();
 
-		virtual const FrameBufferSpecification& GetSpecification() const override { return m_Specification; }
+		virtual FrameBufferSpecification& GetSpecification() override { return m_Specification; }
 		virtual const uint32_t GetColorAttchmentRendererID() const override { return m_ColorAttachment; }
 		virtual const uint32_t GetDepthAttchmentRendererID() const override { return m_DepthAttachment; }
 

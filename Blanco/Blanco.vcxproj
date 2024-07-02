@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Blanco\Scene\SceneCamera.h" />
     <ClInclude Include="src\Blanco\Scene\Components.h" />
     <ClInclude Include="src\Blanco\Scene\Entity.h" />
     <ClInclude Include="src\Blanco\Scene\Scene.h" />
@@ -605,6 +606,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Blanco\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Blanco\Scene\Scene.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
