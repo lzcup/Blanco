@@ -29,3 +29,4 @@
 #include "Blanco/Scene/Scene.h"
 #include "Blanco/Scene/Components.h"
 #include "Blanco/Scene/Entity.h"
+#include "Blanco/Scene/ScriptableEntity.h"

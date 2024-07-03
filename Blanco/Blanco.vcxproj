@@ -147,6 +147,7 @@
     <ClInclude Include="src\Blanco\Scene\Components.h" />
     <ClInclude Include="src\Blanco\Scene\Entity.h" />
     <ClInclude Include="src\Blanco\Scene\Scene.h" />
+    <ClInclude Include="src\Blanco\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Core\Application.h" />

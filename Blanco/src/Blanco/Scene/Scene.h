@@ -19,5 +19,6 @@ namespace Blanco
 		entt::registry m_Regisrty;
 
 		friend class Entity;
+		friend class SceneHierarchyPanel;
 	};
 }

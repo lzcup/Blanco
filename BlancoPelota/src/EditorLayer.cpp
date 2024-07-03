@@ -31,6 +31,30 @@ namespace Blanco
 		m_YellowDoor = SubTexture2D::CreateTextureByCoords(m_DoorsSpriteSheet, { 7,0 }, { 128.0f,128.0f }, { 1,2 });
 		m_YellowKey = SubTexture2D::CreateTextureByCoords(m_DoorsSpriteSheet, { 8,2 }, { 128.0f,128.0f }, { 1,1 });
 		m_OpenDoor = SubTexture2D::CreateTextureByCoords(m_DoorsSpriteSheet, { 5,0 }, { 128.0f,128.0f }, { 1,2 });
+
+		class CameraController :public ScriptableEntity {
+		public:
+			virtual void OnCreate() override{
+				auto& transform = GetComponent<TransformComponent>();
+				transform.Transform[3][0] = rand() % 5 + 2.0f;
+			}
+			virtual void OnUpdate(TimeStep ts) override {
+				float moveSpeed = 10.0f;
+				auto& transform = GetComponent<TransformComponent>();
+				if (Input::IsKeyPressed(BL_KEY_W))
+					transform.Transform[3][1] += moveSpeed * ts;
+				if (Input::IsKeyPressed(BL_KEY_S))
+					transform.Transform[3][1] -= moveSpeed * ts;
+				if (Input::IsKeyPressed(BL_KEY_A))
+					transform.Transform[3][0] -= moveSpeed * ts;
+				if (Input::IsKeyPressed(BL_KEY_D))
+					transform.Transform[3][0] += moveSpeed * ts;
+			}
+		};
+		m_PrimaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -53,11 +77,9 @@ namespace Blanco
 		
 		RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		RenderCommand::Clear();;
-	
+
 		m_ActiveScene->OnUpdate(ts);
 
-		bool p1 = m_PrimaryCamera.GetComponent<CameraComponent>().Primary;
-		bool p2 = m_SecondCamera.GetComponent<CameraComponent>().Primary;
 		m_FrameBuffer->UnBind();
 	}
 
@@ -122,6 +144,8 @@ namespace Blanco
 		}
 		ImGui::End();
 
+		m_SceneHierarchyPanel.OnImguiRender();
+
 		auto& stats = Renderer2D::GetStats();
 		ImGui::Begin("Statistics");
 		if (m_SquareEntity) {
@@ -155,7 +179,7 @@ namespace Blanco
 		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
 		m_Viewport = { regionViewport.x,regionViewport.y };
 		uint32_t textureID = m_FrameBuffer->GetColorAttchmentRendererID();
-		ImGui::Image((void*)textureID, { m_Viewport.x,m_Viewport.y },{0,1},{1,0});
+		ImGui::Image((void*)(uint64_t)textureID, { m_Viewport.x,m_Viewport.y },{0,1},{1,0});
 		ImGui::PopStyleVar();
 		ImGui::End();
 	}

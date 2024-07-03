@@ -1432,6 +1432,7 @@
     <ClInclude Include="src\Blanco\Scene\Entity.h" />
     <ClInclude Include="src\Blanco\Scene\Scene.h" />
     <ClInclude Include="src\Blanco\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Blanco\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">

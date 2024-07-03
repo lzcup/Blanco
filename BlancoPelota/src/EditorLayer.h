@@ -1,5 +1,6 @@
 #pragma once
 #include <Blanco.h>
+#include "Panel/SceneHierarchyPanel.h"
 
 namespace Blanco
 {
@@ -24,6 +25,7 @@ namespace Blanco
 		Entity m_SquareEntity;
 		Entity m_PrimaryCamera;
 		Entity m_SecondCamera;
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 		glm::vec2 m_Viewport = { 1280.0f,720.0f };
 		bool m_ViewFocuse = false;

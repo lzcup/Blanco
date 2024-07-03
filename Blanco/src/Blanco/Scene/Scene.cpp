@@ -25,6 +25,16 @@ namespace Blanco
 
 	void Scene::OnUpdate(TimeStep ts)
 	{
+		//TODO remove to sceneplay
+		m_Regisrty.view<NativeScriptComponent>().each([=](auto entity,auto& nsc) {
+			if (!nsc.Instance) {
+				nsc.Instance = nsc.InstantiateScript();
+				nsc.Instance->m_Entity = Entity(entity, this);
+				nsc.Instance->OnCreate();
+			}
+			nsc.Instance->OnUpdate(ts);
+			});
+
 		SceneCamera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 		{
