@@ -20,6 +20,8 @@ namespace Blanco
 
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 		m_SquareEntity.AddComponent<SpriteComponent>(glm::vec4(1.0f,0.0f,0.0f,1.0f));
+		auto greenSquare = m_ActiveScene->CreateEntity("Green Square");
+		greenSquare.AddComponent<SpriteComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 		m_PrimaryCamera = m_ActiveScene->CreateEntity("Primary Camera");
 		m_PrimaryCamera.AddComponent<CameraComponent>();
 		m_SecondCamera = m_ActiveScene->CreateEntity("Second Camera");
@@ -36,19 +38,19 @@ namespace Blanco
 		public:
 			virtual void OnCreate() override{
 				auto& transform = GetComponent<TransformComponent>();
-				transform.Transform[3][0] = rand() % 5 + 2.0f;
+				transform.Translation.x = rand() % 5 + 2.0f;
 			}
 			virtual void OnUpdate(TimeStep ts) override {
 				float moveSpeed = 10.0f;
 				auto& transform = GetComponent<TransformComponent>();
 				if (Input::IsKeyPressed(BL_KEY_W))
-					transform.Transform[3][1] += moveSpeed * ts;
+					transform.Translation.y += moveSpeed * ts;
 				if (Input::IsKeyPressed(BL_KEY_S))
-					transform.Transform[3][1] -= moveSpeed * ts;
+					transform.Translation.y -= moveSpeed * ts;
 				if (Input::IsKeyPressed(BL_KEY_A))
-					transform.Transform[3][0] -= moveSpeed * ts;
+					transform.Translation.x -= moveSpeed * ts;
 				if (Input::IsKeyPressed(BL_KEY_D))
-					transform.Transform[3][0] += moveSpeed * ts;
+					transform.Translation.x += moveSpeed * ts;
 			}
 		};
 		m_PrimaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
@@ -125,11 +127,15 @@ namespace Blanco
 			ImGui::PopStyleVar(2);
 
 		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style= ImGui::GetStyle();
+		float minWinSizeX = style.WindowMinSize.x;
+		style.WindowMinSize.x = 370.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
+		style.WindowMinSize.x = minWinSizeX;
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -148,23 +154,6 @@ namespace Blanco
 
 		auto& stats = Renderer2D::GetStats();
 		ImGui::Begin("Statistics");
-		if (m_SquareEntity) {
-			auto& color = m_SquareEntity.GetComponent<SpriteComponent>().Color;
-			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());
-			ImGui::ColorEdit4("Square Color", &color.r);
-		}
-		if (m_PrimaryCamera && m_SecondCamera) {
-			glm::mat4& transform = m_PrimaryCamera.GetComponent<TransformComponent>();
-			bool* primary = &(m_PrimaryCamera.GetComponent<CameraComponent>().Primary);
-			ImGui::DragFloat3("Primary Transform", glm::value_ptr(transform[3]));
-			if (ImGui::Checkbox("Primary Camera", primary)) {
-				m_SecondCamera.GetComponent<CameraComponent>().Primary = !*primary;
-			}
-			float size = m_SecondCamera.GetComponent<CameraComponent>().Camera.GetOrthoGraphicSize();
-			ImGui::DragFloat("Second OrthoSize", &size);
-			m_SecondCamera.GetComponent<CameraComponent>().Camera.SetOrthGraphicSize(size);
-		}
-
 		ImGui::Text("DrawCalls:%d", stats.DrawCalls);
 		ImGui::Text("DrawQuads:%d", stats.DrawQuads);
 		ImGui::Text("DrawVertices:%d", stats.DrawVertices);

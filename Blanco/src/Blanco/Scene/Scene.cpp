@@ -19,13 +19,18 @@ namespace Blanco
 	{
 		Entity entity = Entity(m_Regisrty.create(), this);
 		entity.AddComponent<TagComponent>(name);
-		entity.AddComponent<TransformComponent>(glm::mat4(1.0f));
+		entity.AddComponent<TransformComponent>();
 		return entity;
+	}
+
+	void Scene::DestoryEntity(Entity& entity)
+	{
+		m_Regisrty.destroy(entity);
 	}
 
 	void Scene::OnUpdate(TimeStep ts)
 	{
-		//TODO remove to sceneplay
+		//TODO remove to scene play
 		m_Regisrty.view<NativeScriptComponent>().each([=](auto entity,auto& nsc) {
 			if (!nsc.Instance) {
 				nsc.Instance = nsc.InstantiateScript();
@@ -36,33 +41,37 @@ namespace Blanco
 			});
 
 		SceneCamera* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform;
 		{
 			auto group = m_Regisrty.group<CameraComponent>(entt::get<TransformComponent>);
 			for (auto entity : group) {
 				auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
 				if (camera.Primary) {
 					mainCamera = &camera.Camera;
-					cameraTransform = &transform.Transform;
+					cameraTransform = transform.GetTransform();
 					break;
 				}
 			}
 		}
 		if (mainCamera) {
-			Renderer2D::BeginScene(*mainCamera, *cameraTransform);
-
 			auto group = m_Regisrty.group<TransformComponent>(entt::get<SpriteComponent>);
-			for (auto entity : group) {
-				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-				Renderer2D::DrawQuad(transform, sprite.Color);
-			}
+			if (group.size()) {
+				Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
-			Renderer2D::EndScene();
+				for (auto entity : group) {
+					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+					Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				}
+
+				Renderer2D::EndScene();
+			}
 		}
 		
 	}
 	void Scene::OnSetViewport(uint32_t width, uint32_t height)
 	{
+		m_ViewportWidth = width;
+		m_ViewportHeight = height;
 		auto view = m_Regisrty.view<CameraComponent>();
 		for (auto entity : view) {
 			CameraComponent& cameraComponent = view.get<CameraComponent>(entity);
@@ -71,5 +80,28 @@ namespace Blanco
 			}
 		}
 	}
+
+	template<typename T>
+	void Scene::OnComponentAdded(Entity& entity, T& component)
+	{
+		static_assert(false);
+	}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, TagComponent& component){}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, TransformComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, SpriteComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, CameraComponent& component) {
+		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+	}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, NativeScriptComponent& component) {}
 }
 

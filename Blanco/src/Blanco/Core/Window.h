@@ -6,7 +6,7 @@
 namespace Blanco {
 
 	struct WindowProp {
-		WindowProp(const std::string& title = "Blanco Engine", uint32_t width = 1280, uint32_t height = 720)
+		WindowProp(const std::string& title = "Blanco Engine", uint32_t width = 1600, uint32_t height = 900)
 			:m_Title(title), m_Width(width), m_Height(height) {}
 
 		std::string m_Title;
