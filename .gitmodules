@@ -10,3 +10,6 @@
 [submodule "Blanco/vendor/glm"]
 	path = Blanco/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "Blanco/vendor/yaml"]
+	path = Blanco/vendor/yaml
+	url = https://github.com/lzcup/yaml-cpp
