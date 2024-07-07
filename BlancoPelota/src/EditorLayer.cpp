@@ -17,7 +17,7 @@ namespace Blanco
 		m_FrameBuffer = FrameBuffer::Create(spec);
 
 		m_ActiveScene = CreateRef<Scene>();
-
+#if 0
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 		m_SquareEntity.AddComponent<SpriteComponent>(glm::vec4(1.0f,0.0f,0.0f,1.0f));
 		auto greenSquare = m_ActiveScene->CreateEntity("Green Square");
@@ -55,7 +55,7 @@ namespace Blanco
 		};
 		m_PrimaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-
+#endif
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
@@ -87,7 +87,8 @@ namespace Blanco
 
 	void EditorLayer::OnEvent(Event& e)
 	{
-		m_CameraController.OnEvent(e);
+		Dispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(BL_BIND_EVENT_FNC(EditorLayer::OnKeyPressed));
 	}
 
 	void EditorLayer::OnImguiRender()
@@ -142,6 +143,18 @@ namespace Blanco
 			if (ImGui::BeginMenu("Options"))
 			{
 				ImGui::Separator();
+				if (ImGui::MenuItem("New","Ctrl+N")) {
+					NewFile();
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Open As...", "Ctrl+O")) {
+					OpenFileAs();
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
+					SaveFileAs();
+				}
+				ImGui::Separator();
 				if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
 				ImGui::Separator();
 				ImGui::EndMenu();
@@ -171,6 +184,60 @@ namespace Blanco
 		ImGui::Image((void*)(uint64_t)textureID, { m_Viewport.x,m_Viewport.y },{0,1},{1,0});
 		ImGui::PopStyleVar();
 		ImGui::End();
+	}
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		//short cuts
+		if (e.GetRepeatCounts() > 0)
+			return false;
+
+		bool controlPressed = Input::IsKeyPressed(BL_KEY_LEFT_CONTROL) || Input::IsKeyPressed(BL_KEY_RIGHT_CONTROL);
+		bool shiftPressed = Input::IsKeyPressed(BL_KEY_LEFT_SHIFT) || Input::IsKeyPressed(BL_KEY_RIGHT_SHIFT);
+		switch (e.GetKeyCode())
+		{
+		case BL_KEY_N:
+			if (controlPressed) 
+				NewFile();
+			break;
+		case BL_KEY_O:
+			if (controlPressed)
+				OpenFileAs();
+			break;
+		case BL_KEY_S:
+			if (controlPressed && shiftPressed) 
+				SaveFileAs();
+			break;
+		default:
+			break;
+		}
+		return false;
+	}
+	void EditorLayer::NewFile()
+	{
+		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+	void EditorLayer::OpenFileAs()
+	{
+		std::string filepath = FileDialogs::OpenFile("Blanco Scene(*.blanco)\0*.blanco\0");
+		if (!filepath.empty())
+		{
+			m_ActiveScene = CreateRef<Scene>();
+			m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			SceneSerializer sceneSerializer(m_ActiveScene);
+			sceneSerializer.DeSerialize(filepath);
+		}
+	}
+	void EditorLayer::SaveFileAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("Blanco Scene(*.blanco)\0*.blanco\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer sceneSerializer(m_ActiveScene);
+			sceneSerializer.Serialize(filepath);
+		}
 	}
 }
 

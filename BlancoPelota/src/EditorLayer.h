@@ -14,6 +14,11 @@ namespace Blanco
 		virtual void OnEvent(Event& event) override;
 		virtual void OnImguiRender() override;
 	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+		void NewFile();
+		void OpenFileAs();
+		void SaveFileAs();
+	private:
 		OrthoGraphicCameraController m_CameraController;
 		Ref<FrameBuffer> m_FrameBuffer;
 

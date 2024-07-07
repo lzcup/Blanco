@@ -15,10 +15,12 @@ IncludeDir["ImGui"] = "Blanco/vendor/imgui"
 IncludeDir["glm"] = "Blanco/vendor/glm/glm"
 IncludeDir["stb_image"] = "Blanco/vendor/stb_image"
 IncludeDir["entt"] = "Blanco/vendor/entt/include"
+IncludeDir["Yaml"] = "Blanco/vendor/yaml/include"
 
 include "Blanco/vendor/glfw"
 include "Blanco/vendor/glad"
 include "Blanco/vendor/imgui"
+include "Blanco/vendor/yaml"
 
 project "Blanco"
   location "Blanco"
@@ -30,7 +32,8 @@ project "Blanco"
       "GLFW",
       "opengl32.lib",
       "Glad",
-      "ImGui"
+      "ImGui",
+      "Yaml"
   }
 
   pchheader "BLpch.h"
@@ -55,11 +58,13 @@ project "Blanco"
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.glm}",
     "%{IncludeDir.stb_image}",
-    "%{IncludeDir.entt}"
+    "%{IncludeDir.entt}",
+    "%{IncludeDir.Yaml}"
   }
 
   defines{
-    "_CRT_SECURE_NO_WARNINGS"
+    "_CRT_SECURE_NO_WARNINGS",
+    "YAML_CPP_STATIC_DEFINE"
   }
 
   filter "system:windows"

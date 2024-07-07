@@ -1,0 +1,28 @@
+Scene: Untitled Name
+Entities:
+  - Entity: 123456789
+    TagComponent:
+      Tag: pink
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [0.777071238, 0.18463546, 0.850533843, 1]
+  - Entity: 123456789
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      ProjectionType: 1
+      PerspectiveVerticalFov: 0.785398185
+      PerspectiveNear: 0.00999999978
+      PerspectiveFar: 10000
+      OrthographicSize: 10
+      OrthographicNearClip: -1
+      OrthographicFarClip: 1
+      Primary: true
+      FixedAspectRatio: false

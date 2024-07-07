@@ -30,3 +30,7 @@
 #include "Blanco/Scene/Components.h"
 #include "Blanco/Scene/Entity.h"
 #include "Blanco/Scene/ScriptableEntity.h"
+#include "Blanco/Scene/SceneSerializer.h"
+
+//utils
+#include "Blanco/Utils/PlatformUtils.h"

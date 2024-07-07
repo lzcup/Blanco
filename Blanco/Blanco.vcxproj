@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BLpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,8 +97,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BLpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -122,8 +122,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BLpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,11 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Blanco\Scene\SceneCamera.h" />
-    <ClInclude Include="src\Blanco\Scene\Components.h" />
-    <ClInclude Include="src\Blanco\Scene\Entity.h" />
-    <ClInclude Include="src\Blanco\Scene\Scene.h" />
-    <ClInclude Include="src\Blanco\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Blanco\Utils\PlatformUtils.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Core\Application.h" />
@@ -180,6 +176,12 @@
     <ClInclude Include="src\Blanco\Renderer\SubTexture2D.h" />
     <ClInclude Include="src\Blanco\Renderer\Texture.h" />
     <ClInclude Include="src\Blanco\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Blanco\Scene\Components.h" />
+    <ClInclude Include="src\Blanco\Scene\Entity.h" />
+    <ClInclude Include="src\Blanco\Scene\Scene.h" />
+    <ClInclude Include="src\Blanco\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Blanco\Scene\SceneSerializer.h" />
+    <ClInclude Include="src\Blanco\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFrameBuffer.h" />
@@ -607,8 +609,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Blanco\Scene\SceneCamera.cpp" />
-    <ClCompile Include="src\Blanco\Scene\Scene.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -629,6 +629,9 @@
     <ClCompile Include="src\Blanco\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Texture.cpp" />
     <ClCompile Include="src\Blanco\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Blanco\Scene\Scene.cpp" />
+    <ClCompile Include="src\Blanco\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Blanco\Scene\SceneSerializer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
@@ -637,6 +640,7 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
@@ -649,6 +653,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\yaml\Yaml.vcxproj">
+      <Project>{58888F7C-44BF-900D-EDAB-7610D9C10C0F}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
