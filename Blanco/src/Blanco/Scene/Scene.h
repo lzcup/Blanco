@@ -1,6 +1,7 @@
 #pragma once
 #include <entt.hpp>
 #include "Blanco/Core/TimeStep.h"
+#include "Blanco/Renderer/EditorCamera.h"
 
 namespace Blanco
 {
@@ -14,7 +15,8 @@ namespace Blanco
 		Entity CreateEntity(const std::string& name = "Entity");
 		void DestoryEntity(Entity& entity);
 
-		void OnUpdate(TimeStep ts);
+		void OnRuntimeUpdate(TimeStep ts);
+		void OnEditorUpdate(TimeStep ts, EditorCamera& camera);
 		void OnSetViewport(uint32_t width, uint32_t height);
 
 		Entity GetPrimaryCamera();

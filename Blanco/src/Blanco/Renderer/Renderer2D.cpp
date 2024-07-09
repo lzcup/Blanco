@@ -115,6 +115,17 @@ namespace Blanco
 		s_Data.TextureIndex = 1;
 	}
 
+	void Renderer2D::BeginScene(EditorCamera& camera)
+	{
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
+
+		s_Data.IndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureIndex = 1;
+	}
+
 	void Renderer2D::BeginScene(OrthoGraphicCamera& camera)
 	{
 		BL_PROFILE_FUNCTION();

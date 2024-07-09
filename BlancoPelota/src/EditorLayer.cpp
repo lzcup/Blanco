@@ -19,6 +19,8 @@ namespace Blanco
 		m_FrameBuffer = FrameBuffer::Create(spec);
 
 		m_ActiveScene = CreateRef<Scene>();
+
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 #if 0
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 		m_SquareEntity.AddComponent<SpriteComponent>(glm::vec4(1.0f,0.0f,0.0f,1.0f));
@@ -73,22 +75,25 @@ namespace Blanco
 			spec.Width > 0 && spec.Height > 0 && (spec.Width != m_Viewport.x || spec.Height != m_Viewport.y) ){
 			m_FrameBuffer->Resize((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
 			m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+			m_EditorCamera.SetViewportSize(m_Viewport.x, m_Viewport.y);
 		}
 
 		m_FrameBuffer->Bind();
 		if (m_ViewFocuse)
 			m_CameraController.OnUpdate(ts);
+		m_EditorCamera.OnUpdate(ts);
 		
 		RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		RenderCommand::Clear();;
 
-		m_ActiveScene->OnUpdate(ts);
+		m_ActiveScene->OnEditorUpdate(ts, m_EditorCamera);
 
 		m_FrameBuffer->UnBind();
 	}
 
 	void EditorLayer::OnEvent(Event& e)
 	{
+		m_EditorCamera.OnEvent(e);
 		Dispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(BL_BIND_EVENT_FNC(EditorLayer::OnKeyPressed));
 	}
@@ -200,11 +205,15 @@ namespace Blanco
 			float windowHeight = (float)ImGui::GetWindowHeight();
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-			//Camera
-			auto cameraEntity = m_ActiveScene->GetPrimaryCamera();
+			//RunTimeCamera
+		/*	auto cameraEntity = m_ActiveScene->GetPrimaryCamera();
 			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
 			const glm::mat4 projection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
+
+			//EditorCamera
+			const glm::mat4 projection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
 			//Entity transform
 			auto& tc = seletedEntity.GetComponent<TransformComponent>();

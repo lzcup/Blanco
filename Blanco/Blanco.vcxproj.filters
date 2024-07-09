@@ -1462,6 +1462,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Math\Math.h" />
+    <ClInclude Include="src\Blanco\Renderer\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">
@@ -1564,5 +1565,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Math\Math.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

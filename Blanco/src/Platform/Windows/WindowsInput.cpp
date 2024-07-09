@@ -30,4 +30,14 @@ namespace Blanco
 		glfwGetCursorPos(window, &xpos, &ypos);
 		return { (float)xpos,(float)ypos };
 	}
+	float Input::GetMouseX()
+	{
+		auto [x, y] = GetMousePos();
+		return x;
+	}
+	float Input::GetMouseY()
+	{
+		auto [x, y] = GetMousePos();
+		return y;
+	}
 }

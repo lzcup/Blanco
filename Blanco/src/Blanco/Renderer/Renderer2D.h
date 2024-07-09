@@ -2,6 +2,7 @@
 #include "RenderCommand.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "EditorCamera.h"
 #include "Texture.h"
 #include "SubTexture2D.h"
 
@@ -13,6 +14,7 @@ namespace Blanco
 		static void ShutDown();
 
 		static void BeginScene(Camera& camera,const glm::mat4& transform);
+		static void BeginScene(EditorCamera& camera);
 		static void BeginScene(OrthoGraphicCamera& camera);//To remove
 		static void EndScene();
 		static void Flush();

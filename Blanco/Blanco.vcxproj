@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Blanco\Math\Math.h" />
+    <ClInclude Include="src\Blanco\Renderer\EditorCamera.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Core\Application.h" />
@@ -612,6 +613,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Blanco\Math\Math.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

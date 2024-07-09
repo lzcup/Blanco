@@ -8,5 +8,7 @@ namespace Blanco {
 		static bool IsKeyPressed(int keyCode);
 		static bool IsMousePressed(int button);
 		static std::pair<float, float> GetMousePos();
+		static float GetMouseX();
+		static float GetMouseY();
 	};
 }

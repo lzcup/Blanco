@@ -28,7 +28,7 @@ namespace Blanco
 		m_Regisrty.destroy(entity);
 	}
 
-	void Scene::OnUpdate(TimeStep ts)
+	void Scene::OnRuntimeUpdate(TimeStep ts)
 	{
 		//TODO remove to scene play
 		m_Regisrty.view<NativeScriptComponent>().each([=](auto entity,auto& nsc) {
@@ -68,6 +68,22 @@ namespace Blanco
 		}
 		
 	}
+
+	void Scene::OnEditorUpdate(TimeStep ts, EditorCamera& camera)
+	{
+		auto group = m_Regisrty.group<TransformComponent>(entt::get<SpriteComponent>);
+		if (group.size()) {
+			Renderer2D::BeginScene(camera);
+
+			for (auto entity : group) {
+				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
+				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+			}
+
+			Renderer2D::EndScene();
+		}
+	}
+
 	void Scene::OnSetViewport(uint32_t width, uint32_t height)
 	{
 		m_ViewportWidth = width;
