@@ -173,7 +173,7 @@ namespace Blanco
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
 			strcpy_s(buffer, sizeof(buffer), tag.c_str());
-			if (ImGui::InputText("##tag", buffer, sizeof(buffer))) {
+			if ((ImGui::InputText("##tag", buffer, sizeof(buffer)))&&(ImGui::IsItemFocused())) {
 				tag = buffer;
 			}
 		}

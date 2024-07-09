@@ -18,6 +18,7 @@ namespace Blanco
 		void NewFile();
 		void OpenFileAs();
 		void SaveFileAs();
+		void SaveFile();
 	private:
 		OrthoGraphicCameraController m_CameraController;
 		Ref<FrameBuffer> m_FrameBuffer;
@@ -35,5 +36,8 @@ namespace Blanco
 		glm::vec2 m_Viewport = { 1280.0f,720.0f };
 		bool m_ViewFocuse = false;
 		bool m_ViewHovered = false;
+
+		std::string m_FilePath = {};
+		int m_GuizmoOperation = -1;
 	};
 }

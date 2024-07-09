@@ -16,6 +16,8 @@ namespace Blanco
 		void OnImguiRender();
 		void DrawEntityNode(Entity& entity);
 		void DrawProperties(Entity& entity);
+
+		Entity GetSeletedEntity() const { return m_SelectionContext; }
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;

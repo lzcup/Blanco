@@ -81,6 +81,18 @@ namespace Blanco
 		}
 	}
 
+	Entity Scene::GetPrimaryCamera()
+	{
+		auto view = m_Regisrty.view<CameraComponent>();
+		for (auto entity : view) {
+			CameraComponent& cameraComponent = view.get<CameraComponent>(entity);
+			if (cameraComponent.Primary) {
+				return Entity(entity, this);
+			}
+		}
+		return {};
+	}
+
 	template<typename T>
 	void Scene::OnComponentAdded(Entity& entity, T& component)
 	{

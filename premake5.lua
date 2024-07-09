@@ -16,6 +16,7 @@ IncludeDir["glm"] = "Blanco/vendor/glm/glm"
 IncludeDir["stb_image"] = "Blanco/vendor/stb_image"
 IncludeDir["entt"] = "Blanco/vendor/entt/include"
 IncludeDir["Yaml"] = "Blanco/vendor/yaml/include"
+IncludeDir["ImGuizmo"] = "Blanco/vendor/ImGuizmo"
 
 include "Blanco/vendor/glfw"
 include "Blanco/vendor/glad"
@@ -47,7 +48,9 @@ project "Blanco"
   	"%{prj.name}/vendor/glm/glm/**.inl",
   	"%{prj.name}/vendor/glm/glm/**.hpp",
   	"%{prj.name}/vendor/stb_image/**.h",
-  	"%{prj.name}/vendor/stb_image/**.cpp"
+  	"%{prj.name}/vendor/stb_image/**.cpp",
+  	"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+  	"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
   }
   
   includedirs{
@@ -59,13 +62,19 @@ project "Blanco"
     "%{IncludeDir.glm}",
     "%{IncludeDir.stb_image}",
     "%{IncludeDir.entt}",
-    "%{IncludeDir.Yaml}"
+    "%{IncludeDir.Yaml}",
+    "%{IncludeDir.ImGuizmo}"
   }
 
   defines{
     "_CRT_SECURE_NO_WARNINGS",
     "YAML_CPP_STATIC_DEFINE"
   }
+
+  filter "files:Blanco/vendor/ImGuizmo/**.cpp"
+    flags{
+        "NoPCH"
+    }
 
   filter "system:windows"
     systemversion "latest"
@@ -113,6 +122,7 @@ project "BlancoPelota"
     "%{IncludeDir.glm}",
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.entt}",
+    "%{IncludeDir.ImGuizmo}",
     "Blanco/src"
   }
 

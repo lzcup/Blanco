@@ -17,6 +17,7 @@ namespace Blanco
 		void OnUpdate(TimeStep ts);
 		void OnSetViewport(uint32_t width, uint32_t height);
 
+		Entity GetPrimaryCamera();
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity& entity,T& component);

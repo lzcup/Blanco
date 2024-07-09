@@ -2,6 +2,8 @@
 #include "imgui.h"
 #include "gtc/matrix_transform.hpp"
 #include <gtc/type_ptr.hpp>
+#include "ImGuizmo.h"
+#include "Blanco/Math/Math.h"
 
 namespace Blanco
 {
@@ -155,6 +157,10 @@ namespace Blanco
 					SaveFileAs();
 				}
 				ImGui::Separator();
+				if (ImGui::MenuItem("Save", "Ctrl+S")) {
+					SaveFile();
+				}
+				ImGui::Separator();
 				if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
 				ImGui::Separator();
 				ImGui::EndMenu();
@@ -177,13 +183,57 @@ namespace Blanco
 		ImGui::Begin("Viewpoint");
 		m_ViewFocuse = ImGui::IsWindowFocused();
 		m_ViewHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImgui().BlockEvents(!(m_ViewFocuse && m_ViewHovered));
+		Application::Get().GetImgui().BlockEvents(!m_ViewFocuse && !m_ViewHovered);
 		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
 		m_Viewport = { regionViewport.x,regionViewport.y };
 		uint32_t textureID = m_FrameBuffer->GetColorAttchmentRendererID();
 		ImGui::Image((void*)(uint64_t)textureID, { m_Viewport.x,m_Viewport.y },{0,1},{1,0});
-		ImGui::PopStyleVar();
+
+		//Gizmos
+		Entity seletedEntity = m_SceneHierarchyPanel.GetSeletedEntity();
+		if (seletedEntity)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			//Camera
+			auto cameraEntity = m_ActiveScene->GetPrimaryCamera();
+			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			const glm::mat4 projection = camera.GetProjection();
+			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			//Entity transform
+			auto& tc = seletedEntity.GetComponent<TransformComponent>();
+			glm::mat4 transform = tc.GetTransform();
+
+			//snapping
+			float snapValue = 0.5f;
+			if (m_GuizmoOperation == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+			float snapValues[3] = {snapValue,snapValue,snapValue};
+			bool isSnap = Input::IsKeyPressed(BL_KEY_LEFT_CONTROL);
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(projection),
+				(ImGuizmo::OPERATION)m_GuizmoOperation, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, isSnap ? snapValues : nullptr);
+
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, roation, scale;
+				Math::DecomposeTransform(transform, translation, roation, scale);
+
+				tc.Translation = translation;
+				glm::vec3 deltaRotation = roation - tc.Rotation;
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
+		}
+
 		ImGui::End();
+		ImGui::PopStyleVar();
 	}
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
@@ -206,6 +256,21 @@ namespace Blanco
 		case BL_KEY_S:
 			if (controlPressed && shiftPressed) 
 				SaveFileAs();
+			if (controlPressed && !shiftPressed)
+				SaveFile();
+			break;
+	    //Gizmos
+		case BL_KEY_Q:
+			m_GuizmoOperation = -1;
+			break;
+		case BL_KEY_W:
+			m_GuizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case BL_KEY_E:
+			m_GuizmoOperation = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case BL_KEY_R:
+			m_GuizmoOperation = ImGuizmo::OPERATION::SCALE;
 			break;
 		default:
 			break;
@@ -217,6 +282,7 @@ namespace Blanco
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_FilePath = {};
 	}
 	void EditorLayer::OpenFileAs()
 	{
@@ -228,6 +294,7 @@ namespace Blanco
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 			SceneSerializer sceneSerializer(m_ActiveScene);
 			sceneSerializer.DeSerialize(filepath);
+			m_FilePath = filepath;
 		}
 	}
 	void EditorLayer::SaveFileAs()
@@ -237,6 +304,15 @@ namespace Blanco
 		{
 			SceneSerializer sceneSerializer(m_ActiveScene);
 			sceneSerializer.Serialize(filepath);
+			m_FilePath = filepath;
+		}
+	}
+	void EditorLayer::SaveFile()
+	{
+		if (!m_FilePath.empty())
+		{
+			SceneSerializer sceneSerializer(m_ActiveScene);
+			sceneSerializer.Serialize(m_FilePath);
 		}
 	}
 }

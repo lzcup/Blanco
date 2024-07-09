@@ -20,19 +20,19 @@ namespace Blanco
 		void SetOrthographic(float orthographicSize, float orthographicNear, float orthographicFar);
 
 		float GetPerspectiveVerticalFov() const { return m_PerspectiveVerticalFov; }
-		void SetPerspectiveVerticalFov(float verticalFov) { m_PerspectiveVerticalFov = verticalFov; m_ProjectionType = Perspective; ReCalculateProjection(); }
+		void SetPerspectiveVerticalFov(float verticalFov) { m_PerspectiveVerticalFov = verticalFov; }
 		float GetPerspectiveNear() const { return m_PerspectiveNear; }
-		void SetPerspectiveNear(float perspectiveNear) { m_PerspectiveNear = perspectiveNear; m_ProjectionType = Perspective; ReCalculateProjection(); }
+		void SetPerspectiveNear(float perspectiveNear) { m_PerspectiveNear = perspectiveNear; }
 		float GetPerspectiveFar() const { return m_PerspectiveFar; }
-		void SetPerspectiveFar(float perspectiveFar) { m_PerspectiveFar = perspectiveFar; m_ProjectionType = Perspective; ReCalculateProjection(); }
+		void SetPerspectiveFar(float perspectiveFar) { m_PerspectiveFar = perspectiveFar; }
 
 
 		float GetOrthographicSize() const { return m_OrthographicSize; }
-		void SetOrthographicSize(float orthographicSize) { m_OrthographicSize = orthographicSize; m_ProjectionType = Orthographic; ReCalculateProjection(); }
+		void SetOrthographicSize(float orthographicSize) { m_OrthographicSize = orthographicSize; }
 		float GetOrthographicNearClip() const { return m_OrthographicNearClip; }
-		void SetOrthographicNearClip(float orthographicNear) { m_OrthographicNearClip = orthographicNear; m_ProjectionType = Orthographic; ReCalculateProjection(); }
+		void SetOrthographicNearClip(float orthographicNear) { m_OrthographicNearClip = orthographicNear; }
 		float GetOrthographicFarClip() const { return m_OrthographicFarClip; }
-		void SetOrthographicFarClip(float orthographicFar) { m_OrthographicFarClip = orthographicFar; m_ProjectionType = Orthographic; ReCalculateProjection(); }
+		void SetOrthographicFarClip(float orthographicFar) { m_OrthographicFarClip = orthographicFar; }
 
 	private:
 		void ReCalculateProjection();
