@@ -13,3 +13,6 @@
 [submodule "Blanco/vendor/yaml"]
 	path = Blanco/vendor/yaml
 	url = https://github.com/lzcup/yaml-cpp
+[submodule "Blanco/vendor/ImGuizmo"]
+	path = Blanco/vendor/ImGuizmo
+	url = https://github.com/lzcup/ImGuizmo
