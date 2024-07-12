@@ -16,6 +16,7 @@ namespace Blanco
 		virtual void OnImguiRender() override;
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void NewFile();
 		void OpenFileAs();
 		void SaveFileAs();
@@ -32,13 +33,16 @@ namespace Blanco
 		Entity m_SquareEntity;
 		Entity m_PrimaryCamera;
 		Entity m_SecondCamera;
-		SceneHierarchyPanel m_SceneHierarchyPanel;
 
+		Entity m_HoveredEntity = {};
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 		EditorCamera m_EditorCamera;
 
-		glm::vec2 m_Viewport = { 1280.0f,720.0f };
 		bool m_ViewFocuse = false;
 		bool m_ViewHovered = false;
+		glm::vec2 m_ViewportMinBound = { 0.0f,0.0f }; //viewport upper left corner
+		glm::vec2 m_ViewportSize = { 1280.0f,720.0f };
 
 		std::string m_FilePath = {};
 		int m_GuizmoOperation = -1;

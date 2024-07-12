@@ -11,6 +11,9 @@ namespace Blanco
 		glm::vec2 Texcoord;
 		float TextureSlot;
 		float TilingFactor;
+
+		//Editor-only
+		int EntityID;
 	};
 
 	struct Renderer2DData {
@@ -51,7 +54,8 @@ namespace Blanco
 			{ShaderDataType::Float4,"a_Color",false},
 			{ShaderDataType::Float2,"a_TexCoord",false},
 			{ShaderDataType::Float,"a_TexSlot",false},
-			{ShaderDataType::Float,"a_TilingFactor",false}
+			{ShaderDataType::Float,"a_TilingFactor",false},
+			{ShaderDataType::Int,"a_EntityID",true }
 		};
 		s_Data.QuadVertexBuffer->SetLayout(quadLayout);
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
@@ -181,7 +185,7 @@ namespace Blanco
 		DrawQuad(transform, color);
 
 	}
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color,int entityID)
 	{
 		if (s_Data.IndexCount >= s_Data.MAXINDICES)
 			FlushAndReset();
@@ -197,6 +201,7 @@ namespace Blanco
 			s_Data.QuadVertexBufferPtr->Texcoord = texCoords[i];
 			s_Data.QuadVertexBufferPtr->TextureSlot = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -217,7 +222,7 @@ namespace Blanco
 		DrawQuad(transform, texture, color, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor, int entityID)
 	{
 		if ((s_Data.IndexCount >= s_Data.MAXINDICES) || (s_Data.TextureIndex >= s_Data.MAXTEXTURESLOT))
 			FlushAndReset();
@@ -243,6 +248,7 @@ namespace Blanco
 			s_Data.QuadVertexBufferPtr->Texcoord = texCoords[i];
 			s_Data.QuadVertexBufferPtr->TextureSlot = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -415,6 +421,11 @@ namespace Blanco
 		s_Data.IndexCount += 6;
 
 		s_Data.Stats.DrawQuads++;
+	}
+
+	void Renderer2D::DrawSprite(const glm::mat4& transform, const SpriteComponent& src, int entityID)
+	{
+		DrawQuad(transform, src.Color, entityID);
 	}
 
 	Renderer2D::Statistics& Renderer2D::GetStats()

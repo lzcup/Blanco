@@ -32,8 +32,8 @@ namespace Blanco
         //io.ConfigViewportsNoAutoMerge = true;
         //io.ConfigViewportsNoTaskBarIcon = true;
 
-		io.Fonts->AddFontFromFileTTF("assets/fonts/OpenSans/static/OpenSans-Bold.ttf", 20.0f);
-        io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/OpenSans/static/OpenSans-Regular.ttf",20.0f);
+		io.Fonts->AddFontFromFileTTF("assets/fonts/OpenSans/static/OpenSans-Bold.ttf", 25.0f);
+        io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/OpenSans/static/OpenSans-Regular.ttf",25.0f);
 
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();

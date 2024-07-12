@@ -16,6 +16,7 @@ namespace Blanco
 		FrameBufferSpecification spec;
 		spec.Width = 1280;
 		spec.Height = 720;
+		spec.Attachments = { FrameBufferTextureFormat::RGBA8,FrameBufferTextureFormat::RED_INTEGER,FrameBufferTextureFormat::DEPTH24STENCIL8 };
 		m_FrameBuffer = FrameBuffer::Create(spec);
 
 		m_ActiveScene = CreateRef<Scene>();
@@ -72,10 +73,10 @@ namespace Blanco
 		Renderer2D::ResetStats();
 
 		if(FrameBufferSpecification& spec=m_FrameBuffer->GetSpecification();
-			spec.Width > 0 && spec.Height > 0 && (spec.Width != m_Viewport.x || spec.Height != m_Viewport.y) ){
-			m_FrameBuffer->Resize((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
-			m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
-			m_EditorCamera.SetViewportSize(m_Viewport.x, m_Viewport.y);
+			spec.Width > 0 && spec.Height > 0 && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y) ){
+			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 
 		m_FrameBuffer->Bind();
@@ -86,7 +87,19 @@ namespace Blanco
 		RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		RenderCommand::Clear();;
 
+		//clear attachment to -1
+		m_FrameBuffer->ClearAttachment(1, -1);
+
 		m_ActiveScene->OnEditorUpdate(ts, m_EditorCamera);
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= m_ViewportMinBound.x;
+		my -= m_ViewportMinBound.y;
+		my = m_ViewportSize.y - my;  //reverse
+		if (mx >= 0 && my >= 0 && mx < m_ViewportSize.x && my < m_ViewportSize.y) {
+			int pixelData= m_FrameBuffer->ReadPixel(1, (int)mx, (int)my);
+			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
+		}
 
 		m_FrameBuffer->UnBind();
 	}
@@ -96,6 +109,7 @@ namespace Blanco
 		m_EditorCamera.OnEvent(e);
 		Dispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(BL_BIND_EVENT_FNC(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(BL_BIND_EVENT_FNC(EditorLayer::OnMouseButtonPressed));
 	}
 
 	void EditorLayer::OnImguiRender()
@@ -177,7 +191,11 @@ namespace Blanco
 		m_SceneHierarchyPanel.OnImguiRender();
 
 		auto& stats = Renderer2D::GetStats();
+		std::string name = "None";
+		if (m_HoveredEntity)
+			name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
 		ImGui::Begin("Statistics");
+		ImGui::Text("Entity:%s", name.c_str());
 		ImGui::Text("DrawCalls:%d", stats.DrawCalls);
 		ImGui::Text("DrawQuads:%d", stats.DrawQuads);
 		ImGui::Text("DrawVertices:%d", stats.DrawVertices);
@@ -186,13 +204,21 @@ namespace Blanco
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("Viewpoint");
+
 		m_ViewFocuse = ImGui::IsWindowFocused();
 		m_ViewHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImgui().BlockEvents(!m_ViewFocuse && !m_ViewHovered);
+
+		auto viewportOffset = ImGui::GetCursorPos();//include tab bar
+		auto minBound = ImGui::GetWindowPos(); //window upper left corner
+		m_ViewportMinBound.x = minBound.x + viewportOffset.x;
+		m_ViewportMinBound.y = minBound.y + viewportOffset.y;
+
 		ImVec2 regionViewport = ImGui::GetContentRegionAvail();
-		m_Viewport = { regionViewport.x,regionViewport.y };
-		uint32_t textureID = m_FrameBuffer->GetColorAttchmentRendererID();
-		ImGui::Image((void*)(uint64_t)textureID, { m_Viewport.x,m_Viewport.y },{0,1},{1,0});
+		m_ViewportSize = { regionViewport.x,regionViewport.y };
+		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+
+		ImGui::Image((void*)(uint64_t)textureID, { m_ViewportSize.x,m_ViewportSize.y },{0,1},{1,0});
 
 		//Gizmos
 		Entity seletedEntity = m_SceneHierarchyPanel.GetSeletedEntity();
@@ -286,10 +312,19 @@ namespace Blanco
 		}
 		return false;
 	}
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseCode() == BL_MOUSE_BUTTON_LEFT)
+		{
+			if (m_ViewHovered && !Input::IsKeyPressed(BL_KEY_LEFT_ALT) && !ImGuizmo::IsOver())
+				m_SceneHierarchyPanel.SetSeletedEntity(m_HoveredEntity);
+		}
+		return false;
+	}
 	void EditorLayer::NewFile()
 	{
 		m_ActiveScene = CreateRef<Scene>();
-		m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+		m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_FilePath = {};
 	}
@@ -299,7 +334,7 @@ namespace Blanco
 		if (!filepath.empty())
 		{
 			m_ActiveScene = CreateRef<Scene>();
-			m_ActiveScene->OnSetViewport((uint32_t)m_Viewport.x, (uint32_t)m_Viewport.y);
+			m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 			SceneSerializer sceneSerializer(m_ActiveScene);
 			sceneSerializer.DeSerialize(filepath);

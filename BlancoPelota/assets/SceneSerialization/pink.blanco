@@ -2,22 +2,13 @@ Scene: Untitled Name
 Entities:
   - Entity: 123456789
     TagComponent:
-      Tag: Top
+      Tag: Floor
     TransformComponent:
-      Translation: [0, 0.5, 0]
-      Rotation: [1.57079613, 0.785398245, -4.21468513e-08]
-      Scale: [0.999999881, 0.999999285, 0.999878645]
+      Translation: [0.457369298, -0.571365237, 0.321265876]
+      Rotation: [-1.56454158, -0.338500082, -0.0103903888]
+      Scale: [2.49312878, 4.85520697, 0.00113050966]
     SpriteComponent:
-      Color: [0.717647076, 0.141176477, 0.749019623, 1]
-  - Entity: 123456789
-    TagComponent:
-      Tag: Right
-    TransformComponent:
-      Translation: [0.356953591, 2.18162313e-07, 0.349023312]
-      Rotation: [0, 0.785398245, 0]
-      Scale: [1, 1, 1]
-    SpriteComponent:
-      Color: [0.721568644, 0.125490203, 0.717647076, 1]
+      Color: [1, 1, 1, 1]
   - Entity: 123456789
     TagComponent:
       Tag: Left
@@ -29,10 +20,19 @@ Entities:
       Color: [0.776470602, 0.184313729, 0.850980401, 1]
   - Entity: 123456789
     TagComponent:
-      Tag: Floor
+      Tag: Right
     TransformComponent:
-      Translation: [0.457369298, -0.571365237, 0.321265876]
-      Rotation: [-1.56454158, -0.338500082, -0.0103903888]
-      Scale: [2.49312878, 4.85520697, 0.00113050966]
+      Translation: [0.356953591, 2.18162313e-07, 0.349023312]
+      Rotation: [0, 0.785398245, 0]
+      Scale: [1, 1, 1]
     SpriteComponent:
-      Color: [1, 1, 1, 1]
+      Color: [0.721568644, 0.125490203, 0.717647076, 1]
+  - Entity: 123456789
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.57079613, 0.785398245, -4.21468513e-08]
+      Scale: [0.999999881, 0.999999285, 0.999878645]
+    SpriteComponent:
+      Color: [0.717647076, 0.141176477, 0.749019623, 1]

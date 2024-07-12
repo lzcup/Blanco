@@ -18,6 +18,7 @@ namespace Blanco
 		void DrawProperties(Entity& entity);
 
 		Entity GetSeletedEntity() const { return m_SelectionContext; }
+		void SetSeletedEntity(Entity entity) { m_SelectionContext = entity; }
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;

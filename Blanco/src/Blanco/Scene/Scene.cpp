@@ -60,7 +60,7 @@ namespace Blanco
 
 				for (auto entity : group) {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-					Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite,(int)entity);
 				}
 
 				Renderer2D::EndScene();
@@ -77,7 +77,7 @@ namespace Blanco
 
 			for (auto entity : group) {
 				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite,(int)entity);
 			}
 
 			Renderer2D::EndScene();
