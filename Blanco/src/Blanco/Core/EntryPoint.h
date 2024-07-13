@@ -2,10 +2,12 @@
 #pragma once
 
 #ifdef BLANCO_PLATFORM_WINDOWS
-int main() {
-	BL_PROFILE_BEGIN_SESSION("start","Profile.StartUp.json");
+
+int main(int argc, char** argv) {
 	Blanco::Log::Init();
-	auto app = Blanco::CreatApplication();
+
+	BL_PROFILE_BEGIN_SESSION("start","Profile.StartUp.json");
+	auto app = Blanco::CreatApplication({ argc, argv });
 	BL_PROFILE_END_SESSION();
 
 	BL_PROFILE_BEGIN_SESSION("runtime", "Profile.Runtime.json");

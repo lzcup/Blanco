@@ -12,8 +12,8 @@ namespace Blanco
 		if (type == "fragment" || type == "pixel")
 			return GL_FRAGMENT_SHADER;
 
-		BL_CORE_ASSERT(false,"Unknow shader type!")
-		return 0;
+		BL_CORE_ASSERT(false, "Unknow shader type!")
+			return 0;
 	}
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
@@ -28,7 +28,7 @@ namespace Blanco
 		auto shaderMap = PreProcess(shaderSource);
 		Compile(shaderMap);
 	}
-	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc):
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) :
 		m_Name(name)
 	{
 		BL_PROFILE_FUNCTION();
@@ -53,7 +53,7 @@ namespace Blanco
 			BL_CORE_WARN("Uniform(" + name + ")is not exist!");
 		glUniform1i(location, value);
 	}
-	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values,uint32_t count) const
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count) const
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
 		if (location == -1)
@@ -119,7 +119,7 @@ namespace Blanco
 			return buffer;
 		}
 		BL_CORE_ASSERT(false, "Can't read file:" + filepath)
-		return nullptr;
+			return nullptr;
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
@@ -132,10 +132,10 @@ namespace Blanco
 		size_t tokenLength = token.length();
 		while (pos != std::string::npos) {
 			size_t eol = source.find_first_of("\r\n", pos);
-			BL_CORE_ASSERT((eol!= std::string::npos),"Syntax error!")
-			std::string type = source.substr(pos + tokenLength + 1, eol - (pos + tokenLength + 1));
+			BL_CORE_ASSERT((eol != std::string::npos), "Syntax error!")
+				std::string type = source.substr(pos + tokenLength + 1, eol - (pos + tokenLength + 1));
 			GLenum glType = ShaderTypeToGLenum(type);
-			size_t nextLine=source.find_first_not_of("\r\n", eol);
+			size_t nextLine = source.find_first_not_of("\r\n", eol);
 			pos = source.find("#type", eol);
 			std::string value = source.substr(nextLine, pos - nextLine);
 			shaderMap[glType] = value;
@@ -149,7 +149,7 @@ namespace Blanco
 
 		GLuint program = glCreateProgram();
 		BL_CORE_ASSERT(shaderMap.size() <= 2, "Not support more than 2 shaders for now!")
-		std::array<GLuint, 2> shaderIDs = { 0,0 };
+			std::array<GLuint, 2> shaderIDs = { 0,0 };
 		int index = 0;
 		for (auto& kv : shaderMap) {
 			GLenum shadeType = kv.first;
@@ -177,10 +177,10 @@ namespace Blanco
 				BL_CORE_ERROR(infoLog.data());
 				BL_CORE_ASSERT(false, "Shader compile failed!")
 			}
-		glAttachShader(program, shader);
-		shaderIDs[index++] = shader;
+			glAttachShader(program, shader);
+			shaderIDs[index++] = shader;
 		}
-	
+
 		glLinkProgram(program);
 
 		GLint isLinked = 0;
@@ -196,7 +196,7 @@ namespace Blanco
 			glDeleteProgram(program);
 			for (auto& shader : shaderIDs)
 				glDeleteShader(shader);
-	
+
 			BL_CORE_ERROR(infoLog.data());
 			BL_CORE_ASSERT(false, "Program link failed!")
 		}
@@ -244,6 +244,10 @@ namespace Blanco
 		BL_PROFILE_FUNCTION();
 
 		UploadUniformFloat(name, value);
+	}
+	void OpenGLShader::SetFloat2(const std::string& name, const glm::vec2& values)
+	{
+		UploadUniformFloat2(name, values);
 	}
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& values)
 	{

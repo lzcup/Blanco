@@ -6,7 +6,7 @@
 
 namespace Blanco
 {
-	class OpenGLShader: public Shader{
+	class OpenGLShader : public Shader {
 	public:
 		OpenGLShader(const std::string& filepath);
 		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
@@ -19,6 +19,7 @@ namespace Blanco
 		virtual void SetIntArray(const std::string& name, int* values, uint32_t count) override;
 		virtual void SetMat4(const std::string& name, const glm::mat4& values) override;
 		virtual void SetFloat(const std::string& name, float value) override;
+		virtual void SetFloat2(const std::string& name, const glm::vec2& values) override;
 		virtual void SetFloat3(const std::string& name, const glm::vec3& values) override;
 		virtual void SetFloat4(const std::string& name, const glm::vec4& values) override;
 
@@ -36,7 +37,7 @@ namespace Blanco
 		void UploadUniformMat4(const std::string& name, const glm::mat4& value) const;
 	private:
 		std::string ReadFile(const std::string& filepath);
-		std::unordered_map<GLenum,std::string> PreProcess(const std::string& shader);
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& shader);
 		void Compile(const std::unordered_map<GLenum, std::string>& map);
 	private:
 		uint32_t m_RendererID;

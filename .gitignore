@@ -353,3 +353,8 @@ bin-int/
 
 # profile.json
 *.json
+
+# cache
+Blanco/vendor/VulkanSDK
+BlancoPelota/assets/cache
+scripts/__pycache__

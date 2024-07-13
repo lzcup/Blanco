@@ -4,13 +4,13 @@
 
 class SandboxApp :public Blanco::Application {
 public:
-	SandboxApp() { 
+	SandboxApp(Blanco::ApplicationCommandLineArgs args) :Application("Sandbox", args) {
 		//PushLayer(new ExampleLayer());
 		PushLayer(new SandBox2D());
 	};
 	~SandboxApp() override{};
 };
 
-Blanco::Application* Blanco::CreatApplication() {
-	return new SandboxApp();
+Blanco::Application* Blanco::CreatApplication(ApplicationCommandLineArgs args) {
+	return new SandboxApp(args);
 }

@@ -19,6 +19,9 @@
     <Filter Include="src\Blanco\ImGui">
       <UniqueIdentifier>{35A11514-219A-3466-4ACC-19EB36241472}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Blanco\Math">
+      <UniqueIdentifier>{84BB408C-F046-AE50-F957-314565620A51}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Blanco\Renderer">
       <UniqueIdentifier>{D1F79EB0-3D59-7CBE-C6C6-C2703227B37D}</UniqueIdentifier>
     </Filter>
@@ -102,6 +105,9 @@
     <ClInclude Include="src\Blanco\Core\TimeStep.h">
       <Filter>src\Blanco\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\Core\Timer.h">
+      <Filter>src\Blanco\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blanco\Core\Window.h">
       <Filter>src\Blanco\Core</Filter>
     </ClInclude>
@@ -123,10 +129,16 @@
     <ClInclude Include="src\Blanco\ImGui\ImguiLayer.h">
       <Filter>src\Blanco\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Blanco\Math\Math.h">
+      <Filter>src\Blanco\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\Buffer.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\Camera.h">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Renderer\EditorCamera.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\FrameBuffer.h">
@@ -157,6 +169,9 @@
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\Texture.h">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Blanco\Renderer\UniformBuffer.h">
       <Filter>src\Blanco\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Blanco\Renderer\VertexArray.h">
@@ -199,6 +214,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLUniformBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
@@ -1461,8 +1479,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Blanco\Math\Math.h" />
-    <ClInclude Include="src\Blanco\Renderer\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BLpch.cpp">
@@ -1483,10 +1499,16 @@
     <ClCompile Include="src\Blanco\ImGui\ImguiLayer.cpp">
       <Filter>src\Blanco\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Blanco\Math\Math.cpp">
+      <Filter>src\Blanco\Math</Filter>
+    </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Buffer.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Camera.cpp">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Renderer\EditorCamera.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\FrameBuffer.cpp">
@@ -1514,6 +1536,9 @@
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\Texture.cpp">
+      <Filter>src\Blanco\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Blanco\Renderer\UniformBuffer.cpp">
       <Filter>src\Blanco\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Blanco\Renderer\VertexArray.cpp">
@@ -1546,6 +1571,9 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLUniformBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1564,7 +1592,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Blanco\Math\Math.cpp" />
-    <ClCompile Include="src\Blanco\Renderer\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

@@ -77,10 +77,12 @@
       <PrecompiledHeaderFile>BLpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;vendor\ImGuizmo;vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -89,7 +91,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\VulkanSDK\Lib\shaderc_sharedd.lib;vendor\VulkanSDK\Lib\spirv-cross-cored.lib;vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,13 +100,14 @@
       <PrecompiledHeaderFile>BLpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;vendor\ImGuizmo;vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -114,7 +117,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\VulkanSDK\Lib\shaderc_shared.lib;vendor\VulkanSDK\Lib\spirv-cross-core.lib;vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -123,13 +126,14 @@
       <PrecompiledHeaderFile>BLpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BLANCO_BUILD_DLL;BLANCO_PLATFORM_WINDOWS;BL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\yaml\include;vendor\ImGuizmo;vendor\VulkanSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -139,12 +143,10 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;vendor\VulkanSDK\Lib\shaderc_shared.lib;vendor\VulkanSDK\Lib\spirv-cross-core.lib;vendor\VulkanSDK\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Blanco\Math\Math.h" />
-    <ClInclude Include="src\Blanco\Renderer\EditorCamera.h" />
     <ClInclude Include="src\BLpch.h" />
     <ClInclude Include="src\Blanco.h" />
     <ClInclude Include="src\Blanco\Core\Application.h" />
@@ -157,6 +159,7 @@
     <ClInclude Include="src\Blanco\Core\Log.h" />
     <ClInclude Include="src\Blanco\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Blanco\Core\TimeStep.h" />
+    <ClInclude Include="src\Blanco\Core\Timer.h" />
     <ClInclude Include="src\Blanco\Core\Window.h" />
     <ClInclude Include="src\Blanco\Debug\Instrumentor.h" />
     <ClInclude Include="src\Blanco\Events\ApplicationEvent.h" />
@@ -164,8 +167,10 @@
     <ClInclude Include="src\Blanco\Events\KeyEvent.h" />
     <ClInclude Include="src\Blanco\Events\MouseEvent.h" />
     <ClInclude Include="src\Blanco\ImGui\ImguiLayer.h" />
+    <ClInclude Include="src\Blanco\Math\Math.h" />
     <ClInclude Include="src\Blanco\Renderer\Buffer.h" />
     <ClInclude Include="src\Blanco\Renderer\Camera.h" />
+    <ClInclude Include="src\Blanco\Renderer\EditorCamera.h" />
     <ClInclude Include="src\Blanco\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Blanco\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Blanco\Renderer\OrthoGraphicCameraController.h" />
@@ -176,6 +181,7 @@
     <ClInclude Include="src\Blanco\Renderer\Shader.h" />
     <ClInclude Include="src\Blanco\Renderer\SubTexture2D.h" />
     <ClInclude Include="src\Blanco\Renderer\Texture.h" />
+    <ClInclude Include="src\Blanco\Renderer\UniformBuffer.h" />
     <ClInclude Include="src\Blanco\Renderer\VertexArray.h" />
     <ClInclude Include="src\Blanco\Scene\Components.h" />
     <ClInclude Include="src\Blanco\Scene\Entity.h" />
@@ -190,6 +196,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLUniformBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
@@ -612,8 +619,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Blanco\Math\Math.cpp" />
-    <ClCompile Include="src\Blanco\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\BLpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -622,8 +627,10 @@
     <ClCompile Include="src\Blanco\Core\LayerStack.cpp" />
     <ClCompile Include="src\Blanco\Core\Log.cpp" />
     <ClCompile Include="src\Blanco\ImGui\ImguiLayer.cpp" />
+    <ClCompile Include="src\Blanco\Math\Math.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Blanco\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Blanco\Renderer\OrthoGraphicCameraController.cpp" />
     <ClCompile Include="src\Blanco\Renderer\RenderCommand.cpp" />
@@ -633,6 +640,7 @@
     <ClCompile Include="src\Blanco\Renderer\Shader.cpp" />
     <ClCompile Include="src\Blanco\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Blanco\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Blanco\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="src\Blanco\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Blanco\Scene\Scene.cpp" />
     <ClCompile Include="src\Blanco\Scene\SceneCamera.cpp" />
@@ -643,6 +651,7 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLUniformBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />

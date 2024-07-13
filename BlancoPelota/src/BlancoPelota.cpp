@@ -5,13 +5,13 @@
 namespace Blanco {
 	class BlancoPelota :public Application {
 	public:
-		BlancoPelota() :Application("BlancoPelota") {
+		BlancoPelota(ApplicationCommandLineArgs args) :Application("BlancoPelota",args) {
 			PushLayer(new EditorLayer());
 		};
 		~BlancoPelota() override {};
 	};
 
-	Application* CreatApplication() {
-		return new BlancoPelota();
+	Application* CreatApplication(ApplicationCommandLineArgs args) {
+		return new BlancoPelota(args);
 	}
 }

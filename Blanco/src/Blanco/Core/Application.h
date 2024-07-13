@@ -8,12 +8,26 @@
 #include "Blanco/Renderer/VertexArray.h"
 #include "Blanco/Renderer/Camera.h"
 
+int main(int argc, char** argv);
+
 namespace Blanco
 {
+	struct ApplicationCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const
+		{
+			BL_CORE_ASSERT(index < Count,"");
+			return Args[index];
+		}
+	};
+
 	class Application
 	{
 	public:
-		Application(const char* name = "Blanco App");
+		Application(const std::string& name = "Blanco App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 
 		static Application& Get() { return *s_Instance; }
@@ -23,10 +37,15 @@ namespace Blanco
 		void PushLayer(Layer* layer);
 		void PushOverLayer(Layer* layer);
 		void OnEvent(Event& e);
-		void Run();
 		void Close();
+		
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 	private:
-		static Application* s_Instance;
+		void Run();
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
+	private:
+		ApplicationCommandLineArgs m_CommandLineArgs;
 		Ref<Window> m_Window;
 		ImguiLayer* m_Imgui;
 		bool m_Running = true;
@@ -34,11 +53,11 @@ namespace Blanco
 		LayerStack m_LayerStack;
 		float m_Time = 0.0f;
 	private:
-		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnWindowResize(WindowResizeEvent& e);
+		static Application* s_Instance;
+		friend int ::main(int argc, char** argv);
 	};
 
 	//to be defined in client
-	Application* CreatApplication();
+	Application* CreatApplication(ApplicationCommandLineArgs args);
 }
 

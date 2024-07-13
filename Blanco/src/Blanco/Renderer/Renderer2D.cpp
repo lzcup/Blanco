@@ -1,6 +1,9 @@
 #include "BLpch.h"
 #include "Renderer2D.h"
-#include "gtc/matrix_transform.hpp"
+#include "Blanco/Renderer/UniformBuffer.h"
+
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 namespace Blanco
 {
@@ -79,12 +82,12 @@ namespace Blanco
 		s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
 		delete[] quadIndices;
 
-		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.TextureShader->Bind();
 		int sampler2D[s_Data.MAXTEXTURESLOT];
 		for (uint32_t i = 0; i < s_Data.MAXTEXTURESLOT; i++)
 			sampler2D[i] = i;
-		s_Data.TextureShader->SetIntArray("u_Texture", sampler2D, s_Data.MAXTEXTURESLOT);
+		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetIntArray("u_Textures", sampler2D, s_Data.MAXTEXTURESLOT);
 
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t data = 0xffffffff;
@@ -108,39 +111,22 @@ namespace Blanco
 	{
 		BL_PROFILE_FUNCTION();
 
-		glm::mat4 viewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
+		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
 
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProjectionMatrix);
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
 
-		s_Data.IndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureIndex = 1;
+		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(EditorCamera& camera)
 	{
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
-
-		s_Data.IndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureIndex = 1;
-	}
-
-	void Renderer2D::BeginScene(OrthoGraphicCamera& camera)
-	{
-		BL_PROFILE_FUNCTION();
+		glm::mat4 viewProj = camera.GetViewProjection();
 
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
 
-		s_Data.IndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureIndex = 1;
+		StartBatch();
 	}
 
 	void Renderer2D::EndScene()
@@ -153,6 +139,14 @@ namespace Blanco
 		Flush();
 	}
 
+	void Renderer2D::StartBatch()
+	{
+		s_Data.IndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureIndex = 1;
+	}
+
 	void Renderer2D::Flush()
 	{
 		for (uint32_t i = 0; i < s_Data.TextureIndex; i++)
@@ -161,7 +155,7 @@ namespace Blanco
 		s_Data.Stats.DrawCalls++;
 	}
 
-	void Renderer2D::FlushAndReset()
+	void Renderer2D::NextBatch()
 	{
 		EndScene();
 
@@ -188,7 +182,7 @@ namespace Blanco
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color,int entityID)
 	{
 		if (s_Data.IndexCount >= s_Data.MAXINDICES)
-			FlushAndReset();
+			NextBatch();
 
 		float textureIndex = 0.0f;
 		float tilingFactor = 1.0f;
@@ -225,7 +219,7 @@ namespace Blanco
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec4& color, float tilingFactor, int entityID)
 	{
 		if ((s_Data.IndexCount >= s_Data.MAXINDICES) || (s_Data.TextureIndex >= s_Data.MAXTEXTURESLOT))
-			FlushAndReset();
+			NextBatch();
 
 		float textureIndex = 0.0f;
 		for (uint32_t i = 0; i < s_Data.TextureIndex; i++) {
@@ -235,8 +229,8 @@ namespace Blanco
 			}
 		}
 		if (textureIndex == 0.0f) {
-			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			textureIndex = (float)s_Data.TextureIndex;
+			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			s_Data.TextureIndex++;
 		}
 
@@ -265,7 +259,7 @@ namespace Blanco
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, const glm::vec4& color /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 	{
 		if ((s_Data.IndexCount >= s_Data.MAXINDICES) || (s_Data.TextureIndex >= s_Data.MAXTEXTURESLOT))
-			FlushAndReset();
+			NextBatch();
 
 		Ref <Texture2D> texture = subTexture->GetTexture();
 		float textureIndex = 0.0f;
@@ -276,8 +270,8 @@ namespace Blanco
 			}
 		}
 		if (textureIndex == 0.0f) {
-			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			textureIndex = (float)s_Data.TextureIndex;
+			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			s_Data.TextureIndex++;
 		}
 
@@ -309,7 +303,7 @@ namespace Blanco
 		BL_PROFILE_FUNCTION();
 
 		if (s_Data.IndexCount >= s_Data.MAXINDICES)
-			FlushAndReset();
+			NextBatch();
 
 		float textureIndex = 0.0f;
 		float tilingFactor = 1.0f;
@@ -341,7 +335,7 @@ namespace Blanco
 		BL_PROFILE_FUNCTION();
 
 		if ((s_Data.IndexCount >= s_Data.MAXINDICES) || (s_Data.TextureIndex >= s_Data.MAXTEXTURESLOT))
-			FlushAndReset();
+			NextBatch();
 
 		float textureIndex = 0.0f;
 		for (uint32_t i = 0; i < s_Data.TextureIndex; i++) {
@@ -351,8 +345,8 @@ namespace Blanco
 			}
 		}
 		if (textureIndex == 0.0f) {
-			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			textureIndex = (float)s_Data.TextureIndex;
+			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			s_Data.TextureIndex++;
 			BL_CORE_ASSERT(s_Data.TextureIndex < s_Data.MAXTEXTURESLOT, "Beyond max texture slot");
 		}
@@ -385,7 +379,7 @@ namespace Blanco
 	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, const glm::vec4& color /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 	{
 		if ((s_Data.IndexCount >= s_Data.MAXINDICES) || (s_Data.TextureIndex >= s_Data.MAXTEXTURESLOT))
-			FlushAndReset();
+			NextBatch();
 
 		Ref <Texture2D> texture = subTexture->GetTexture();
 		float textureIndex = 0.0f;
@@ -396,8 +390,8 @@ namespace Blanco
 			}
 		}
 		if (textureIndex == 0.0f) {
-			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			textureIndex = (float)s_Data.TextureIndex;
+			s_Data.TextureSlots[s_Data.TextureIndex] = texture;
 			s_Data.TextureIndex++;
 			BL_CORE_ASSERT(s_Data.TextureIndex < s_Data.MAXTEXTURESLOT, "Beyond max texture slot");
 		}
