@@ -29,8 +29,11 @@ namespace Blanco
 			serializer.DeSerialize(sceneFilePath);
 		}
 
-
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
+		m_PlayIcon = Texture2D::Create("Resource/Icons/play_circle_icon.png");
+		m_StopIcon = Texture2D::Create("Resource/Icons/stop_circle_icon.png");
+
 #if 0
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 		m_SquareEntity.AddComponent<SpriteComponent>(glm::vec4(1.0f,0.0f,0.0f,1.0f));
@@ -89,9 +92,8 @@ namespace Blanco
 		}
 
 		m_FrameBuffer->Bind();
-		if (m_ViewFocuse)
-			m_CameraController.OnUpdate(ts);
-		m_EditorCamera.OnUpdate(ts);
+
+	
 		
 		RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		RenderCommand::Clear();;
@@ -99,7 +101,18 @@ namespace Blanco
 		//clear attachment to -1
 		m_FrameBuffer->ClearAttachment(1, -1);
 
-		m_ActiveScene->OnEditorUpdate(ts, m_EditorCamera);
+		switch (m_SceneState)
+		{
+		case SceneState::Edit:
+			if (m_ViewFocuse)
+				m_CameraController.OnUpdate(ts);
+			m_EditorCamera.OnUpdate(ts);
+			m_ActiveScene->OnEditorUpdate(ts, m_EditorCamera);
+			break;
+		case SceneState::Runtime:
+			m_ActiveScene->OnRuntimeUpdate(ts);
+			break;
+		}
 
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= m_ViewportMinBound.x;
@@ -140,19 +153,12 @@ namespace Blanco
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
-		else
-		{
-			dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-		}
-
 		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
 			window_flags |= ImGuiWindowFlags_NoBackground;
 
-		if (!opt_padding)
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
-		if (!opt_padding)
-			ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
 			ImGui::PopStyleVar(2);
@@ -174,19 +180,19 @@ namespace Blanco
 			{
 				ImGui::Separator();
 				if (ImGui::MenuItem("New","Ctrl+N")) {
-					NewFile();
+					NewScene();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Open As...", "Ctrl+O")) {
-					OpenFileAs();
+					OpenScene();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
-					SaveFileAs();
+					SaveSceneAs();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Save", "Ctrl+S")) {
-					SaveFile();
+					SaveScene();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Exit")) { Application::Get().Close(); }
@@ -195,9 +201,9 @@ namespace Blanco
 			}
 			ImGui::EndMenuBar();
 		}
-		ImGui::End();
 
 		m_SceneHierarchyPanel.OnImguiRender();
+		m_ContentBrowserPanel.OnImguiRender();
 
 		auto& stats = Renderer2D::GetStats();
 		std::string name = "None";
@@ -228,6 +234,17 @@ namespace Blanco
 		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
 
 		ImGui::Image((void*)(uint64_t)textureID, { m_ViewportSize.x,m_ViewportSize.y },{0,1},{1,0});
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				OpenScene(path);
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		//Gizmos
 		Entity seletedEntity = m_SceneHierarchyPanel.GetSeletedEntity();
@@ -278,6 +295,10 @@ namespace Blanco
 
 		ImGui::End();
 		ImGui::PopStyleVar();
+
+		UI_Toolbar();
+
+		ImGui::End();
 	}
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
@@ -291,17 +312,17 @@ namespace Blanco
 		{
 		case BL_KEY_N:
 			if (controlPressed) 
-				NewFile();
+				NewScene();
 			break;
 		case BL_KEY_O:
 			if (controlPressed)
-				OpenFileAs();
+				OpenScene();
 			break;
 		case BL_KEY_S:
 			if (controlPressed && shiftPressed) 
-				SaveFileAs();
+				SaveSceneAs();
 			if (controlPressed && !shiftPressed)
-				SaveFile();
+				SaveScene();
 			break;
 	    //Gizmos
 		case BL_KEY_Q:
@@ -330,27 +351,72 @@ namespace Blanco
 		}
 		return false;
 	}
-	void EditorLayer::NewFile()
+	void EditorLayer::OnScenePlay()
+	{
+		m_SceneState = SceneState::Runtime;
+	}
+	void EditorLayer::OnSceneStop()
+	{
+		m_SceneState = SceneState::Edit;
+	}
+	void EditorLayer::UI_Toolbar()
+	{
+		ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,2 });
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, { 0,0 });
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0,0,0,0 });
+		auto& colors = ImGui::GetStyle().Colors;
+		const auto& activeColor = colors[ImGuiCol_ButtonActive];
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, { activeColor.x, activeColor.y, activeColor.z, activeColor.w });
+		const auto& hoveredColor = colors[ImGuiCol_ButtonHovered];
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { hoveredColor.x, hoveredColor.y, hoveredColor.z, hoveredColor.w });
+	
+		Ref<Texture2D> iconTexture = m_SceneState == SceneState::Edit ? m_PlayIcon : m_StopIcon;
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x * 0.5f - size * 0.5f);
+		if (ImGui::ImageButton((ImTextureID)iconTexture->GetRendererID(), { size,size }, { 2,0 }, { 1,1 })) {
+			switch (m_SceneState) 
+			{
+			case SceneState::Edit:
+				OnScenePlay();
+				break;
+			case SceneState::Runtime:
+				OnSceneStop();
+				break;
+			}
+		}
+
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor(3);
+
+		ImGui::End();
+	}
+	void EditorLayer::NewScene()
 	{
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_FilePath = {};
 	}
-	void EditorLayer::OpenFileAs()
+	void EditorLayer::OpenScene()
 	{
 		std::string filepath = FileDialogs::OpenFile("Blanco Scene(*.blanco)\0*.blanco\0");
 		if (!filepath.empty())
 		{
-			m_ActiveScene = CreateRef<Scene>();
-			m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-			SceneSerializer sceneSerializer(m_ActiveScene);
-			sceneSerializer.DeSerialize(filepath);
-			m_FilePath = filepath;
+			OpenScene(filepath);
 		}
 	}
-	void EditorLayer::SaveFileAs()
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		SceneSerializer sceneSerializer(m_ActiveScene);
+		sceneSerializer.DeSerialize(path.string());
+		m_FilePath = path.string();
+	}
+	void EditorLayer::SaveSceneAs()
 	{
 		std::string filepath = FileDialogs::SaveFile("Blanco Scene(*.blanco)\0*.blanco\0");
 		if (!filepath.empty())
@@ -360,7 +426,7 @@ namespace Blanco
 			m_FilePath = filepath;
 		}
 	}
-	void EditorLayer::SaveFile()
+	void EditorLayer::SaveScene()
 	{
 		if (!m_FilePath.empty())
 		{

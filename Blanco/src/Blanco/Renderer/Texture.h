@@ -23,6 +23,8 @@ namespace Blanco
 
 	class Texture2D :public Texture {
 	public:
+		virtual std::string GetTexturePath() const = 0;
+
 		static Ref<Texture2D> Create(uint32_t width,uint32_t height);
 		static Ref<Texture2D> Create(const std::string& path);
 	};

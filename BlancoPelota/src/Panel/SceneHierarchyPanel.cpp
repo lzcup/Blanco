@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Blanco/Scene/Components.h"
+#include <filesystem>
 
 
 namespace Blanco
@@ -256,6 +257,19 @@ namespace Blanco
 
 		DrawComponent<SpriteComponent>("Sprite", entity, [](auto& component) {
 			ImGui::ColorEdit4("Color", &component.Color.r);
+			ImGui::Button("Texture");
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path filePath = path;
+					component.Texture = Texture2D::Create(filePath.string());
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::DragFloat("TilingFactor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 			});
 
 	}

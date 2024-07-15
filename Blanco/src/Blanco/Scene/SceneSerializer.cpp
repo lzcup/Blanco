@@ -87,6 +87,9 @@ namespace Blanco
 			out << YAML::Key << "SpriteComponent";
 			out << YAML::BeginMap;  //SpriteComponent
 			out << YAML::Key << "Color" << YAML::Value << sc.Color;
+			if (sc.Texture)
+				out << YAML::Key << "Texture" << YAML::Value << sc.Texture->GetTexturePath();
+			out << YAML::Key << "TilingFactor" << YAML::Value << sc.TilingFactor;
 			out << YAML::EndMap;  //SpriteComponent
 		}
 		if (entity.HasComponent<CameraComponent>()) {
@@ -174,6 +177,9 @@ namespace Blanco
 					auto& sc = entt.AddComponent<SpriteComponent>();
 					auto spriteComponent = entity["SpriteComponent"];
 					sc.Color = spriteComponent["Color"].as<glm::vec4>();
+					if (spriteComponent["Texture"])
+						sc.Texture = Texture2D::Create(spriteComponent["Texture"].as<std::string>());
+					sc.TilingFactor = spriteComponent["TilingFactor"].as<float>();
 				}
 
 				if (entity["CameraComponent"]) {

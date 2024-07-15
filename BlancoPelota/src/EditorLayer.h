@@ -1,6 +1,7 @@
 #pragma once
 #include <Blanco.h>
 #include "Panel/SceneHierarchyPanel.h"
+#include "Panel/ContentBrowserPanel.h"
 #include "Blanco/Renderer/EditorCamera.h"
 
 namespace Blanco
@@ -17,27 +18,41 @@ namespace Blanco
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
-		void NewFile();
-		void OpenFileAs();
-		void SaveFileAs();
-		void SaveFile();
+		void OnScenePlay();
+		void OnSceneStop();
+	private:
+		void UI_Toolbar();
+		void NewScene();
+		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
+		void SaveSceneAs();
+		void SaveScene();
 	private:
 		OrthoGraphicCameraController m_CameraController;
 		Ref<FrameBuffer> m_FrameBuffer;
 
 		glm::vec4 m_FlatColor = { 0.2f, 0.3f, 0.5f ,1.0f };
 		Ref<Texture2D> m_Texture;
+		Ref<Texture2D> m_PlayIcon, m_StopIcon;
 		Ref<Texture2D> m_DoorsSpriteSheet;
 		Ref<SubTexture2D> m_YellowDoor, m_YellowKey, m_OpenDoor;
 		Ref<Scene> m_ActiveScene;
 		Entity m_SquareEntity;
 		Entity m_PrimaryCamera;
 		Entity m_SecondCamera;
+		EditorCamera m_EditorCamera;
 
 		Entity m_HoveredEntity = {};
 
+		//Panel
+		enum class SceneState
+		{
+			Edit = 0, Runtime = 1
+		};
+
 		SceneHierarchyPanel m_SceneHierarchyPanel;
-		EditorCamera m_EditorCamera;
+		ContentBrowserPanel m_ContentBrowserPanel;
+		SceneState m_SceneState = SceneState::Edit;
 
 		bool m_ViewFocuse = false;
 		bool m_ViewHovered = false;

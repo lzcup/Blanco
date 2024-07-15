@@ -2,6 +2,7 @@
 #include <glm.hpp>
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
+#include "Blanco/Renderer/Texture.h"
 #include <gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -36,6 +37,8 @@ namespace Blanco
 	struct SpriteComponent
 	{
 		glm::vec4 Color{ 1.0f,1.0f,1.0f,1.0f };
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 		SpriteComponent() = default;
 		SpriteComponent(const glm::vec4& color) :Color(color) {}
 		SpriteComponent(const SpriteComponent&) = default;
