@@ -16,3 +16,6 @@
 [submodule "Blanco/vendor/ImGuizmo"]
 	path = Blanco/vendor/ImGuizmo
 	url = https://github.com/lzcup/ImGuizmo
+[submodule "Blanco/vendor/Box2D"]
+	path = Blanco/vendor/Box2D
+	url = https://github.com/lzcup/box2d
