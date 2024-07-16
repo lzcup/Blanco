@@ -32,7 +32,7 @@ namespace Blanco
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 		m_PlayIcon = Texture2D::Create("Resource/Icons/play_circle_icon.png");
-		m_StopIcon = Texture2D::Create("Resource/Icons/stop_circle_icon.png");
+		m_StopIcon = Texture2D::Create("Resource/Icons/stop.png");
 
 #if 0
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
@@ -353,10 +353,12 @@ namespace Blanco
 	}
 	void EditorLayer::OnScenePlay()
 	{
+		m_ActiveScene->OnRuntimeStart();
 		m_SceneState = SceneState::Runtime;
 	}
 	void EditorLayer::OnSceneStop()
 	{
+		m_ActiveScene->OnRuntimeStop();
 		m_SceneState = SceneState::Edit;
 	}
 	void EditorLayer::UI_Toolbar()
@@ -375,7 +377,7 @@ namespace Blanco
 		Ref<Texture2D> iconTexture = m_SceneState == SceneState::Edit ? m_PlayIcon : m_StopIcon;
 		float size = ImGui::GetWindowHeight() - 4.0f;
 		ImGui::SetCursorPosX(ImGui::GetContentRegionMax().x * 0.5f - size * 0.5f);
-		if (ImGui::ImageButton((ImTextureID)iconTexture->GetRendererID(), { size,size }, { 2,0 }, { 1,1 })) {
+		if (ImGui::ImageButton((void*)(uint64_t)iconTexture->GetRendererID(), { size,size }, { 2,0 }, { 1,1 })) {
 			switch (m_SceneState) 
 			{
 			case SceneState::Edit:

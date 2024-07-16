@@ -28,7 +28,7 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
-      ProjectionType: 1
+      ProjectionType: Orthographic
       PerspectiveVerticalFov: 0.785398185
       PerspectiveNear: 0.00999999978
       PerspectiveFar: 10000
@@ -45,7 +45,7 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
-      ProjectionType: 1
+      ProjectionType: Orthographic
       PerspectiveVerticalFov: 0.785398185
       PerspectiveNear: 0.00999999978
       PerspectiveFar: 10000

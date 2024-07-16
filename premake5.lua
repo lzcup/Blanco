@@ -26,6 +26,7 @@ group "Dependencies"
   include "Blanco/vendor/glad"
   include "Blanco/vendor/imgui"
   include "Blanco/vendor/yaml"
+  include "Blanco/vendor/Box2D"
 group ""
 
 include "Blanco"

@@ -10,6 +10,9 @@
     <Filter Include="..\Blanco\vendor">
       <UniqueIdentifier>{FC130E42-E80C-2D94-113F-1219FD960CA0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="..\Blanco\vendor\Box2D">
+      <UniqueIdentifier>{0ACBEFDF-F6C4-1832-DF31-AF42CBCA7E9E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="..\Blanco\vendor\glad">
       <UniqueIdentifier>{83C4325C-EF30-EE56-B824-86B4245010BF}</UniqueIdentifier>
     </Filter>
@@ -32,6 +35,9 @@
   <ItemGroup>
     <None Include="..\..\Blanco\premake5.lua">
       <Filter>..\Blanco</Filter>
+    </None>
+    <None Include="..\..\Blanco\vendor\Box2D\premake5.lua">
+      <Filter>..\Blanco\vendor\Box2D</Filter>
     </None>
     <None Include="..\..\Blanco\vendor\glad\premake5.lua">
       <Filter>..\Blanco\vendor\glad</Filter>

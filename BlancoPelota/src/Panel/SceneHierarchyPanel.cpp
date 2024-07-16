@@ -198,6 +198,18 @@ namespace Blanco
 					ImGui::CloseCurrentPopup();
 				}
 			}
+			if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>()) {
+				if (ImGui::MenuItem("Rigidbody2D")) {
+					m_SelectionContext.AddComponent<Rigidbody2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			if (!m_SelectionContext.HasComponent<BoxCollider2DComponent>()) {
+				if (ImGui::MenuItem("BoxCollider2D")) {
+					m_SelectionContext.AddComponent<BoxCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
 			ImGui::EndPopup();
 		}
 
@@ -257,7 +269,10 @@ namespace Blanco
 
 		DrawComponent<SpriteComponent>("Sprite", entity, [](auto& component) {
 			ImGui::ColorEdit4("Color", &component.Color.r);
-			ImGui::Button("Texture");
+			if (ImGui::Button("Texture"))
+			{
+				component.Texture = nullptr;
+			};
 			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
@@ -270,6 +285,30 @@ namespace Blanco
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::DragFloat("TilingFactor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+			});
+
+		DrawComponent<Rigidbody2DComponent>("Rigidbody2D", entity, [](auto& component) {
+			const char* bodyTypes[] = { "Static","Dynamic" };
+			Rigidbody2DComponent::BodyType currentBodyType = component.Type;
+			if (ImGui::BeginCombo("BodyType", bodyTypes[(int)currentBodyType])) {
+				for (int i = 0; i < 2; i++) {
+					bool isSelected = (int)currentBodyType == i;
+					if (ImGui::Selectable(bodyTypes[i], isSelected)) {
+						component.Type = (Rigidbody2DComponent::BodyType)i;
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::Checkbox("FixedRotation", &(component.FixedRotation));
+			});
+
+		DrawComponent<BoxCollider2DComponent>("BoxCollider2D", entity, [](auto& component) {
+			ImGui::DragFloat2("Offset", &component.Offset.x);
+			ImGui::DragFloat2("Size", &component.Size.x);
+			ImGui::DragFloat("Density", &component.Density);
+			ImGui::DragFloat("Friction", &component.Friction, 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat("RestitutionThreshold", &component.RestitutionThreshold);
 			});
 
 	}

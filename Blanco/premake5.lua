@@ -8,7 +8,8 @@ project "Blanco"
       "opengl32.lib",
       "Glad",
       "ImGui",
-      "Yaml"
+      "Yaml",
+      "Box2D"
   }
 
   pchheader "BLpch.h"
@@ -38,7 +39,8 @@ project "Blanco"
     "%{IncludeDir.stb_image}",
     "%{IncludeDir.entt}",
     "%{IncludeDir.Yaml}",
-    "%{IncludeDir.ImGuizmo}"
+    "%{IncludeDir.ImGuizmo}",
+    "%{IncludeDir.Box2D}"
   }
 
   defines{

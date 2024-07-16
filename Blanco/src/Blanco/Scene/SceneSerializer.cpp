@@ -5,6 +5,26 @@
 
 namespace YAML {
 	template<>
+	struct convert<glm::vec2> {
+		static Node encode(const glm::vec2& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs) {
+			if (!node.IsSequence() || node.size() != 2) {
+				return false;
+			}
+
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+
+	template<>
 	struct convert<glm::vec3> {
 		static Node encode(const glm::vec3& rhs) {
 			Node node;
@@ -53,6 +73,11 @@ namespace YAML {
 
 namespace Blanco
 {
+	static YAML::Emitter& operator << (YAML::Emitter& out, const glm::vec2& v) {
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << YAML::EndSeq;
+		return out;
+	}
 	static YAML::Emitter& operator << (YAML::Emitter& out, const glm::vec3& v) {
 		out << YAML::Flow;
 		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
@@ -62,6 +87,56 @@ namespace Blanco
 		out << YAML::Flow;
 		out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
 		return out;
+	}
+
+	static std::string ProjectionTypeToString(SceneCamera::ProjectionType projectionType)
+	{
+		switch (projectionType)
+		{
+		case SceneCamera::ProjectionType::Perspective:
+			return "Perspective";
+		case SceneCamera::ProjectionType::Orthographic:
+			return "Orthographic";
+		}
+		BL_CORE_ASSERT(false, "Unkonw ProjectionType");
+		return "";
+	}
+
+	static SceneCamera::ProjectionType GetProjectionTypeFromString(const std::string& projectionTypeString)
+	{
+		if (projectionTypeString == "Perspective")
+			return SceneCamera::ProjectionType::Perspective;
+		if (projectionTypeString == "Orthographic")
+			return SceneCamera::ProjectionType::Orthographic;
+		BL_CORE_ASSERT(false, "Unkonw ProjectionTypeString");
+		return SceneCamera::ProjectionType::Orthographic;
+	}
+
+	static std::string Rigidbody2DBodyTypeToString(Rigidbody2DComponent::BodyType bodyType)
+	{
+		switch (bodyType)
+		{
+		case Rigidbody2DComponent::BodyType::Static:
+			return "Static";
+		case Rigidbody2DComponent::BodyType::Dynamic:
+			return "Dynamic";
+		case Rigidbody2DComponent::BodyType::Kinematic:
+			return "Kinematic";
+		}
+		BL_CORE_ASSERT(false, "Unkonw BodyType");
+		return "";
+	}
+
+	static Rigidbody2DComponent::BodyType GetRigidbody2DBodyTypeFromString(const std::string& bodyTypeString)
+	{
+		if (bodyTypeString == "Static")
+			return Rigidbody2DComponent::BodyType::Static;
+		if (bodyTypeString == "Dynamic")
+			return Rigidbody2DComponent::BodyType::Dynamic;
+		if (bodyTypeString == "Kinematic")
+			return Rigidbody2DComponent::BodyType::Kinematic;
+		BL_CORE_ASSERT(false, "Unkonw BodyTypeString");
+		return Rigidbody2DComponent::BodyType::Static;
 	}
 
 	static void SerializeEntity(YAML::Emitter& out,Entity& entity) {
@@ -96,7 +171,7 @@ namespace Blanco
 			auto& cc = entity.GetComponent<CameraComponent>();
 			out << YAML::Key << "CameraComponent";
 			out << YAML::BeginMap;  //CameraComponent
-			out << YAML::Key << "ProjectionType" << YAML::Value << (int)cc.Camera.GetProjectionType();
+			out << YAML::Key << "ProjectionType" << YAML::Value << ProjectionTypeToString(cc.Camera.GetProjectionType());
 			out << YAML::Key << "PerspectiveVerticalFov" << YAML::Value << cc.Camera.GetPerspectiveVerticalFov();
 			out << YAML::Key << "PerspectiveNear" << YAML::Value << cc.Camera.GetPerspectiveNear();
 			out << YAML::Key << "PerspectiveFar" << YAML::Value << cc.Camera.GetPerspectiveFar();
@@ -112,6 +187,26 @@ namespace Blanco
 			out << YAML::BeginMap;  //NativeScriptComponent
 			out << YAML::Key << "NativeScript" << YAML::Value << true;
 			out << YAML::EndMap;  //NativeScriptComponent
+		}
+		if (entity.HasComponent<Rigidbody2DComponent>()) {
+			auto& rc = entity.GetComponent<Rigidbody2DComponent>();
+			out << YAML::Key << "Rigidbody2DComponent";
+			out << YAML::BeginMap;  //Rigidbody2DComponent
+			out << YAML::Key << "Type" << YAML::Value << Rigidbody2DBodyTypeToString(rc.Type);
+			out << YAML::Key << "FixedRotation" << YAML::Value << rc.FixedRotation;
+			out << YAML::EndMap;  //Rigidbody2DComponent
+		}
+		if (entity.HasComponent<BoxCollider2DComponent>()) {
+			auto& bc = entity.GetComponent<BoxCollider2DComponent>();
+			out << YAML::Key << "BoxCollider2DComponent";
+			out << YAML::BeginMap;  //BoxCollider2DComponent
+			out << YAML::Key << "Offset" << YAML::Value << bc.Offset;
+			out << YAML::Key << "Size" << YAML::Value << bc.Size;
+			out << YAML::Key << "Density" << YAML::Value << bc.Density;
+			out << YAML::Key << "Friction" << YAML::Value << bc.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << bc.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << bc.RestitutionThreshold;
+			out << YAML::EndMap;  //BoxCollider2DComponent
 		}
 		out << YAML::EndMap;
 		
@@ -185,7 +280,7 @@ namespace Blanco
 				if (entity["CameraComponent"]) {
 					auto& cc = entt.AddComponent<CameraComponent>();
 					auto cameraComponent = entity["CameraComponent"];
-					cc.Camera.SetProjectionType((SceneCamera::ProjectionType)cameraComponent["ProjectionType"].as<int>());
+					cc.Camera.SetProjectionType(GetProjectionTypeFromString(cameraComponent["ProjectionType"].as<std::string>()));
 					cc.Camera.SetPerspectiveVerticalFov(cameraComponent["PerspectiveVerticalFov"].as<float>());
 					cc.Camera.SetPerspectiveNear(cameraComponent["PerspectiveNear"].as<float>());
 					cc.Camera.SetPerspectiveFar(cameraComponent["PerspectiveFar"].as<float>());
@@ -194,6 +289,24 @@ namespace Blanco
 					cc.Camera.SetOrthographicFarClip(cameraComponent["OrthographicFarClip"].as<float>());
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+				}
+
+				if (entity["Rigidbody2DComponent"]) {
+					auto& rc = entt.AddComponent<Rigidbody2DComponent>();
+					auto rigidbody2DComponent = entity["Rigidbody2DComponent"];
+					rc.Type = GetRigidbody2DBodyTypeFromString(rigidbody2DComponent["Type"].as<std::string>());
+					rc.FixedRotation = rigidbody2DComponent["FixedRotation"].as<bool>();
+				}
+
+				if (entity["BoxCollider2DComponent"]) {
+					auto& bc = entt.AddComponent<BoxCollider2DComponent>();
+					auto boxCollider2DComponent = entity["BoxCollider2DComponent"];
+					bc.Offset = boxCollider2DComponent["Offset"].as<glm::vec2>();
+					bc.Size = boxCollider2DComponent["Size"].as<glm::vec2>();
+					bc.Density = boxCollider2DComponent["Density"].as<float>();
+					bc.Friction = boxCollider2DComponent["Friction"].as<float>();
+					bc.Restitution = boxCollider2DComponent["Restitution"].as<float>();
+					bc.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 			}
 		}
