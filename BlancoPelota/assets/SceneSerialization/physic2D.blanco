@@ -1,10 +1,112 @@
 Scene: Untitled Name
 Entities:
+  - Entity: 4087784916144839517
+    TagComponent:
+      Tag: sprite
+    TransformComponent:
+      Translation: [-0.810185909, 3.7833128, -0.00421138899]
+      Rotation: [0, 0, -1.59647906]
+      Scale: [0.810000002, 0.811243176, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      Texture: assets\textures\checkerboard.png
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.5
+      RestitutionThreshold: 0.5
+  - Entity: 8748281219591514535
+    TagComponent:
+      Tag: sprite
+    TransformComponent:
+      Translation: [2.97100306, 3.74513531, -0.00421138899]
+      Rotation: [0, 0, -0.0029595606]
+      Scale: [0.809999526, 0.811243773, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      Texture: assets\textures\cat.png
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.5
+      RestitutionThreshold: 0.5
+  - Entity: 3423168136937479669
+    TagComponent:
+      Tag: floor
+    TransformComponent:
+      Translation: [-2.27849388, 1.63646531, -0.0122680645]
+      Rotation: [0, 0, 2.65856385]
+      Scale: [8.62358952, 0.315474242, 1.0002563]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 5575134118495529959
+    TagComponent:
+      Tag: floor
+    TransformComponent:
+      Translation: [4.39371157, -0.673467636, -0.0122680645]
+      Rotation: [-9.64345546e-08, 0.0297529977, -2.68834949]
+      Scale: [8.62366199, 0.315481305, 1.00025594]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 13884487153461775538
+    TagComponent:
+      Tag: floor
+    TransformComponent:
+      Translation: [1.27559388, -5.10681248, -0.0122070294]
+      Rotation: [0, 0, 3.13844657]
+      Scale: [13.1936769, 0.482643723, 1.53039205]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 1237520092360241532
     TagComponent:
       Tag: sprite
     TransformComponent:
-      Translation: [-0.125421047, 1.69800091, -0.00421138899]
+      Translation: [1.04221582, 3.72601604, -0.00421138899]
       Rotation: [0, 0, -1.59647906]
       Scale: [0.810000002, 0.811243176, 1]
     SpriteComponent:
@@ -25,7 +127,7 @@ Entities:
     TagComponent:
       Tag: camera
     TransformComponent:
-      Translation: [0, 0, 6.99938965]
+      Translation: [0.559774756, 3.76198483, 11.7200003]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -38,13 +140,23 @@ Entities:
       OrthographicFarClip: 1
       Primary: true
       FixedAspectRatio: false
+    Rigidbody2DComponent:
+      Type: Dynamic
+      FixedRotation: true
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.100000001, 0.100000001]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 17514866285534137538
     TagComponent:
       Tag: floor
     TransformComponent:
-      Translation: [0.10329055, -1.40340543, -0.0122680645]
-      Rotation: [0, 0, -0.101603352]
-      Scale: [8.62336445, 0.31546098, 1.0002563]
+      Translation: [-3.74500632, -2.44708443, -0.0122680664]
+      Rotation: [0, 0, 2.70556164]
+      Scale: [8.62335777, 0.315461218, 1.0002563]
     SpriteComponent:
       Color: [1, 1, 1, 1]
       TilingFactor: 1

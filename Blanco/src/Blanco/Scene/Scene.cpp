@@ -10,6 +10,7 @@
 #include <Box2D/b2_body.h>
 #include <Box2D/b2_polygon_shape.h>
 #include <Box2D/b2_fixture.h>
+#include <unordered_map>
 
 namespace Blanco
 {
@@ -28,6 +29,25 @@ namespace Blanco
 		return b2_staticBody;
 	}
 
+	template<typename Component>
+	static void CopyComponent(entt::registry& dstRegistry, entt::registry& srcRegistry, const std::unordered_map<UUID, entt::entity>& enttMap)
+	{
+		auto view = srcRegistry.view<Component>();
+		for (auto& e : view)
+		{
+			entt::entity desEntity = enttMap.at(srcRegistry.get<IDComponent>(e).ID);
+			auto& srcComponent = srcRegistry.get<Component>(e);
+			dstRegistry.emplace_or_replace<Component>(desEntity, srcComponent);
+		}
+	}
+
+	template<typename Component>
+	static void CopyComponentIfExist(Entity& dstEntity, Entity& srcEntity)
+	{
+		if (srcEntity.HasComponent<Component>())
+			dstEntity.AddOrReplaceComponent<Component>(srcEntity.GetComponent<Component>());
+	}
+
 	Scene::Scene()
 	{
 	}
@@ -36,9 +56,40 @@ namespace Blanco
 	{
 	}
 
+	Ref<Scene> Scene::Copy(Ref<Scene> other)
+	{
+		Ref<Scene> newScene = CreateRef<Scene>();
+
+		newScene->m_ViewportWidth = other->m_ViewportWidth;
+		newScene->m_ViewportHeight = other->m_ViewportHeight;
+
+		entt::registry& srcRegistry = other->m_Regisrty;
+		entt::registry& dstRegistry = newScene->m_Regisrty;
+
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		auto view = srcRegistry.view<IDComponent>();
+		for (auto& e : view)
+		{
+			UUID uuid = srcRegistry.get<IDComponent>(e).ID;
+			std::string& name = srcRegistry.get<TagComponent>(e).Tag;
+			Entity newEntity = newScene->CreateEntityWithUUID(uuid, name);
+			enttMap[uuid] = (entt::entity)newEntity;
+		}
+
+		CopyComponent<TransformComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<SpriteComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<CameraComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<NativeScriptComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<Rigidbody2DComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<BoxCollider2DComponent>(dstRegistry, srcRegistry, enttMap);
+	
+		return newScene;
+	}
+
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return CreateEntityWithUUID(UUID());
+		return CreateEntityWithUUID(UUID(), name);
 	}
 
 	Entity Scene::CreateEntityWithUUID(const UUID& uuid, const std::string& name)
@@ -186,6 +237,21 @@ namespace Blanco
 				cameraComponent.Camera.SetViewportSize(width, height);
 			}
 		}
+	}
+
+	Entity Scene::DuplicateEntity(Entity entity)
+	{
+		std::string name = entity.GetName();
+		Entity newEntity = CreateEntity(name);
+
+		CopyComponentIfExist<TransformComponent>(newEntity, entity);
+		CopyComponentIfExist<SpriteComponent>(newEntity, entity);
+		CopyComponentIfExist<CameraComponent>(newEntity, entity);
+		CopyComponentIfExist<NativeScriptComponent>(newEntity, entity);
+		CopyComponentIfExist<Rigidbody2DComponent>(newEntity, entity);
+		CopyComponentIfExist<BoxCollider2DComponent>(newEntity, entity);
+
+		return newEntity;
 	}
 
 	Entity Scene::GetPrimaryCamera()

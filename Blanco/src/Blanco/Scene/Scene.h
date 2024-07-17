@@ -15,6 +15,8 @@ namespace Blanco
 		Scene();
 		~Scene();
 
+		static Ref<Scene> Copy(Ref<Scene> other);
+
 		Entity CreateEntity(const std::string& name = "Entity");
 		Entity CreateEntityWithUUID(const UUID& uuid,const std::string& name = "Entity");
 		void DestoryEntity(Entity& entity);
@@ -25,6 +27,8 @@ namespace Blanco
 		void OnRuntimeUpdate(TimeStep ts);
 		void OnEditorUpdate(TimeStep ts, EditorCamera& camera);
 		void OnSetViewport(uint32_t width, uint32_t height);
+
+		Entity DuplicateEntity(Entity entity);
 
 		Entity GetPrimaryCamera();
 	private:

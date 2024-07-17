@@ -23,6 +23,12 @@ namespace Blanco
 			m_Scene->OnComponentAdded(*this, component);
 			return component;
 		}
+		template<typename T, typename... Args>
+		T& AddOrReplaceComponent(Args&&... args) {
+			T& component = m_Scene->m_Regisrty.emplace_or_replace<T>(m_EntityHandle, std::forward<Args>(args)...);
+			m_Scene->OnComponentAdded(*this, component);
+			return component;
+		}
 		template<typename T>
 		T& GetComponent() {
 			BL_ASSERT(HasComponent<T>(), "Entity do not have this component!");
@@ -35,6 +41,7 @@ namespace Blanco
 		}
 
 		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
+		std::string& GetName() { return GetComponent<TagComponent>().Tag; }
 
 		operator bool() const{ return m_EntityHandle != entt::null; }
 		operator entt::entity() const { return m_EntityHandle; }

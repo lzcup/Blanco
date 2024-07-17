@@ -20,6 +20,7 @@ namespace Blanco
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void OnScenePlay();
 		void OnSceneStop();
+		void OnDuplicateEntity();
 	private:
 		void UI_Toolbar();
 		void NewScene();
@@ -37,6 +38,7 @@ namespace Blanco
 		Ref<Texture2D> m_DoorsSpriteSheet;
 		Ref<SubTexture2D> m_YellowDoor, m_YellowKey, m_OpenDoor;
 		Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_EditorScene;
 		Entity m_SquareEntity;
 		Entity m_PrimaryCamera;
 		Entity m_SecondCamera;

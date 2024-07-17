@@ -19,7 +19,8 @@ namespace Blanco
 		spec.Attachments = { FrameBufferTextureFormat::RGBA8,FrameBufferTextureFormat::RED_INTEGER,FrameBufferTextureFormat::DEPTH24STENCIL8 };
 		m_FrameBuffer = FrameBuffer::Create(spec);
 
-		m_ActiveScene = CreateRef<Scene>();
+		m_EditorScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditorScene;
 
 		auto commandLineArgs = Application::Get().GetCommandLineArgs();
 		if (commandLineArgs.Count > 1)
@@ -247,7 +248,7 @@ namespace Blanco
 		}
 
 		//Gizmos
-		Entity seletedEntity = m_SceneHierarchyPanel.GetSeletedEntity();
+		Entity seletedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (seletedEntity)
 		{
 			ImGuizmo::SetOrthographic(false);
@@ -337,6 +338,11 @@ namespace Blanco
 		case BL_KEY_R:
 			m_GuizmoOperation = ImGuizmo::OPERATION::SCALE;
 			break;
+		//Duplicate
+		case BL_KEY_D:
+			if (controlPressed)
+				OnDuplicateEntity();
+			break;
 		default:
 			break;
 		}
@@ -347,12 +353,14 @@ namespace Blanco
 		if (e.GetMouseCode() == BL_MOUSE_BUTTON_LEFT)
 		{
 			if (m_ViewHovered && !Input::IsKeyPressed(BL_KEY_LEFT_ALT) && !ImGuizmo::IsOver())
-				m_SceneHierarchyPanel.SetSeletedEntity(m_HoveredEntity);
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 		}
 		return false;
 	}
 	void EditorLayer::OnScenePlay()
 	{
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+
 		m_ActiveScene->OnRuntimeStart();
 		m_SceneState = SceneState::Runtime;
 	}
@@ -360,6 +368,20 @@ namespace Blanco
 	{
 		m_ActiveScene->OnRuntimeStop();
 		m_SceneState = SceneState::Edit;
+
+		m_ActiveScene = m_EditorScene;
+	}
+	void EditorLayer::OnDuplicateEntity()
+	{
+		if (m_SceneState != SceneState::Edit)
+			return;
+
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity)
+		{
+			Entity newEntity = m_EditorScene->DuplicateEntity(selectedEntity);
+			m_SceneHierarchyPanel.SetSelectedEntity(newEntity);
+		}
 	}
 	void EditorLayer::UI_Toolbar()
 	{
@@ -411,12 +433,21 @@ namespace Blanco
 	}
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		m_ActiveScene = CreateRef<Scene>();
-		m_ActiveScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-		SceneSerializer sceneSerializer(m_ActiveScene);
-		sceneSerializer.DeSerialize(path.string());
-		m_FilePath = path.string();
+		if (m_SceneState == SceneState::Runtime)
+			OnSceneStop();
+
+		Ref<Scene> newScene = CreateRef<Scene>();
+		SceneSerializer sceneSerializer(newScene);
+		if (sceneSerializer.DeSerialize(path.string()))
+		{
+			m_EditorScene = newScene;
+			m_EditorScene->OnSetViewport((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+			m_ActiveScene = m_EditorScene;
+
+			m_FilePath = path.string();
+		}
 	}
 	void EditorLayer::SaveSceneAs()
 	{
@@ -434,6 +465,10 @@ namespace Blanco
 		{
 			SceneSerializer sceneSerializer(m_ActiveScene);
 			sceneSerializer.Serialize(m_FilePath);
+		}
+		else
+		{
+			SaveSceneAs();
 		}
 	}
 }
