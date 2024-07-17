@@ -1,7 +1,9 @@
 #include "BLpch.h"
 #include "SceneSerializer.h"
-#include <yaml-cpp/yaml.h>
 #include "Components.h"
+#include "Entity.h"
+
+#include <yaml-cpp/yaml.h>
 
 namespace YAML {
 	template<>
@@ -140,8 +142,10 @@ namespace Blanco
 	}
 
 	static void SerializeEntity(YAML::Emitter& out,Entity& entity) {
+		BL_CORE_ASSERT(entity.HasComponent<IDComponent>(), "Entity without UUID");
+
 		out << YAML::BeginMap;
-		out << YAML::Key << "Entity" << YAML::Value << "123456789";//TODO: Entity ID Here
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
 
 		auto& tag = entity.GetComponent<TagComponent>();
 		out << YAML::Key << "TagComponent";
@@ -250,7 +254,7 @@ namespace Blanco
 		if (entites) {
 			for (auto entity : entites) {
 				uint64_t uuid = entity["Entity"].as<uint64_t>();
-				Entity entt = m_Scene->CreateEntity();
+				Entity entt = m_Scene->CreateEntityWithUUID(uuid);
 
 				if (entity["TagComponent"]) {
 					auto tagComponent = entity["TagComponent"];

@@ -2,6 +2,7 @@
 #include <entt.hpp>
 #include "Blanco/Core/TimeStep.h"
 #include "Blanco/Renderer/EditorCamera.h"
+#include "Blanco/Core/UUID.h"
 
 class b2World;
 
@@ -15,6 +16,7 @@ namespace Blanco
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = "Entity");
+		Entity CreateEntityWithUUID(const UUID& uuid,const std::string& name = "Entity");
 		void DestoryEntity(Entity& entity);
 
 		void OnRuntimeStart();

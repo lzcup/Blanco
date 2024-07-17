@@ -1,43 +1,16 @@
 Scene: Untitled Name
 Entities:
-  - Entity: 123456789
+  - Entity: 14772596312074088343
     TagComponent:
-      Tag: Square
+      Tag: white
     TransformComponent:
-      Translation: [4.80000019, 0, 0]
+      Translation: [0, 2.5999999, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteComponent:
-      Color: [1, 0, 0, 1]
+      Color: [1, 1, 1, 1]
       TilingFactor: 1
-  - Entity: 123456789
-    TagComponent:
-      Tag: Green Square
-    TransformComponent:
-      Translation: [1.60000002, -1.70000005, 0.5]
-      Rotation: [-0.0157079622, 0, 0.968657732]
-      Scale: [1, 1, 1]
-    SpriteComponent:
-      Color: [0, 1, 0, 1]
-      TilingFactor: 1
-  - Entity: 123456789
-    TagComponent:
-      Tag: Primary Camera
-    TransformComponent:
-      Translation: [4, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      ProjectionType: Orthographic
-      PerspectiveVerticalFov: 0.785398185
-      PerspectiveNear: 0.00999999978
-      PerspectiveFar: 10000
-      OrthographicSize: 10
-      OrthographicNearClip: -1
-      OrthographicFarClip: 1
-      Primary: true
-      FixedAspectRatio: false
-  - Entity: 123456789
+  - Entity: 12660518913225060523
     TagComponent:
       Tag: Second Camera
     TransformComponent:
@@ -54,13 +27,40 @@ Entities:
       OrthographicFarClip: 1
       Primary: false
       FixedAspectRatio: false
-  - Entity: 123456789
+  - Entity: 14443637383842341040
     TagComponent:
-      Tag: white
+      Tag: Primary Camera
     TransformComponent:
-      Translation: [0, 2.5999999, 0]
+      Translation: [4, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      ProjectionType: Orthographic
+      PerspectiveVerticalFov: 0.785398185
+      PerspectiveNear: 0.00999999978
+      PerspectiveFar: 10000
+      OrthographicSize: 10
+      OrthographicNearClip: -1
+      OrthographicFarClip: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 7573953279383800777
+    TagComponent:
+      Tag: Green Square
+    TransformComponent:
+      Translation: [1.60000002, -1.70000005, 0.5]
+      Rotation: [-0.0157079622, 0, 0.968657732]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [0, 1, 0, 1]
+      TilingFactor: 1
+  - Entity: 9455035469659653696
+    TagComponent:
+      Tag: Square
+    TransformComponent:
+      Translation: [4.80000019, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteComponent:
-      Color: [1, 1, 1, 1]
+      Color: [1, 0, 0, 1]
       TilingFactor: 1

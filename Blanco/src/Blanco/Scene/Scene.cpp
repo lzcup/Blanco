@@ -4,6 +4,8 @@
 #include "Components.h"
 #include "Blanco/Renderer/Renderer2D.h"
 #include "Entity.h"
+#include "ScriptableEntity.h"
+
 #include <Box2D/b2_world.h>
 #include <Box2D/b2_body.h>
 #include <Box2D/b2_polygon_shape.h>
@@ -36,7 +38,13 @@ namespace Blanco
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		return CreateEntityWithUUID(UUID());
+	}
+
+	Entity Scene::CreateEntityWithUUID(const UUID& uuid, const std::string& name)
+	{
 		Entity entity = Entity(m_Regisrty.create(), this);
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TagComponent>(name);
 		entity.AddComponent<TransformComponent>();
 		return entity;
@@ -197,6 +205,9 @@ namespace Blanco
 	{
 		static_assert(false);
 	}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, IDComponent& component) {}
 
 	template<>
 	void Scene::OnComponentAdded(Entity& entity, TagComponent& component){}

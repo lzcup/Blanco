@@ -1,12 +1,12 @@
 Scene: Untitled Name
 Entities:
-  - Entity: 123456789
+  - Entity: 1237520092360241532
     TagComponent:
       Tag: sprite
     TransformComponent:
       Translation: [-0.125421047, 1.69800091, -0.00421138899]
       Rotation: [0, 0, -1.59647906]
-      Scale: [0.999943733, 0.999943733, 1]
+      Scale: [0.810000002, 0.811243176, 1]
     SpriteComponent:
       Color: [1, 1, 1, 1]
       Texture: assets\textures\baiwan.jpg
@@ -21,7 +21,7 @@ Entities:
       Friction: 0.5
       Restitution: 0.5
       RestitutionThreshold: 0.5
-  - Entity: 123456789
+  - Entity: 12069752377866689661
     TagComponent:
       Tag: camera
     TransformComponent:
@@ -38,13 +38,13 @@ Entities:
       OrthographicFarClip: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 123456789
+  - Entity: 17514866285534137538
     TagComponent:
       Tag: floor
     TransformComponent:
-      Translation: [0.124209397, -1.69625211, -0.0122680645]
-      Rotation: [0, 0, -0.10160353]
-      Scale: [7.44066906, 0.31546095, 1.0002563]
+      Translation: [0.10329055, -1.40340543, -0.0122680645]
+      Rotation: [0, 0, -0.101603352]
+      Scale: [8.62336445, 0.31546098, 1.0002563]
     SpriteComponent:
       Color: [1, 1, 1, 1]
       TilingFactor: 1

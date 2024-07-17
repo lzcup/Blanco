@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 #include "entt.hpp"
+#include "Blanco/Core/UUID.h"
+#include "Components.h"
 
 namespace Blanco
 {
@@ -31,6 +33,8 @@ namespace Blanco
 			BL_ASSERT(HasComponent<T>(), "Entity do not have this component!");
 			m_Scene->m_Regisrty.remove<T>(m_EntityHandle);
 		}
+
+		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
 
 		operator bool() const{ return m_EntityHandle != entt::null; }
 		operator entt::entity() const { return m_EntityHandle; }

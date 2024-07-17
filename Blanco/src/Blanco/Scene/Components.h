@@ -1,7 +1,8 @@
 #pragma once
 #include <glm.hpp>
 #include "SceneCamera.h"
-#include "ScriptableEntity.h"
+#include "Blanco/Core/UUID.h"
+
 #include "Blanco/Renderer/Texture.h"
 #include <gtc/matrix_transform.hpp>
 
@@ -10,6 +11,14 @@
 
 namespace Blanco
 {
+	struct IDComponent
+	{
+		UUID ID;
+		IDComponent() = default;
+		IDComponent(const UUID& id) :ID(id) {}
+		IDComponent(const IDComponent&) = default;
+	};
+
 	struct TagComponent
 	{
 		std::string Tag;
@@ -54,6 +63,7 @@ namespace Blanco
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	class ScriptableEntity;
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
