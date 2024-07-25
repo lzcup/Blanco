@@ -53,6 +53,16 @@ namespace Blanco
 		SpriteComponent(const SpriteComponent&) = default;
 	};
 
+	struct CircleComponent
+	{
+		glm::vec4 Color{ 1.0f,1.0f,1.0f,1.0f };
+		float Thickness = 1.0f;
+		float Fade = 0.0005f;
+		CircleComponent() = default;
+		CircleComponent(const glm::vec4& color) :Color(color) {}
+		CircleComponent(const CircleComponent&) = default;
+	};
+
 	struct CameraComponent
 	{
 		SceneCamera Camera;

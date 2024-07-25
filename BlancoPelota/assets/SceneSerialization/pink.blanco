@@ -1,5 +1,48 @@
 Scene: Untitled Name
 Entities:
+  - Entity: 14117696188326498008
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [-0.00925065577, 0.491394073, 0.00250243396]
+      Rotation: [1.57079613, 0.785398245, -4.21468513e-08]
+      Scale: [0.999999881, 0.999999285, 0.999878347]
+    SpriteComponent:
+      Color: [0.717647076, 0.141176477, 0.749019623, 1]
+      TilingFactor: 1
+  - Entity: 6658327020735494593
+    TagComponent:
+      Tag: Right
+    TransformComponent:
+      Translation: [0.344152689, 2.18162313e-07, 0.33622241]
+      Rotation: [-2.16660123e-06, 0.785398185, -2.09238647e-06]
+      Scale: [0.999999523, 1, 0.999999523]
+    SpriteComponent:
+      Color: [0.985119045, 0.985119045, 0.985119045, 1]
+      Texture: assets\textures\baiwan.jpg
+      TilingFactor: 1
+  - Entity: 15382651206595152200
+    TagComponent:
+      Tag: Left
+    TransformComponent:
+      Translation: [-0.352066666, 0, 0.347933322]
+      Rotation: [0, -0.785398245, 0]
+      Scale: [0.999999642, 0.999998808, 0.999999881]
+    SpriteComponent:
+      Color: [0.985119045, 0.985119045, 0.985119045, 1]
+      Texture: assets\textures\cat.png
+      TilingFactor: 1
+  - Entity: 2941916669467409797
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [0.457369298, -0.571365237, 0.321265876]
+      Rotation: [-1.56454158, -0.338500082, -0.0103903888]
+      Scale: [2.49312878, 4.85520697, 0.00113050966]
+    SpriteComponent:
+      Color: [0.21452485, 0.889880955, 0.23864463, 1]
+      Texture: assets\textures\checkerboard.png
+      TilingFactor: 2
   - Entity: 8991617306320188381
     TagComponent:
       Tag: Camera
@@ -17,46 +60,3 @@ Entities:
       OrthographicFarClip: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 2941916669467409797
-    TagComponent:
-      Tag: Floor
-    TransformComponent:
-      Translation: [0.457369298, -0.571365237, 0.321265876]
-      Rotation: [-1.56454158, -0.338500082, -0.0103903888]
-      Scale: [2.49312878, 4.85520697, 0.00113050966]
-    SpriteComponent:
-      Color: [0.21452485, 0.889880955, 0.23864463, 1]
-      Texture: assets\textures\checkerboard.png
-      TilingFactor: 2
-  - Entity: 15382651206595152200
-    TagComponent:
-      Tag: Left
-    TransformComponent:
-      Translation: [-0.352066666, 0, 0.347933322]
-      Rotation: [0, -0.785398245, 0]
-      Scale: [0.999999642, 0.999998808, 0.999999881]
-    SpriteComponent:
-      Color: [0.985119045, 0.985119045, 0.985119045, 1]
-      Texture: assets\textures\cat.png
-      TilingFactor: 1
-  - Entity: 6658327020735494593
-    TagComponent:
-      Tag: Right
-    TransformComponent:
-      Translation: [0.344152689, 2.18162313e-07, 0.33622241]
-      Rotation: [-2.16660123e-06, 0.785398185, -2.09238647e-06]
-      Scale: [0.999999523, 1, 0.999999523]
-    SpriteComponent:
-      Color: [0.985119045, 0.985119045, 0.985119045, 1]
-      Texture: assets\textures\baiwan.jpg
-      TilingFactor: 1
-  - Entity: 14117696188326498008
-    TagComponent:
-      Tag: Top
-    TransformComponent:
-      Translation: [-0.00925065577, 0.491394073, 0.00250243396]
-      Rotation: [1.57079613, 0.785398245, -4.21468513e-08]
-      Scale: [0.999999881, 0.999999285, 0.999878347]
-    SpriteComponent:
-      Color: [0.717647076, 0.141176477, 0.749019623, 1]
-      TilingFactor: 1

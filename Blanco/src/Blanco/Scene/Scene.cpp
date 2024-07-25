@@ -79,6 +79,7 @@ namespace Blanco
 
 		CopyComponent<TransformComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<SpriteComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<CircleComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<CameraComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<NativeScriptComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<Rigidbody2DComponent>(dstRegistry, srcRegistry, enttMap);
@@ -185,9 +186,9 @@ namespace Blanco
 		SceneCamera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
 		{
-			auto group = m_Regisrty.group<CameraComponent>(entt::get<TransformComponent>);
-			for (auto entity : group) {
-				auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
+			auto view = m_Regisrty.view<CameraComponent, TransformComponent>();
+			for (auto entity : view) {
+				auto [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
 				if (camera.Primary) {
 					mainCamera = &camera.Camera;
 					cameraTransform = transform.GetTransform();
@@ -195,35 +196,47 @@ namespace Blanco
 				}
 			}
 		}
-		if (mainCamera) {
-			auto group = m_Regisrty.group<TransformComponent>(entt::get<SpriteComponent>);
-			if (group.size()) {
-				Renderer2D::BeginScene(*mainCamera, cameraTransform);
-
-				for (auto entity : group) {
-					auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-					Renderer2D::DrawSprite(transform.GetTransform(), sprite,(int)entity);
+		if (mainCamera) 
+		{
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
+			{
+				auto view = m_Regisrty.view<TransformComponent, SpriteComponent>();
+				for (auto entity : view) {
+					auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
+					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 				}
-
-				Renderer2D::EndScene();
 			}
+			{
+				{
+					auto view = m_Regisrty.view<TransformComponent, CircleComponent>();
+					for (auto entity : view) {
+						auto [transform, circle] = view.get<TransformComponent, CircleComponent>(entity);
+						Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+					}
+				}
+			}
+			Renderer2D::EndScene();
 		}
-		
 	}
 
 	void Scene::OnEditorUpdate(TimeStep ts, EditorCamera& camera)
 	{
-		auto group = m_Regisrty.group<TransformComponent>(entt::get<SpriteComponent>);
-		if (group.size()) {
-			Renderer2D::BeginScene(camera);
-
-			for (auto entity : group) {
-				auto [transform, sprite] = group.get<TransformComponent, SpriteComponent>(entity);
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite,(int)entity);
+		Renderer2D::BeginScene(camera);
+		{
+			auto view = m_Regisrty.view<TransformComponent, SpriteComponent>();
+			for (auto entity : view) {
+				auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
-
-			Renderer2D::EndScene();
 		}
+		{
+			auto view = m_Regisrty.view<TransformComponent, CircleComponent>();
+			for (auto entity : view) {
+				auto [transform, circle] = view.get<TransformComponent, CircleComponent>(entity);
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+			}
+		}
+		Renderer2D::EndScene();
 	}
 
 	void Scene::OnSetViewport(uint32_t width, uint32_t height)
@@ -246,6 +259,7 @@ namespace Blanco
 
 		CopyComponentIfExist<TransformComponent>(newEntity, entity);
 		CopyComponentIfExist<SpriteComponent>(newEntity, entity);
+		CopyComponentIfExist<CircleComponent>(newEntity, entity);
 		CopyComponentIfExist<CameraComponent>(newEntity, entity);
 		CopyComponentIfExist<NativeScriptComponent>(newEntity, entity);
 		CopyComponentIfExist<Rigidbody2DComponent>(newEntity, entity);
@@ -283,6 +297,9 @@ namespace Blanco
 
 	template<>
 	void Scene::OnComponentAdded(Entity& entity, SpriteComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, CircleComponent& component) {}
 
 	template<>
 	void Scene::OnComponentAdded(Entity& entity, CameraComponent& component) {

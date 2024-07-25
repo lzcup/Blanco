@@ -171,6 +171,15 @@ namespace Blanco
 			out << YAML::Key << "TilingFactor" << YAML::Value << sc.TilingFactor;
 			out << YAML::EndMap;  //SpriteComponent
 		}
+		if (entity.HasComponent<CircleComponent>()) {
+			auto& cc = entity.GetComponent<CircleComponent>();
+			out << YAML::Key << "CircleComponent";
+			out << YAML::BeginMap;  //CircleComponent
+			out << YAML::Key << "Color" << YAML::Value << cc.Color;
+			out << YAML::Key << "Thickness" << YAML::Value << cc.Thickness;
+			out << YAML::Key << "Fade" << YAML::Value << cc.Fade;
+			out << YAML::EndMap;  //CircleComponent
+		}
 		if (entity.HasComponent<CameraComponent>()) {
 			auto& cc = entity.GetComponent<CameraComponent>();
 			out << YAML::Key << "CameraComponent";
@@ -279,6 +288,14 @@ namespace Blanco
 					if (spriteComponent["Texture"])
 						sc.Texture = Texture2D::Create(spriteComponent["Texture"].as<std::string>());
 					sc.TilingFactor = spriteComponent["TilingFactor"].as<float>();
+				}
+
+				if (entity["CircleComponent"]) {
+					auto& cc = entt.AddComponent<CircleComponent>();
+					auto circleComponent = entity["CircleComponent"];
+					cc.Color = circleComponent["Color"].as<glm::vec4>();
+					cc.Thickness = circleComponent["Thickness"].as<float>();
+					cc.Fade = circleComponent["Fade"].as<float>();
 				}
 
 				if (entity["CameraComponent"]) {

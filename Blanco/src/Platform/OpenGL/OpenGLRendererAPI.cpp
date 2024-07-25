@@ -38,6 +38,7 @@ namespace Blanco
 	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count)
 	{
 		BL_PROFILE_FUNCTION();
+		vertexArray->Bind();
 		uint32_t indicesCount = count == 0 ? vertexArray->GetIndexBuffer()->GetCount() : count;
 		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, nullptr);
 	}
