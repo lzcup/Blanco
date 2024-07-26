@@ -20,6 +20,12 @@ namespace Blanco
 		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0) {
 			s_RendererAPI->DrawIndexed(vertexArray,count);
 		};
+		inline static void DrawLine(const Ref<VertexArray>& vertexArray, uint32_t count = 0) {
+			s_RendererAPI->DrawLine(vertexArray, count);
+		};
+		inline static void SetLineWidth(float width) {
+			s_RendererAPI->SetLineWidth(width);
+		};
 	private:
 		static Ref<RendererAPI> s_RendererAPI;
 	};

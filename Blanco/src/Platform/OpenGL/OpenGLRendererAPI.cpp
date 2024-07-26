@@ -12,6 +12,7 @@ namespace Blanco
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LINE_SMOOTH);
 	}
 
 	void OpenGLRendererAPI::SetViewport(float x, float y, float width, float height)
@@ -41,6 +42,17 @@ namespace Blanco
 		vertexArray->Bind();
 		uint32_t indicesCount = count == 0 ? vertexArray->GetIndexBuffer()->GetCount() : count;
 		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void OpenGLRendererAPI::DrawLine(const Ref<VertexArray>& vertexArray, uint32_t count)
+	{
+		vertexArray->Bind();
+		glDrawArrays(GL_LINES, 0, count);
+	}
+
+	void OpenGLRendererAPI::SetLineWidth(float width)
+	{
+		glLineWidth(width);
 	}
 
 }
