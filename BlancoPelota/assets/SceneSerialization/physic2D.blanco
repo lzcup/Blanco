@@ -1,23 +1,54 @@
 Scene: Untitled Name
 Entities:
-  - Entity: 246735708224619777
+  - Entity: 4087784916144839517
     TagComponent:
-      Tag: circle
+      Tag: sprite
     TransformComponent:
-      Translation: [1.88458729, 0.791527987, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CircleComponent:
-      Color: [0.172034413, 0.741071463, 0.0771949589, 1]
-      Thickness: 0.25999999
-      Fade: 0.000500000024
-  - Entity: 17514866285534137538
+      Translation: [-0.810185909, 3.7833128, -0.00421138899]
+      Rotation: [0, 0, -1.59647906]
+      Scale: [0.810000002, 0.811243176, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      Texture: assets\textures\checkerboard.png
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.5
+      RestitutionThreshold: 0.5
+  - Entity: 8748281219591514535
+    TagComponent:
+      Tag: sprite
+    TransformComponent:
+      Translation: [2.97100306, 3.74513531, -0.00421138899]
+      Rotation: [0, 0, -0.0029595606]
+      Scale: [0.809999526, 0.811243773, 1]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      Texture: assets\textures\cat.png
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.5
+      RestitutionThreshold: 0.5
+  - Entity: 3423168136937479669
     TagComponent:
       Tag: floor
     TransformComponent:
-      Translation: [-3.74500632, -2.44708443, -0.0122680664]
-      Rotation: [0, 0, 2.70556164]
-      Scale: [8.62335777, 0.315461218, 1.0002563]
+      Translation: [-2.27849388, 1.63646531, -0.0122680645]
+      Rotation: [0, 0, 2.65856385]
+      Scale: [8.62358952, 0.315474242, 1.0002563]
     SpriteComponent:
       Color: [1, 1, 1, 1]
       TilingFactor: 1
@@ -31,31 +62,44 @@ Entities:
       Friction: 0
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 12069752377866689661
+  - Entity: 5575134118495529959
     TagComponent:
-      Tag: camera
+      Tag: floor
     TransformComponent:
-      Translation: [0.559774756, 3.76198483, 11.7200003]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      ProjectionType: Perspective
-      PerspectiveVerticalFov: 0.785398185
-      PerspectiveNear: 0.00999999978
-      PerspectiveFar: 10000
-      OrthographicSize: 10
-      OrthographicNearClip: -1
-      OrthographicFarClip: 1
-      Primary: true
-      FixedAspectRatio: false
+      Translation: [4.39371157, -0.673467636, -0.0122680645]
+      Rotation: [-9.65084368e-08, -0.00169793412, -2.68834949]
+      Scale: [8.62366199, 0.315481305, 1.00025582]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
     Rigidbody2DComponent:
-      Type: Dynamic
-      FixedRotation: true
+      Type: Static
+      FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
-      Size: [0.100000001, 0.100000001]
+      Size: [0.5, 0.5]
       Density: 1
-      Friction: 0.5
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 13884487153461775538
+    TagComponent:
+      Tag: floor
+    TransformComponent:
+      Translation: [1.27559388, -5.10681248, -0.0122070294]
+      Rotation: [0, 0, 3.13844657]
+      Scale: [13.1936769, 0.482643723, 1.53039205]
+    SpriteComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      Type: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
       Restitution: 0
       RestitutionThreshold: 0.5
   - Entity: 1237520092360241532
@@ -79,105 +123,68 @@ Entities:
       Friction: 0.5
       Restitution: 0.5
       RestitutionThreshold: 0.5
-  - Entity: 13884487153461775538
+  - Entity: 12069752377866689661
     TagComponent:
-      Tag: floor
+      Tag: camera
     TransformComponent:
-      Translation: [1.27559388, -5.10681248, -0.0122070294]
-      Rotation: [0, 0, 3.13844657]
-      Scale: [13.1936769, 0.482643723, 1.53039205]
-    SpriteComponent:
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
-    Rigidbody2DComponent:
-      Type: Static
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 5575134118495529959
-    TagComponent:
-      Tag: floor
-    TransformComponent:
-      Translation: [4.39371157, -0.673467636, -0.0122680645]
-      Rotation: [-9.64345546e-08, 0.0297529977, -2.68834949]
-      Scale: [8.62366199, 0.315481305, 1.00025594]
-    SpriteComponent:
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
-    Rigidbody2DComponent:
-      Type: Static
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 3423168136937479669
-    TagComponent:
-      Tag: floor
-    TransformComponent:
-      Translation: [-2.27849388, 1.63646531, -0.0122680645]
-      Rotation: [0, 0, 2.65856385]
-      Scale: [8.62358952, 0.315474242, 1.0002563]
-    SpriteComponent:
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
-    Rigidbody2DComponent:
-      Type: Static
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 8748281219591514535
-    TagComponent:
-      Tag: sprite
-    TransformComponent:
-      Translation: [2.97100306, 3.74513531, -0.00421138899]
-      Rotation: [0, 0, -0.0029595606]
-      Scale: [0.809999526, 0.811243773, 1]
-    SpriteComponent:
-      Color: [1, 1, 1, 1]
-      Texture: assets\textures\cat.png
-      TilingFactor: 1
-    Rigidbody2DComponent:
-      Type: Dynamic
-      FixedRotation: false
+      Translation: [2.29970622, -0.305742085, 2.52003765]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 2.76810837]
+    CameraComponent:
+      ProjectionType: Orthographic
+      PerspectiveVerticalFov: 0.785398185
+      PerspectiveNear: 0.00999999978
+      PerspectiveFar: 10000
+      OrthographicSize: 10
+      OrthographicNearClip: -1
+      OrthographicFarClip: 1
+      Primary: true
+      FixedAspectRatio: false
     BoxCollider2DComponent:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0.5
+      Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 4087784916144839517
+  - Entity: 17514866285534137538
     TagComponent:
-      Tag: sprite
+      Tag: floor
     TransformComponent:
-      Translation: [-0.810185909, 3.7833128, -0.00421138899]
-      Rotation: [0, 0, -1.59647906]
-      Scale: [0.810000002, 0.811243176, 1]
+      Translation: [-3.74500632, -2.44708443, -0.0122680664]
+      Rotation: [0, 0, 2.70556164]
+      Scale: [8.62335777, 0.315461218, 1.0002563]
     SpriteComponent:
       Color: [1, 1, 1, 1]
-      Texture: assets\textures\checkerboard.png
       TilingFactor: 1
     Rigidbody2DComponent:
-      Type: Dynamic
+      Type: Static
       FixedRotation: false
     BoxCollider2DComponent:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 1
+      Friction: 0
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 246735708224619777
+    TagComponent:
+      Tag: circle
+    TransformComponent:
+      Translation: [1.88458729, 0.791527987, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleComponent:
+      Color: [0.0771949142, 0.25501895, 0.741071463, 1]
+      Thickness: 0.25999999
+      Fade: 0.000500000024
+    Rigidbody2DComponent:
+      Type: Dynamic
+      FixedRotation: true
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
       Friction: 0.5
-      Restitution: 0.5
+      Restitution: 0
       RestitutionThreshold: 0.5

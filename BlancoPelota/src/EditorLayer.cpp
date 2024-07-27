@@ -124,6 +124,8 @@ namespace Blanco
 			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 		}
 
+		OnOverlayRender();
+
 		m_FrameBuffer->UnBind();
 	}
 
@@ -216,6 +218,10 @@ namespace Blanco
 		ImGui::Text("DrawQuads:%d", stats.DrawQuads);
 		ImGui::Text("DrawVertices:%d", stats.DrawVertices);
 		ImGui::Text("DrawIndices:%d", stats.DrawIndices);
+		ImGui::End();
+
+		ImGui::Begin("Setting");
+		ImGui::Checkbox("ShowCollider",&m_ShowCollider);
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -356,6 +362,56 @@ namespace Blanco
 				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
 		}
 		return false;
+	}
+	void EditorLayer::OnOverlayRender()
+	{
+		if (m_SceneState == SceneState::Runtime)
+		{
+			Renderer2D::BeginScene(m_ActiveScene->GetPrimaryCamera().GetComponent<CameraComponent>().Camera, m_ActiveScene->GetPrimaryCamera().GetComponent<TransformComponent>().GetTransform());
+		}
+		else
+		{
+			Renderer2D::BeginScene(m_EditorCamera);
+		}
+		if (m_ShowCollider)
+		{
+			{
+				auto view = m_ActiveScene->GetEntitiesWith<TransformComponent, BoxCollider2DComponent>();
+				for (auto entityID : view)
+				{
+					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entityID);
+
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), tc.Translation + glm::vec3(bc2d.Offset, 0.0f))
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0, 0, 1))
+						* glm::scale(glm::mat4(1.0f), tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f));
+
+					Renderer2D::SetLineWidth(1.0f);
+					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+				}
+			}
+			{
+				auto view = m_ActiveScene->GetEntitiesWith<TransformComponent, CircleCollider2DComponent>();
+				for (auto entityID : view)
+				{
+					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entityID);
+
+					glm::mat4 upTransform = glm::translate(glm::mat4(1.0f), tc.Translation + glm::vec3(cc2d.Offset, 0.001f))
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0, 0, 1))
+						* glm::scale(glm::mat4(1.0f), tc.Scale * 2.0f * cc2d.Radius);
+
+					glm::mat4 belowTransform = glm::translate(glm::mat4(1.0f), tc.Translation + glm::vec3(cc2d.Offset, -0.001f))
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0, 0, 1))
+						* glm::scale(glm::mat4(1.0f), tc.Scale * 2.0f * cc2d.Radius);
+
+					Renderer2D::SetLineWidth(1.0f);
+					Renderer2D::DrawCircle(upTransform, glm::vec4(0, 1, 0, 1), 0.005f);
+					Renderer2D::DrawCircle(belowTransform, glm::vec4(0, 1, 0, 1), 0.005f);
+				}
+			}
+		}
+
+		Renderer2D::EndScene();
+
 	}
 	void EditorLayer::OnScenePlay()
 	{

@@ -9,6 +9,7 @@
 #include <Box2D/b2_world.h>
 #include <Box2D/b2_body.h>
 #include <Box2D/b2_polygon_shape.h>
+#include <Box2D/b2_circle_shape.h>
 #include <Box2D/b2_fixture.h>
 #include <unordered_map>
 
@@ -84,6 +85,7 @@ namespace Blanco
 		CopyComponent<NativeScriptComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<Rigidbody2DComponent>(dstRegistry, srcRegistry, enttMap);
 		CopyComponent<BoxCollider2DComponent>(dstRegistry, srcRegistry, enttMap);
+		CopyComponent<CircleCollider2DComponent>(dstRegistry, srcRegistry, enttMap);
 	
 		return newScene;
 	}
@@ -143,6 +145,25 @@ namespace Blanco
 
 				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
 				bc2d.RuntimeFixture = b2fixture;
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2CircleShape circleShape;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = cc2d.Radius * transform.Scale.x;
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.density = cc2d.Density;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+
+				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
+				cc2d.RuntimeFixture = b2fixture;
 			}
 		}
 	}
@@ -265,6 +286,7 @@ namespace Blanco
 		CopyComponentIfExist<NativeScriptComponent>(newEntity, entity);
 		CopyComponentIfExist<Rigidbody2DComponent>(newEntity, entity);
 		CopyComponentIfExist<BoxCollider2DComponent>(newEntity, entity);
+		CopyComponentIfExist<CircleCollider2DComponent>(newEntity, entity);
 
 		return newEntity;
 	}
@@ -316,5 +338,8 @@ namespace Blanco
 
 	template<>
 	void Scene::OnComponentAdded(Entity& entity, BoxCollider2DComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded(Entity& entity, CircleCollider2DComponent& component) {}
 }
 

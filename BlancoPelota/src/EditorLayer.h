@@ -18,6 +18,7 @@ namespace Blanco
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+		void OnOverlayRender();
 		void OnScenePlay();
 		void OnSceneStop();
 		void OnDuplicateEntity();
@@ -63,5 +64,7 @@ namespace Blanco
 
 		std::string m_FilePath = {};
 		int m_GuizmoOperation = -1;
+
+		bool m_ShowCollider = false;
 	};
 }

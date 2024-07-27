@@ -31,6 +31,11 @@ namespace Blanco
 		Entity DuplicateEntity(Entity entity);
 
 		Entity GetPrimaryCamera();
+
+		template<typename... components>
+		auto GetEntitiesWith() {
+			return m_Regisrty.view<components...>();
+		}
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity& entity,T& component);
